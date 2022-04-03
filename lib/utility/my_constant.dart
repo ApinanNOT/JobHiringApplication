@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyConstant {
   // General
@@ -23,7 +24,7 @@ class MyConstant {
         fontSize: 24,
         color: dark,
         fontWeight: FontWeight.bold,
-      );
+  );
   TextStyle h2Style() => TextStyle(
         fontSize: 18,
         color: dark,
@@ -33,5 +34,12 @@ class MyConstant {
         fontSize: 16,
         color: dark,
         fontWeight: FontWeight.normal,
+      );
+
+  ButtonStyle myButtonStyle() => ElevatedButton.styleFrom(
+        primary: MyConstant.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
       );
 }
