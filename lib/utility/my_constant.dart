@@ -20,19 +20,40 @@ class MyConstant {
   static Color light = Color(0xffff5f52);
 
   // Style
-  TextStyle h1Style() => TextStyle(
+  TextStyle h1Style() => GoogleFonts.prompt(
         fontSize: 24,
         color: dark,
         fontWeight: FontWeight.bold,
-  );
-  TextStyle h2Style() => TextStyle(
+      );
+  TextStyle h2Style() => GoogleFonts.sarabun(
         fontSize: 18,
         color: dark,
         fontWeight: FontWeight.w700,
       );
-  TextStyle h3Style() => TextStyle(
+  TextStyle h3Style() => GoogleFonts.sarabun(
         fontSize: 16,
         color: dark,
+        fontWeight: FontWeight.normal,
+      );
+  TextStyle h4Style() => GoogleFonts.sarabun(
+        fontSize: 14,
+        color: dark,
+        fontWeight: FontWeight.normal,
+      );
+  TextStyle h5Style() => GoogleFonts.sarabun(
+        fontSize: 14,
+        color: dark,
+        fontWeight: FontWeight.bold,
+      );
+
+  TextStyle headbar() => GoogleFonts.prompt(
+        fontSize: 24,
+        color: Color(0xffffffff),
+        fontWeight: FontWeight.bold,
+      );
+  TextStyle textbutton() => GoogleFonts.sarabun(
+        fontSize: 16,
+        color: Color(0xffffffff),
         fontWeight: FontWeight.normal,
       );
 

@@ -28,7 +28,7 @@ class _AuthenState extends State<Authen> {
             children: [
               buildImage(size),
               buildAppName(),
-              buildUser(size),
+              buildEmail(size),
               buildPassword(size),
               buildLogin(size),
               buildCreatAccount()
@@ -44,13 +44,16 @@ class _AuthenState extends State<Authen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ShowTitle(
-          title: 'Non Account ?',
-          textStyle: MyConstant().h3Style(),
+          title: 'ยังไม่มีบัญชี ?',
+          textStyle: MyConstant().h4Style(),
         ),
         TextButton(
           onPressed: () =>
               Navigator.pushNamed(context, MyConstant.routeCreateAccount),
-          child: Text('Create Account'),
+          child: Text(
+            'สร้างบัญชีผู้ใช้',
+            style: MyConstant().h5Style(),
+          ),
         )
       ],
     );
@@ -66,14 +69,17 @@ class _AuthenState extends State<Authen> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle(),
             onPressed: () {},
-            child: Text('Login'),
+            child: Text(
+              'เข้าสู่ระบบ',
+              style: MyConstant().textbutton(),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Row buildUser(double size) {
+  Row buildEmail(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -81,9 +87,15 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอกอีเมล';
+              } else {}
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
-              labelText: 'Username',
+              labelText: 'อีเมล',
               prefixIcon: Icon(
                 Icons.person,
                 color: MyConstant.dark,
@@ -111,6 +123,11 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอกรหัสผ่าน';
+              } else {}
+            },
             obscureText: statusRedEye,
             decoration: InputDecoration(
               suffixIcon: IconButton(
@@ -130,7 +147,7 @@ class _AuthenState extends State<Authen> {
                       ),
               ),
               labelStyle: MyConstant().h3Style(),
-              labelText: 'Password',
+              labelText: 'รหัสผ่าน',
               prefixIcon: Icon(
                 Icons.key,
                 color: MyConstant.dark,
