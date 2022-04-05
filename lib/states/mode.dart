@@ -17,7 +17,7 @@ class _ModeState extends State<Mode> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'ประเภทผู้ใช้งานในการทำงานทดสอบ',
+          'ประเภทผู้ใช้งาน',
           style: MyConstant().headbar(),
         ),
         backgroundColor: MyConstant.primary,
