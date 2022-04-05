@@ -3,6 +3,7 @@ import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/contractor.dart';
 import 'package:jobhiring/states/create_account.dart';
 import 'package:jobhiring/states/employer.dart';
+import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 final Map<String, WidgetBuilder> map = {
@@ -10,6 +11,7 @@ final Map<String, WidgetBuilder> map = {
   '/createAccount': (BuildContext context) => CreateAccount(),
   '/employer': (BuildContext context) => Employer(),
   '/contractor': (BuildContext context) => Contractor(),
+  '/mode': (BuildContext context) => Mode(),
 };
 
 String? initlalRoute;

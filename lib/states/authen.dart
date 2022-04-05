@@ -67,8 +67,10 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.symmetric(vertical: 16),
           width: size * 0.7,
           child: ElevatedButton(
-            style: MyConstant().myButtonStyle(),
-            onPressed: () {},
+            style: MyConstant().myButtonStyle1(),
+            onPressed: () {
+              //Navigator.pushNamed(context, MyConstant.routeMode);
+            },
             child: Text(
               'เข้าสู่ระบบ',
               style: MyConstant().textbutton(),

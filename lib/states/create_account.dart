@@ -316,7 +316,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.symmetric(vertical: 16),
           width: size * 0.7,
           child: ElevatedButton(
-            style: MyConstant().myButtonStyle(),
+            style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 if (typeUser == null) {
@@ -366,9 +366,9 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildAge(size),
                 buildEmail(size),
                 buildPassword(size),
-                buildTitle1('ประเภทผู้ใช้งาน'),
-                buildRadioContractor(size),
-                buildRadioEmployer(size),
+                //buildTitle1('ประเภทผู้ใช้งาน'),
+                //buildRadioContractor(size),
+                //buildRadioEmployer(size),
                 buildRegister(size),
               ],
             ),
