@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
 
@@ -14,6 +15,7 @@ class _CreateAccountState extends State<CreateAccount> {
   final formKey = GlobalKey<FormState>(); //create variable
   List<String> items = ['ชาย', 'หญิง', 'LGBT+']; //gender
   String? selectedItem = 'ชาย';
+  bool statusRedEye = true;
 
   Row buildName(double size) {
     return Row(
@@ -324,7 +326,24 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
               } else {}
             },
+            obscureText: statusRedEye,
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    statusRedEye = !statusRedEye;
+                  });
+                },
+                icon: statusRedEye
+                    ? Icon(
+                        Icons.visibility_off,
+                        color: MyConstant.dark,
+                      )
+                    : Icon(
+                        Icons.visibility,
+                        color: MyConstant.dark,
+                      ),
+              ),
               labelStyle: MyConstant().h3Style(),
               labelText: 'รหัสผ่าน',
               enabledBorder: OutlineInputBorder(
@@ -356,9 +375,21 @@ class _CreateAccountState extends State<CreateAccount> {
             },
             child: Text(
               'สมัครสมาชิก',
-              style: MyConstant().textbutton(),
+              style: MyConstant().textbutton1(),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Row buildImage(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: size * 0.7,
+          child: ShowImage(path: MyConstant.imagelogo),
         ),
       ],
     );
@@ -385,6 +416,7 @@ class _CreateAccountState extends State<CreateAccount> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                buildImage(size),
                 buildTitle1('ข้อมูลส่วนตัว'),
                 buildName(size),
                 buildLastname(size),

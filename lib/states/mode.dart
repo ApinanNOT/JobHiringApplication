@@ -15,11 +15,13 @@ class _ModeState extends State<Mode> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          'โหมดการใช้งาน',
+          'ประเภทผู้ใช้งาน',
           style: MyConstant().headbar(),
         ),
         backgroundColor: MyConstant.primary,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -53,7 +55,7 @@ class _ModeState extends State<Mode> {
             },
             child: Text(
               'ผู้รับจ้าง',
-              style: MyConstant().textbutton(),
+              style: MyConstant().textbutton1(),
             ),
           ),
         ),
@@ -75,7 +77,7 @@ class _ModeState extends State<Mode> {
             },
             child: Text(
               'ผู้ว่าจ้าง',
-              style: MyConstant().textbutton(),
+              style: MyConstant().textbutton1(),
             ),
           ),
         ),

@@ -71,11 +71,11 @@ class _AuthenState extends State<Authen> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               //if (formKey.currentState!.validate()) {}
-              //Navigator.pushNamed(context, MyConstant.routeMode);
+              Navigator.pushNamed(context, MyConstant.routeMode);
             },
             child: Text(
               'เข้าสู่ระบบ',
-              style: MyConstant().textbutton(),
+              style: MyConstant().textbutton1(),
             ),
           ),
         ),

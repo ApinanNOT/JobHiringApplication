@@ -51,14 +51,32 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
+  TextStyle h6Style() => GoogleFonts.sarabun(
+        fontSize: 12,
+        color: dark,
+        fontWeight: FontWeight.normal,
+      );
+
+  TextStyle h7Style() => GoogleFonts.sarabun(
+        fontSize: 12,
+        color: light,
+        fontWeight: FontWeight.normal,
+      );
+
   TextStyle headbar() => GoogleFonts.prompt(
         fontSize: 24,
         color: Color(0xffffffff),
         fontWeight: FontWeight.bold,
       );
 
-  TextStyle textbutton() => GoogleFonts.sarabun(
+  TextStyle textbutton1() => GoogleFonts.sarabun(
         fontSize: 16,
+        color: Color(0xffffffff),
+        fontWeight: FontWeight.normal,
+      );
+      
+  TextStyle textbutton2() => GoogleFonts.sarabun(
+        fontSize: 12,
         color: Color(0xffffffff),
         fontWeight: FontWeight.normal,
       );
@@ -72,6 +90,13 @@ class MyConstant {
 
   ButtonStyle myButtonStyle2() => ElevatedButton.styleFrom(
         primary: MyConstant.dark,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      );
+
+  ButtonStyle myButtonStyle3() => ElevatedButton.styleFrom(
+        primary: MyConstant.light,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
