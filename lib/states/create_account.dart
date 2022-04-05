@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jobhiring/utility/my_dialog.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
 
@@ -90,6 +89,12 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกเลขบัตรประชาชน';
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return 'ต้องเป็นตัวเลข 0-9';
+              } else if (value.length < 13) {
+                return 'กรุณากรอกให้ครบ 13 หลัก';
+              } else if (value.length > 13) {
+                return 'เลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
               } else {}
             },
             decoration: InputDecoration(
@@ -153,6 +158,12 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกเบอร์โทร';
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return 'เบอร์โทรต้องเป็นตัวเลข 0-9';
+              } else if (value.length < 10) {
+                return 'กรุณากรอกเบอร์โทรให้ครบ 10 หลัก';
+              } else if (value.length > 10) {
+                return 'เบอร์โทรต้องไม่เกิน 10 หลัก';
               } else {}
             },
             decoration: InputDecoration(
@@ -222,9 +233,16 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            keyboardType: TextInputType.phone,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกอายุ';
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return 'อายุต้องเป็นตัวเลข 0-9';
+              } else if (int.tryParse(value)! < 18) {
+                return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
+              } else if (int.tryParse(value)! > 60) {
+                return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
               } else {}
             },
             decoration: InputDecoration(
@@ -257,6 +275,10 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกอีเมล';
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
+                return 'กรุณากรอกอีเมลที่ถูกต้อง';
               } else {}
             },
             decoration: InputDecoration(
@@ -288,6 +310,18 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกรหัสผ่าน';
+              } else if (value.length < 6) {
+                return 'รหัสผ่านต้องไม่น้อยกว่า 6 ตัวอักษร';
+              } else if (value.length > 10) {
+                return 'รหัสผ่านต้องไม่เกิน 10 ตัวอักษร';
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวเลข';
+              } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ A-Z';
+              } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์เล็ก a-z';
+              } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
               } else {}
             },
             decoration: InputDecoration(
@@ -318,12 +352,7 @@ class _CreateAccountState extends State<CreateAccount> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                if (typeUser == null) {
-                  MyDialog().normalDialog(context, 'เลือกประเภทผู้ใช้งาน',
-                      'กรุณาเลือกประเภทผู้ใช้');
-                }
-              }
+              if (formKey.currentState!.validate()) {}
             },
             child: Text(
               'สมัครสมาชิก',

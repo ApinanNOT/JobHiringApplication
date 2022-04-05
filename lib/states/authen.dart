@@ -12,6 +12,7 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   bool statusRedEye = true;
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +70,7 @@ class _AuthenState extends State<Authen> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
+              //if (formKey.currentState!.validate()) {}
               //Navigator.pushNamed(context, MyConstant.routeMode);
             },
             child: Text(
@@ -93,6 +95,10 @@ class _AuthenState extends State<Authen> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกอีเมล';
+              } else if (!RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value)) {
+                return 'กรุณากรอกอีเมลที่ถูกต้อง';
               } else {}
             },
             decoration: InputDecoration(

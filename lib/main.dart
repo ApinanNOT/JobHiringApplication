@@ -8,7 +8,7 @@ import 'package:jobhiring/utility/my_constant.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen': (BuildContext context) => Authen(),
-  '/createAccount': (BuildContext context) => CreateAccount(),
+  '/createaccount': (BuildContext context) => CreateAccount(),
   '/employer': (BuildContext context) => Employer(),
   '/contractor': (BuildContext context) => Contractor(),
   '/mode': (BuildContext context) => Mode(),
