@@ -134,6 +134,18 @@ class _AuthenState extends State<Authen> {
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอกรหัสผ่าน';
+              } else if (value.length < 6) {
+                return 'รหัสผ่านต้องไม่น้อยกว่า 6 ตัวอักษร';
+              } else if (value.length > 10) {
+                return 'รหัสผ่านต้องไม่เกิน 10 ตัวอักษร';
+              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวเลข';
+              } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ A-Z';
+              } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์เล็ก a-z';
+              } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(value)) {
+                return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
               } else {}
             },
             obscureText: statusRedEye,

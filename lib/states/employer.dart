@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jobhiring/tabStates/findjob.dart';
 import 'package:jobhiring/tabStates/home.dart';
 import 'package:jobhiring/tabStates/postjob.dart';
 import 'package:jobhiring/tabStates/profile.dart';

@@ -43,7 +43,7 @@ class _ContractorState extends State<Contractor>
           style: MyConstant().headbar(),
         ),
         backgroundColor: MyConstant.primary,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, //no back botton
       ),
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
