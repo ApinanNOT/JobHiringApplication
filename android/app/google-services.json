@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845134928402",
+    "firebase_url": "https://job-hiring-59295-default-rtdb.firebaseio.com",
+    "project_id": "job-hiring-59295",
+    "storage_bucket": "job-hiring-59295.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845134928402:android:e0de180e60c9ab1f3a56cb",
+        "android_client_info": {
+          "package_name": "com.apinanpran.jobhiring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845134928402-3lraqarvb98sakqsrqvmbt3j0p7l9mbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSLlTUW_J7N9KIzBmmEDmLOxprVXwW3K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845134928402-3lraqarvb98sakqsrqvmbt3j0p7l9mbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

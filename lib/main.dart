@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/contractor.dart';
@@ -16,8 +17,9 @@ final Map<String, WidgetBuilder> map = {
 
 String? initlalRoute;
 
-void main() {
+Future<void> main() async {
   initlalRoute = MyConstant.routeAuthen;
+  //await Firebase.initializeApp();
   runApp(MyApp());
 }
 

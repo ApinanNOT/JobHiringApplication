@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
@@ -371,7 +372,16 @@ class _CreateAccountState extends State<CreateAccount> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              if (formKey.currentState!.validate()) {}
+              if (formKey.currentState!.validate()) {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext c) {
+                      return ProgressDialog(
+                        message: "กำลังบันทึกข้อมูล",
+                      );
+                    });
+              }
             },
             child: Text(
               'สมัครสมาชิก',

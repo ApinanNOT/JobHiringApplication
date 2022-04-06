@@ -74,10 +74,16 @@ class MyConstant {
         color: Color(0xffffffff),
         fontWeight: FontWeight.normal,
       );
-      
+
   TextStyle textbutton2() => GoogleFonts.sarabun(
         fontSize: 12,
         color: Color(0xffffffff),
+        fontWeight: FontWeight.normal,
+      );
+
+  TextStyle textdialog() => GoogleFonts.sarabun(
+        fontSize: 14,
+        color: Colors.black,
         fontWeight: FontWeight.normal,
       );
 
