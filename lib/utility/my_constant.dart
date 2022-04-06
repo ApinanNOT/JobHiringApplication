@@ -69,6 +69,12 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
+  TextStyle errortext() => GoogleFonts.kanit(
+        fontSize: 14,
+        color: Colors.red[400],
+        fontWeight: FontWeight.normal,
+      );
+
   TextStyle textbutton1() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Color(0xffffffff),

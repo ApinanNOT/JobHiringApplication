@@ -19,13 +19,14 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   String? typeUser;
   final formKey = GlobalKey<FormState>(); //create variable
-  List<String> items = ['ชาย', 'หญิง', 'LGBT+']; //gender
-  String? selectedItem = 'ชาย';
+  List<String> genderlist = ["ชาย", "หญิง", "LGBTQ"]; //gender
+  String? selectedgendertype;
   bool statusRedEye = true;
 
   TextEditingController idTextEditingController = TextEditingController();
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController lastnameTextEditingController = TextEditingController();
+  TextEditingController genderTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController addressTextEditingController = TextEditingController();
   TextEditingController ageTextEditingController = TextEditingController();
@@ -47,8 +48,9 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
-              labelText: 'ชื่อ',
+              labelText: 'ชื่อ (ไม่ต้องระบุคำนำหน้า)',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.dark),
                 borderRadius: BorderRadius.circular(30),
@@ -79,6 +81,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'นามสกุล',
               enabledBorder: OutlineInputBorder(
@@ -118,6 +121,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'เลขบัตรประชาชน',
               enabledBorder: OutlineInputBorder(
@@ -150,6 +154,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'ที่อยู่',
               enabledBorder: OutlineInputBorder(
@@ -190,6 +195,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'เบอร์โทร',
               enabledBorder: OutlineInputBorder(
@@ -216,7 +222,13 @@ class _CreateAccountState extends State<CreateAccount> {
           child: SizedBox(
             width: size * 0.7,
             child: DropdownButtonFormField<String>(
+              validator: (selectedgendertype) {
+                if (selectedgendertype == null) {
+                  return 'กรุณาระบุเพศ';
+                } else {}
+              },
               decoration: InputDecoration(
+                errorStyle: MyConstant().errortext(),
                 labelText: 'เพศ',
                 labelStyle: MyConstant().h3Style(),
                 enabledBorder: OutlineInputBorder(
@@ -228,19 +240,21 @@ class _CreateAccountState extends State<CreateAccount> {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              value: selectedItem,
-              items: items
-                  .map(
-                    (item) => DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(
-                        item,
-                        style: MyConstant().h3Style(),
-                      ),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (item) => setState(() => selectedItem = item),
+              value: selectedgendertype,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedgendertype = newValue.toString();
+                });
+              },
+              items: genderlist.map((gender) {
+                return DropdownMenuItem(
+                  child: Text(
+                    gender,
+                    style: MyConstant().h3Style(),
+                  ),
+                  value: gender,
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -270,6 +284,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'อายุ',
               enabledBorder: OutlineInputBorder(
@@ -307,6 +322,7 @@ class _CreateAccountState extends State<CreateAccount> {
               } else {}
             },
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'อีเมล',
               enabledBorder: OutlineInputBorder(
@@ -356,6 +372,7 @@ class _CreateAccountState extends State<CreateAccount> {
             },
             obscureText: statusRedEye,
             decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
@@ -425,6 +442,7 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  //connect database and authen
   saveUserInformation() async {
     showDialog(
       context: context,
@@ -450,10 +468,11 @@ class _CreateAccountState extends State<CreateAccount> {
 
     if (firebaseUser != null) {
       Map usermap = {
-        "id": firebaseUser.uid,
+        "User UID": firebaseUser.uid,
         "name": nameTextEditingController.text.trim(),
         "lastname": lastnameTextEditingController.text.trim(),
-        "id1": idTextEditingController.text.trim(),
+        "id": idTextEditingController.text.trim(),
+        "gender": selectedgendertype,
         "address": addressTextEditingController.text.trim(),
         "phone": phoneTextEditingController.text.trim(),
         "age": ageTextEditingController.text.trim(),
@@ -466,11 +485,19 @@ class _CreateAccountState extends State<CreateAccount> {
       usersRef.child(firebaseUser.uid).set(usermap);
 
       currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(msg: "สมัครสมาชิกสำเร็จ");
+      Fluttertoast.showToast(
+          msg: "สมัครสมาชิกสำเร็จ",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 14,
+          backgroundColor: Colors.green);
       Navigator.push(context, MaterialPageRoute(builder: (c) => Authen()));
     } else {
       Navigator.pop(context);
-      Fluttertoast.showToast(msg: "สมัครสมาชิกล้มเหลว");
+      Fluttertoast.showToast(
+          msg: "สมัครสมาชิกล้มเหลว",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 14,
+          backgroundColor: Colors.red);
     }
   }
 
