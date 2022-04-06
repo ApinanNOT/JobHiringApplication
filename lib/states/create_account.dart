@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jobhiring/global/global.dart';
+import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
@@ -18,6 +23,15 @@ class _CreateAccountState extends State<CreateAccount> {
   String? selectedItem = 'ชาย';
   bool statusRedEye = true;
 
+  TextEditingController idTextEditingController = TextEditingController();
+  TextEditingController nameTextEditingController = TextEditingController();
+  TextEditingController lastnameTextEditingController = TextEditingController();
+  TextEditingController phoneTextEditingController = TextEditingController();
+  TextEditingController addressTextEditingController = TextEditingController();
+  TextEditingController ageTextEditingController = TextEditingController();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
+
   Row buildName(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -26,8 +40,9 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: nameTextEditingController,
+            validator: (nameTextEditingController) {
+              if (nameTextEditingController!.isEmpty) {
                 return 'กรุณากรอกชื่อ';
               } else {}
             },
@@ -57,8 +72,9 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: lastnameTextEditingController,
+            validator: (lastnameTextEditingController) {
+              if (lastnameTextEditingController!.isEmpty) {
                 return 'กรุณากรอกนามสกุล';
               } else {}
             },
@@ -89,14 +105,15 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.phone,
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: idTextEditingController,
+            validator: (idTextEditingController) {
+              if (idTextEditingController!.isEmpty) {
                 return 'กรุณากรอกเลขบัตรประชาชน';
-              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              } else if (!RegExp(r'[0-9]').hasMatch(idTextEditingController)) {
                 return 'ต้องเป็นตัวเลข 0-9';
-              } else if (value.length < 13) {
+              } else if (idTextEditingController.length < 13) {
                 return 'กรุณากรอกให้ครบ 13 หลัก';
-              } else if (value.length > 13) {
+              } else if (idTextEditingController.length > 13) {
                 return 'เลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
               } else {}
             },
@@ -126,8 +143,9 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: addressTextEditingController,
+            validator: (addressTextEditingController) {
+              if (addressTextEditingController!.isEmpty) {
                 return 'กรุณากรอกที่อยู่';
               } else {}
             },
@@ -158,14 +176,16 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.phone,
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: phoneTextEditingController,
+            validator: (phoneTextEditingController) {
+              if (phoneTextEditingController!.isEmpty) {
                 return 'กรุณากรอกเบอร์โทร';
-              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              } else if (!RegExp(r'[0-9]')
+                  .hasMatch(phoneTextEditingController)) {
                 return 'เบอร์โทรต้องเป็นตัวเลข 0-9';
-              } else if (value.length < 10) {
+              } else if (phoneTextEditingController.length < 10) {
                 return 'กรุณากรอกเบอร์โทรให้ครบ 10 หลัก';
-              } else if (value.length > 10) {
+              } else if (phoneTextEditingController.length > 10) {
                 return 'เบอร์โทรต้องไม่เกิน 10 หลัก';
               } else {}
             },
@@ -236,15 +256,16 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            controller: ageTextEditingController,
             keyboardType: TextInputType.phone,
-            validator: (value) {
-              if (value!.isEmpty) {
+            validator: (ageTextEditingController) {
+              if (ageTextEditingController!.isEmpty) {
                 return 'กรุณากรอกอายุ';
-              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              } else if (!RegExp(r'[0-9]').hasMatch(ageTextEditingController)) {
                 return 'อายุต้องเป็นตัวเลข 0-9';
-              } else if (int.tryParse(value)! < 18) {
+              } else if (int.tryParse(ageTextEditingController)! < 18) {
                 return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
-              } else if (int.tryParse(value)! > 60) {
+              } else if (int.tryParse(ageTextEditingController)! > 60) {
                 return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
               } else {}
             },
@@ -275,12 +296,13 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: emailTextEditingController,
+            validator: (emailTextEditingController) {
+              if (emailTextEditingController!.isEmpty) {
                 return 'กรุณากรอกอีเมล';
               } else if (!RegExp(
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value)) {
+                  .hasMatch(emailTextEditingController)) {
                 return 'กรุณากรอกอีเมลที่ถูกต้อง';
               } else {}
             },
@@ -310,20 +332,25 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: passwordTextEditingController,
+            validator: (passwordTextEditingController) {
+              if (passwordTextEditingController!.isEmpty) {
                 return 'กรุณากรอกรหัสผ่าน';
-              } else if (value.length < 6) {
+              } else if (passwordTextEditingController.length < 6) {
                 return 'รหัสผ่านต้องไม่น้อยกว่า 6 ตัวอักษร';
-              } else if (value.length > 10) {
+              } else if (passwordTextEditingController.length > 10) {
                 return 'รหัสผ่านต้องไม่เกิน 10 ตัวอักษร';
-              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              } else if (!RegExp(r'[0-9]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวเลข';
-              } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+              } else if (!RegExp(r'[A-Z]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ A-Z';
-              } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+              } else if (!RegExp(r'[a-z]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิมพ์เล็ก a-z';
-              } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(value)) {
+              } else if (!RegExp(r'[#?!@$%^&*-]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
               } else {}
             },
@@ -373,14 +400,7 @@ class _CreateAccountState extends State<CreateAccount> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext c) {
-                      return ProgressDialog(
-                        message: "กำลังบันทึกข้อมูล",
-                      );
-                    });
+                saveUserInformation();
               }
             },
             child: Text(
@@ -403,6 +423,55 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ],
     );
+  }
+
+  saveUserInformation() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังบันทึกข้อมูล",
+        );
+      },
+    );
+    final User? firebaseUser = (await fAuth
+            .createUserWithEmailAndPassword(
+      email: emailTextEditingController.text.trim(),
+      password: passwordTextEditingController.text.trim(),
+    )
+            .catchError(
+      (msg) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Error: " + msg.toString());
+      },
+    ))
+        .user;
+
+    if (firebaseUser != null) {
+      Map usermap = {
+        "id": firebaseUser.uid,
+        "name": nameTextEditingController.text.trim(),
+        "lastname": lastnameTextEditingController.text.trim(),
+        "id1": idTextEditingController.text.trim(),
+        "address": addressTextEditingController.text.trim(),
+        "phone": phoneTextEditingController.text.trim(),
+        "age": ageTextEditingController.text.trim(),
+        "email": emailTextEditingController.text.trim(),
+        "password": passwordTextEditingController.text.trim(),
+      };
+
+      DatabaseReference usersRef =
+          FirebaseDatabase.instance.ref().child("User");
+      usersRef.child(firebaseUser.uid).set(usermap);
+
+      currentFirebaseUser = firebaseUser;
+      Fluttertoast.showToast(msg: "สมัครสมาชิกสำเร็จ");
+      Navigator.push(context, MaterialPageRoute(builder: (c) => Authen()));
+    } else {
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "สมัครสมาชิกล้มเหลว");
+    }
   }
 
   @override
@@ -437,50 +506,11 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildAge(size),
                 buildEmail(size),
                 buildPassword(size),
-                //buildTitle1('ประเภทผู้ใช้งาน'),
-                //buildRadioContractor(size),
-                //buildRadioEmployer(size),
                 buildRegister(size),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  RadioListTile<String> buildRadioContractor(double size) {
-    return RadioListTile(
-      value: 'Contractor',
-      groupValue: typeUser,
-      onChanged: (value) {
-        setState(
-          () {
-            typeUser = value;
-          },
-        );
-      },
-      title: ShowTitle(
-        title: 'ผู้รับจ้าง',
-        textStyle: MyConstant().h3Style(),
-      ),
-    );
-  }
-
-  RadioListTile<String> buildRadioEmployer(double size) {
-    return RadioListTile(
-      value: 'Employer',
-      groupValue: typeUser,
-      onChanged: (value) {
-        setState(
-          () {
-            typeUser = value;
-          },
-        );
-      },
-      title: ShowTitle(
-        title: 'ผู้ว่าจ้าง',
-        textStyle: MyConstant().h3Style(),
       ),
     );
   }

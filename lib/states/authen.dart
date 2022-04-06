@@ -13,6 +13,8 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   bool statusRedEye = true;
   final formKey = GlobalKey<FormState>();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class _AuthenState extends State<Authen> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               //if (formKey.currentState!.validate()) {}
-              Navigator.pushNamed(context, MyConstant.routeMode);
+              //Navigator.pushNamed(context, MyConstant.routeMode);
             },
             child: Text(
               'เข้าสู่ระบบ',
@@ -92,12 +94,13 @@ class _AuthenState extends State<Authen> {
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: emailTextEditingController,
+            validator: (emailTextEditingController) {
+              if (emailTextEditingController!.isEmpty) {
                 return 'กรุณากรอกอีเมล';
               } else if (!RegExp(
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value)) {
+                  .hasMatch(emailTextEditingController)) {
                 return 'กรุณากรอกอีเมลที่ถูกต้อง';
               } else {}
             },
@@ -131,20 +134,25 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
+            controller: passwordTextEditingController,
+            validator: (passwordTextEditingController) {
+              if (passwordTextEditingController!.isEmpty) {
                 return 'กรุณากรอกรหัสผ่าน';
-              } else if (value.length < 6) {
+              } else if (passwordTextEditingController.length < 6) {
                 return 'รหัสผ่านต้องไม่น้อยกว่า 6 ตัวอักษร';
-              } else if (value.length > 10) {
+              } else if (passwordTextEditingController.length > 10) {
                 return 'รหัสผ่านต้องไม่เกิน 10 ตัวอักษร';
-              } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+              } else if (!RegExp(r'[0-9]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวเลข';
-              } else if (!RegExp(r'[A-Z]').hasMatch(value)) {
+              } else if (!RegExp(r'[A-Z]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ A-Z';
-              } else if (!RegExp(r'[a-z]').hasMatch(value)) {
+              } else if (!RegExp(r'[a-z]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิมพ์เล็ก a-z';
-              } else if (!RegExp(r'[#?!@$%^&*-]').hasMatch(value)) {
+              } else if (!RegExp(r'[#?!@$%^&*-]')
+                  .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
               } else {}
             },

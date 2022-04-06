@@ -17,10 +17,11 @@ final Map<String, WidgetBuilder> map = {
 
 String? initlalRoute;
 
-Future<void> main() async {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   initlalRoute = MyConstant.routeAuthen;
-  //await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
