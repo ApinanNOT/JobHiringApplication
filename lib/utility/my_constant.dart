@@ -69,6 +69,12 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
+  TextStyle logotext() => GoogleFonts.prompt(
+        fontSize: 30,
+        color: dark,
+        fontWeight: FontWeight.bold,
+      );
+
   TextStyle errortext() => GoogleFonts.kanit(
         fontSize: 14,
         color: Colors.red[400],
