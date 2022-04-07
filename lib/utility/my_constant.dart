@@ -63,6 +63,12 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle h8Style() => GoogleFonts.sarabun(
+        fontSize: 16,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      );
+
   TextStyle headbar() => GoogleFonts.prompt(
         fontSize: 24,
         color: Color(0xffffffff),

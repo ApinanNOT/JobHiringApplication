@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/splash_screen/splash_screen.dart';
-import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
@@ -251,7 +250,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 return DropdownMenuItem(
                   child: Text(
                     gender,
-                    style: MyConstant().h3Style(),
+                    style: MyConstant().h8Style(),
                   ),
                   value: gender,
                 );
@@ -412,7 +411,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
+          margin: const EdgeInsets.symmetric(vertical: 16),
           width: size * 0.7,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
@@ -492,7 +491,7 @@ class _CreateAccountState extends State<CreateAccount> {
           fontSize: 14,
           backgroundColor: Colors.green);
       Navigator.push(
-          context, MaterialPageRoute(builder: (c) => MySplashScreen()));
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     } else {
       Navigator.pop(context);
       Fluttertoast.showToast(
@@ -500,6 +499,8 @@ class _CreateAccountState extends State<CreateAccount> {
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.red);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     }
   }
 
@@ -546,7 +547,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Container buildTitle1(String title) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
+      margin: const EdgeInsets.symmetric(vertical: 16),
       child: ShowTitle(
         title: title,
         textStyle: MyConstant().h2Style(),
@@ -556,7 +557,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   Container buildTitle2(String title) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 16),
+      margin: const EdgeInsets.symmetric(vertical: 16),
       child: ShowTitle(
         title: title,
         textStyle: MyConstant().h2Style(),

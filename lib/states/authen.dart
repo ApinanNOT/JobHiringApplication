@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jobhiring/global/global.dart';
+import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/utility/my_constant.dart';
+import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
-
   @override
   State<Authen> createState() => _AuthenState();
 }
@@ -15,6 +19,54 @@ class _AuthenState extends State<Authen> {
   final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+
+  loginUser() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "เข้าสู่ระบบ",
+        );
+      },
+    );
+    final User? firebaseUser = (await fAuth
+            .signInWithEmailAndPassword(
+      email: emailTextEditingController.text.trim(),
+      password: passwordTextEditingController.text.trim(),
+    )
+            .catchError(
+      (msg) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: "กรุณาระบุอีเมลและรหัสผ่านที่ถูกต้อง",
+            toastLength: Toast.LENGTH_LONG,
+            fontSize: 14,
+            backgroundColor: Colors.red);
+      },
+    ))
+        .user;
+
+    if (firebaseUser != null) {
+      currentFirebaseUser = firebaseUser;
+      Fluttertoast.showToast(
+          msg: "เข้าสู่ระบบสำเร็จ",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 14,
+          backgroundColor: Colors.green);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+    } else {
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+          msg: "เข้าสู่ระบบล้มเหลว",
+          toastLength: Toast.LENGTH_LONG,
+          fontSize: 14,
+          backgroundColor: Colors.red);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +119,14 @@ class _AuthenState extends State<Authen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
+          margin: const EdgeInsets.symmetric(vertical: 16),
           width: size * 0.7,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              //if (formKey.currentState!.validate()) {}
-              //Navigator.pushNamed(context, MyConstant.routeMode);
+              // if (formKey.currentState!.validate()) {
+              // }
+              loginUser();
             },
             child: Text(
               'เข้าสู่ระบบ',
