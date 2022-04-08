@@ -105,6 +105,12 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle textdialog2() => GoogleFonts.sarabun(
+        fontSize: 12,
+        color: Colors.black,
+        fontWeight: FontWeight.normal,
+      );
+
   ButtonStyle myButtonStyle1() => ElevatedButton.styleFrom(
         primary: MyConstant.primary,
         shape: RoundedRectangleBorder(

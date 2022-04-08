@@ -461,7 +461,8 @@ class _CreateAccountState extends State<CreateAccount> {
             .catchError(
       (msg) {
         Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Error: " + msg.toString());
+        Fluttertoast.showToast(
+            msg: "เกิดข้อผิดพลาดในการสมัครสมาชิก" + msg.toString());
       },
     ))
         .user;

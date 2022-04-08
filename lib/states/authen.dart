@@ -7,6 +7,7 @@ import 'package:jobhiring/utility/my_constant.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
+import 'package:jobhiring/utility/my_dialog.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
@@ -16,35 +17,41 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   bool statusRedEye = true;
-  final formKey = GlobalKey<FormState>();
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
+  validateForm() {
+    if (!emailTextEditingController.text.contains("@")) {
+      MyDialog().normalDialog(
+          context, 'กรุณาระบุอีเมล', 'โปรดตรวจสอบว่ามีการกรอกอีเมลที่ถูกต้อง');
+    } else if (passwordTextEditingController.text.isEmpty) {
+      MyDialog().normalDialog(context, 'กรุณาระบุรหัสผ่าน',
+          'โปรดตรวจสอบว่ามีการกรอกรห้สผ่านที่ถูกต้อง');
+    } else {
+      loginUser();
+    }
+  }
+
   loginUser() async {
     showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext c) {
-        return ProgressDialog(
-          message: "เข้าสู่ระบบ",
-        );
-      },
-    );
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext c) {
+          return ProgressDialog(
+            message: "กำลังเข้าสู่ระบบ",
+          );
+        });
+
     final User? firebaseUser = (await fAuth
             .signInWithEmailAndPassword(
       email: emailTextEditingController.text.trim(),
       password: passwordTextEditingController.text.trim(),
     )
-            .catchError(
-      (msg) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "กรุณาระบุอีเมลและรหัสผ่านที่ถูกต้อง",
-            toastLength: Toast.LENGTH_LONG,
-            fontSize: 14,
-            backgroundColor: Colors.red);
-      },
-    ))
+            .catchError((msg) {
+      Navigator.pop(context);
+      MyDialog().normalDialog(context, 'ไม่มีข้อมูลการลงทะเบียน',
+          'โปรดตรวจสอบว่าท่านได้ลงทะเบียนเรียบร้อยแล้ว');
+    }))
         .user;
 
     if (firebaseUser != null) {
@@ -55,16 +62,18 @@ class _AuthenState extends State<Authen> {
           fontSize: 14,
           backgroundColor: Colors.green);
       Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (c) => const MySplashScreen(),
+        ),
+      );
     } else {
       Navigator.pop(context);
       Fluttertoast.showToast(
-          msg: "เข้าสู่ระบบล้มเหลว",
+          msg: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.red);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     }
   }
 
@@ -124,9 +133,7 @@ class _AuthenState extends State<Authen> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              // if (formKey.currentState!.validate()) {
-              // }
-              loginUser();
+              validateForm();
             },
             child: Text(
               'เข้าสู่ระบบ',
@@ -148,15 +155,6 @@ class _AuthenState extends State<Authen> {
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
             controller: emailTextEditingController,
-            validator: (emailTextEditingController) {
-              if (emailTextEditingController!.isEmpty) {
-                return 'กรุณากรอกอีเมล';
-              } else if (!RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(emailTextEditingController)) {
-                return 'กรุณากรอกอีเมลที่ถูกต้อง';
-              } else {}
-            },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
               labelText: 'อีเมล',
@@ -188,27 +186,6 @@ class _AuthenState extends State<Authen> {
           width: size * 0.7,
           child: TextFormField(
             controller: passwordTextEditingController,
-            validator: (passwordTextEditingController) {
-              if (passwordTextEditingController!.isEmpty) {
-                return 'กรุณากรอกรหัสผ่าน';
-              } else if (passwordTextEditingController.length < 6) {
-                return 'รหัสผ่านต้องไม่น้อยกว่า 6 ตัวอักษร';
-              } else if (passwordTextEditingController.length > 10) {
-                return 'รหัสผ่านต้องไม่เกิน 10 ตัวอักษร';
-              } else if (!RegExp(r'[0-9]')
-                  .hasMatch(passwordTextEditingController)) {
-                return 'รหัสผ่านต้องมีตัวเลข';
-              } else if (!RegExp(r'[A-Z]')
-                  .hasMatch(passwordTextEditingController)) {
-                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ A-Z';
-              } else if (!RegExp(r'[a-z]')
-                  .hasMatch(passwordTextEditingController)) {
-                return 'รหัสผ่านต้องมีตัวอักษรพิมพ์เล็ก a-z';
-              } else if (!RegExp(r'[#?!@$%^&*-]')
-                  .hasMatch(passwordTextEditingController)) {
-                return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
-              } else {}
-            },
             obscureText: statusRedEye,
             decoration: InputDecoration(
               suffixIcon: IconButton(

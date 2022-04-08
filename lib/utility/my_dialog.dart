@@ -4,6 +4,8 @@ import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 
 class MyDialog {
+  final Function()? funcAction;
+  MyDialog({this.funcAction});
   Future<Null> normalDialog(
       BuildContext context, String title, String message) async {
     showDialog(
@@ -13,7 +15,7 @@ class MyDialog {
           leading: ShowImage(path: MyConstant.imagelogo),
           title: ShowTitle(title: title, textStyle: MyConstant().h2Style()),
           subtitle:
-              ShowTitle(title: message, textStyle: MyConstant().h4Style()),
+              ShowTitle(title: message, textStyle: MyConstant().textdialog2()),
         ),
         children: [
           TextButton(
