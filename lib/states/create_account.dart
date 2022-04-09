@@ -38,7 +38,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             controller: nameTextEditingController,
@@ -71,7 +71,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             controller: lastnameTextEditingController,
@@ -104,7 +104,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.phone,
@@ -144,7 +144,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             controller: addressTextEditingController,
@@ -177,7 +177,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.phone,
@@ -218,7 +218,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
             width: size * 0.7,
             child: DropdownButtonFormField<String>(
@@ -267,7 +267,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             controller: ageTextEditingController,
@@ -307,7 +307,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
@@ -345,7 +345,7 @@ class _CreateAccountState extends State<CreateAccount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
             controller: passwordTextEditingController,
@@ -417,7 +417,7 @@ class _CreateAccountState extends State<CreateAccount> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                saveUserInformation();
+                showDialogRegister();
               }
             },
             child: Text(
@@ -427,6 +427,39 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<dynamic> showDialogRegister() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: ListTile(
+          leading: ShowImage(path: MyConstant.imagelogo),
+          title: ShowTitle(
+              title: "ยืนยันการบันทึกข้อมูล",
+              textStyle: MyConstant().h2Style()),
+          subtitle: ShowTitle(
+              title: "โปรดตรวจสอบข้อมูลให้ถูกต้องก่อนการยืนยันข้อมูล",
+              textStyle: MyConstant().textdialog2()),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'ยกเลิก',
+              style: MyConstant().h3Style(),
+            ),
+          ),
+          TextButton(
+            onPressed: () => saveUserInformation(),
+            child: Text(
+              'ยืนยัน',
+              style: MyConstant().h3Style(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -462,7 +495,11 @@ class _CreateAccountState extends State<CreateAccount> {
       (msg) {
         Navigator.pop(context);
         Fluttertoast.showToast(
-            msg: "เกิดข้อผิดพลาดในการสมัครสมาชิก" + msg.toString());
+            msg: "อีเมลนี้ถูกใช้งานแล้ว",
+            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_LONG,
+            fontSize: 14,
+            backgroundColor: Colors.red);
       },
     ))
         .user;
@@ -488,6 +525,7 @@ class _CreateAccountState extends State<CreateAccount> {
       currentFirebaseUser = firebaseUser;
       Fluttertoast.showToast(
           msg: "สมัครสมาชิกสำเร็จ",
+          gravity: ToastGravity.TOP,
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.green);
@@ -497,6 +535,7 @@ class _CreateAccountState extends State<CreateAccount> {
       Navigator.pop(context);
       Fluttertoast.showToast(
           msg: "สมัครสมาชิกล้มเหลว",
+          gravity: ToastGravity.TOP,
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.red);

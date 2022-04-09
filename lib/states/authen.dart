@@ -58,6 +58,7 @@ class _AuthenState extends State<Authen> {
       currentFirebaseUser = firebaseUser;
       Fluttertoast.showToast(
           msg: "เข้าสู่ระบบสำเร็จ",
+          gravity: ToastGravity.TOP,
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.green);
@@ -71,6 +72,7 @@ class _AuthenState extends State<Authen> {
       Navigator.pop(context);
       Fluttertoast.showToast(
           msg: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+          gravity: ToastGravity.TOP,
           toastLength: Toast.LENGTH_LONG,
           fontSize: 14,
           backgroundColor: Colors.red);
