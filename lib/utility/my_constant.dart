@@ -16,9 +16,9 @@ class MyConstant {
   static String imagelogo = 'images/logo.png';
 
   // Color
-  static Color primary = Color(0xffc62828);
-  static Color dark = Color(0xff8e0000);
-  static Color light = Color(0xffff5f52);
+  static Color primary = const Color(0xffc62828);
+  static Color dark = const Color(0xff8e0000);
+  static Color light = const Color(0xffff5f52);
 
   // Style
   TextStyle h1Style() => GoogleFonts.prompt(
@@ -70,20 +70,20 @@ class MyConstant {
       );
 
   TextStyle confirmbutton() => GoogleFonts.sarabun(
-    fontSize: 16,
-    color: Colors.green,
-    fontWeight: FontWeight.normal,
-  );
+        fontSize: 16,
+        color: Colors.green,
+        fontWeight: FontWeight.normal,
+      );
 
   TextStyle cancelbutton() => GoogleFonts.sarabun(
-    fontSize: 16,
-    color: Colors.red,
-    fontWeight: FontWeight.normal,
-  );
+        fontSize: 16,
+        color: Colors.red,
+        fontWeight: FontWeight.normal,
+      );
 
   TextStyle headbar() => GoogleFonts.prompt(
         fontSize: 24,
-        color: Color(0xffffffff),
+        color: const Color(0xffffffff),
         fontWeight: FontWeight.bold,
       );
 
@@ -101,13 +101,13 @@ class MyConstant {
 
   TextStyle textbutton1() => GoogleFonts.sarabun(
         fontSize: 16,
-        color: Color(0xffffffff),
+        color: const Color(0xffffffff),
         fontWeight: FontWeight.normal,
       );
 
   TextStyle textbutton2() => GoogleFonts.sarabun(
         fontSize: 12,
-        color: Color(0xffffffff),
+        color: const Color(0xffffffff),
         fontWeight: FontWeight.normal,
       );
 
@@ -120,6 +120,12 @@ class MyConstant {
   TextStyle textdialog2() => GoogleFonts.sarabun(
         fontSize: 12,
         color: Colors.black,
+        fontWeight: FontWeight.normal,
+      );
+
+  TextStyle texttoast() => GoogleFonts.sarabun(
+        fontSize: 16,
+        color: Colors.white,
         fontWeight: FontWeight.normal,
       );
 

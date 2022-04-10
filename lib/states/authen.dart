@@ -7,8 +7,7 @@ import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import 'package:jobhiring/utility/my_dialog.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
@@ -57,11 +56,13 @@ class _AuthenState extends State<Authen> {
 
     if (firebaseUser != null) {
       currentFirebaseUser = firebaseUser;
-      showTopSnackBar(
+      Toast.show(
+        "เข้าสู่ระบบสำเร็จ",
         context,
-        const CustomSnackBar.success(
-          message: "เข้าสู่ระบบสำเร็จ",
-        ),
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.green,
+        textStyle: MyConstant().texttoast(),
       );
       Navigator.push(
         context,
@@ -71,11 +72,13 @@ class _AuthenState extends State<Authen> {
       );
     } else {
       Navigator.pop(context);
-      showTopSnackBar(
+      Toast.show(
+        "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
         context,
-        const CustomSnackBar.error(
-          message: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
-        ),
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.red,
+        textStyle: MyConstant().texttoast(),
       );
     }
   }
@@ -254,3 +257,5 @@ class _AuthenState extends State<Authen> {
     );
   }
 }
+
+class BOTTOM {}

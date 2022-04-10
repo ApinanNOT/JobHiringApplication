@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../utility/my_constant.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -510,11 +508,13 @@ class _CreateAccountState extends State<CreateAccount> {
             .catchError(
       (msg) {
         Navigator.pop(context);
-        showTopSnackBar(
+        Toast.show(
+          "อีเมลนี้ถูกใช้งานแล้ว",
           context,
-          const CustomSnackBar.error(
-            message: "อีเมลนี้ถูกใช้งานแล้ว",
-          ),
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.red,
+          textStyle: MyConstant().texttoast(),
         );
       },
     ))
@@ -537,23 +537,26 @@ class _CreateAccountState extends State<CreateAccount> {
       DatabaseReference usersRef =
           FirebaseDatabase.instance.ref().child("User");
       usersRef.child(firebaseUser.uid).set(usermap);
-
-      currentFirebaseUser = firebaseUser;
-      showTopSnackBar(
+      Toast.show(
+        "สมัครสมาชิกสำเร็จ",
         context,
-        const CustomSnackBar.success(
-          message: "สมัครสมาชิกสำเร็จ",
-        ),
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.green,
+        textStyle: MyConstant().texttoast(),
       );
+      currentFirebaseUser = firebaseUser;
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     } else {
       Navigator.pop(context);
-      showTopSnackBar(
+      Toast.show(
+        "สมัครสมาชิกล้มเหลว",
         context,
-        const CustomSnackBar.error(
-          message: "สมัครสมาชิกล้มเหลว",
-        ),
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.red,
+        textStyle: MyConstant().texttoast(),
       );
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
