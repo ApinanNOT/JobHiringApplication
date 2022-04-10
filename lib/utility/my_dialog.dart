@@ -11,6 +11,9 @@ class MyDialog {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         title: ListTile(
           leading: ShowImage(path: MyConstant.imagelogo),
           title: ShowTitle(title: title, textStyle: MyConstant().h2Style()),

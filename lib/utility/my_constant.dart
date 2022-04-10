@@ -63,11 +63,23 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
-  TextStyle h8Style() => GoogleFonts.sarabun(
+  TextStyle textinput() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Colors.black,
         fontWeight: FontWeight.normal,
       );
+
+  TextStyle confirmbutton() => GoogleFonts.sarabun(
+    fontSize: 16,
+    color: Colors.green,
+    fontWeight: FontWeight.normal,
+  );
+
+  TextStyle cancelbutton() => GoogleFonts.sarabun(
+    fontSize: 16,
+    color: Colors.red,
+    fontWeight: FontWeight.normal,
+  );
 
   TextStyle headbar() => GoogleFonts.prompt(
         fontSize: 24,
@@ -99,8 +111,8 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
-  TextStyle textdialog() => GoogleFonts.sarabun(
-        fontSize: 14,
+  TextStyle textdialog() => GoogleFonts.notoSansThai(
+        fontSize: 15,
         color: Colors.black,
         fontWeight: FontWeight.normal,
       );

@@ -7,6 +7,8 @@ import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../utility/my_constant.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -41,6 +43,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: nameTextEditingController,
             validator: (nameTextEditingController) {
               if (nameTextEditingController!.isEmpty) {
@@ -74,6 +77,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: lastnameTextEditingController,
             validator: (lastnameTextEditingController) {
               if (lastnameTextEditingController!.isEmpty) {
@@ -107,6 +111,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             keyboardType: TextInputType.phone,
             controller: idTextEditingController,
             validator: (idTextEditingController) {
@@ -147,6 +152,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: addressTextEditingController,
             validator: (addressTextEditingController) {
               if (addressTextEditingController!.isEmpty) {
@@ -180,6 +186,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             keyboardType: TextInputType.phone,
             controller: phoneTextEditingController,
             validator: (phoneTextEditingController) {
@@ -250,7 +257,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 return DropdownMenuItem(
                   child: Text(
                     gender,
-                    style: MyConstant().h8Style(),
+                    style: MyConstant().textinput(),
                   ),
                   value: gender,
                 );
@@ -270,6 +277,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: ageTextEditingController,
             keyboardType: TextInputType.phone,
             validator: (ageTextEditingController) {
@@ -310,6 +318,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             keyboardType: TextInputType.emailAddress,
             controller: emailTextEditingController,
             validator: (emailTextEditingController) {
@@ -348,6 +357,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: passwordTextEditingController,
             validator: (passwordTextEditingController) {
               if (passwordTextEditingController!.isEmpty) {
@@ -434,6 +444,9 @@ class _CreateAccountState extends State<CreateAccount> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         title: ListTile(
           leading: ShowImage(path: MyConstant.imagelogo),
           title: ShowTitle(
@@ -448,14 +461,17 @@ class _CreateAccountState extends State<CreateAccount> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'ยกเลิก',
-              style: MyConstant().h3Style(),
+              style: MyConstant().cancelbutton(),
             ),
           ),
           TextButton(
-            onPressed: () => saveUserInformation(),
+            onPressed: () {
+              Navigator.pop(context);
+              saveUserInformation();
+            },
             child: Text(
               'ยืนยัน',
-              style: MyConstant().h3Style(),
+              style: MyConstant().confirmbutton(),
             ),
           ),
         ],
@@ -494,12 +510,12 @@ class _CreateAccountState extends State<CreateAccount> {
             .catchError(
       (msg) {
         Navigator.pop(context);
-        Fluttertoast.showToast(
-            msg: "อีเมลนี้ถูกใช้งานแล้ว",
-            gravity: ToastGravity.TOP,
-            toastLength: Toast.LENGTH_LONG,
-            fontSize: 14,
-            backgroundColor: Colors.red);
+        showTopSnackBar(
+          context,
+          const CustomSnackBar.error(
+            message: "อีเมลนี้ถูกใช้งานแล้ว",
+          ),
+        );
       },
     ))
         .user;
@@ -523,22 +539,22 @@ class _CreateAccountState extends State<CreateAccount> {
       usersRef.child(firebaseUser.uid).set(usermap);
 
       currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(
-          msg: "สมัครสมาชิกสำเร็จ",
-          gravity: ToastGravity.TOP,
-          toastLength: Toast.LENGTH_LONG,
-          fontSize: 14,
-          backgroundColor: Colors.green);
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.success(
+          message: "สมัครสมาชิกสำเร็จ",
+        ),
+      );
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     } else {
       Navigator.pop(context);
-      Fluttertoast.showToast(
-          msg: "สมัครสมาชิกล้มเหลว",
-          gravity: ToastGravity.TOP,
-          toastLength: Toast.LENGTH_LONG,
-          fontSize: 14,
-          backgroundColor: Colors.red);
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message: "สมัครสมาชิกล้มเหลว",
+        ),
+      );
       Navigator.push(
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     }

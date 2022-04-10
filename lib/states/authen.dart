@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/utility/my_constant.dart';
@@ -8,6 +7,8 @@ import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import 'package:jobhiring/utility/my_dialog.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
@@ -56,12 +57,12 @@ class _AuthenState extends State<Authen> {
 
     if (firebaseUser != null) {
       currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(
-          msg: "เข้าสู่ระบบสำเร็จ",
-          gravity: ToastGravity.TOP,
-          toastLength: Toast.LENGTH_LONG,
-          fontSize: 14,
-          backgroundColor: Colors.green);
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.success(
+          message: "เข้าสู่ระบบสำเร็จ",
+        ),
+      );
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,12 +71,12 @@ class _AuthenState extends State<Authen> {
       );
     } else {
       Navigator.pop(context);
-      Fluttertoast.showToast(
-          msg: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
-          gravity: ToastGravity.TOP,
-          toastLength: Toast.LENGTH_LONG,
-          fontSize: 14,
-          backgroundColor: Colors.red);
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message: "เกิดข้อผิดพลาดในการเข้าสู่ระบบ",
+        ),
+      );
     }
   }
 
@@ -155,6 +156,7 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             keyboardType: TextInputType.emailAddress,
             controller: emailTextEditingController,
             decoration: InputDecoration(
@@ -187,6 +189,7 @@ class _AuthenState extends State<Authen> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            style: MyConstant().textinput(),
             controller: passwordTextEditingController,
             obscureText: statusRedEye,
             decoration: InputDecoration(
