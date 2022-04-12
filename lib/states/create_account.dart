@@ -46,6 +46,8 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (nameTextEditingController) {
               if (nameTextEditingController!.isEmpty) {
                 return 'กรุณากรอกชื่อ';
+              } else if (RegExp(r'[\s]').hasMatch(nameTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -80,6 +82,9 @@ class _CreateAccountState extends State<CreateAccount> {
             validator: (lastnameTextEditingController) {
               if (lastnameTextEditingController!.isEmpty) {
                 return 'กรุณากรอกนามสกุล';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(lastnameTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -121,6 +126,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'กรุณากรอกให้ครบ 13 หลัก';
               } else if (idTextEditingController.length > 13) {
                 return 'เลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
+              } else if (RegExp(r'[\s]').hasMatch(idTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -197,6 +204,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'กรุณากรอกเบอร์โทรให้ครบ 10 หลัก';
               } else if (phoneTextEditingController.length > 10) {
                 return 'เบอร์โทรต้องไม่เกิน 10 หลัก';
+              } else if (RegExp(r'[\s]').hasMatch(phoneTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -287,6 +296,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
               } else if (int.tryParse(ageTextEditingController)! > 60) {
                 return 'อายุต้องอยู่ระหว่าง 18 - 60 ปี';
+              } else if (RegExp(r'[\s]').hasMatch(ageTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -326,6 +337,8 @@ class _CreateAccountState extends State<CreateAccount> {
                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                   .hasMatch(emailTextEditingController)) {
                 return 'กรุณากรอกอีเมลที่ถูกต้อง';
+              } else if (RegExp(r'[\s]').hasMatch(emailTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             decoration: InputDecoration(
@@ -376,6 +389,9 @@ class _CreateAccountState extends State<CreateAccount> {
               } else if (!RegExp(r'[#?!@$%^&*-]')
                   .hasMatch(passwordTextEditingController)) {
                 return 'รหัสผ่านต้องมีตัวอักษรพิเศษ';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(passwordTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
               } else {}
             },
             obscureText: statusRedEye,
@@ -525,7 +541,7 @@ class _CreateAccountState extends State<CreateAccount> {
         "User UID": firebaseUser.uid,
         "name": nameTextEditingController.text.trim(),
         "lastname": lastnameTextEditingController.text.trim(),
-        "id": idTextEditingController.text.trim(),
+        //"id": idTextEditingController.text.trim(),
         "gender": selectedgendertype,
         "address": addressTextEditingController.text.trim(),
         "phone": phoneTextEditingController.text.trim(),
@@ -536,7 +552,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
       DatabaseReference usersRef =
           FirebaseDatabase.instance.ref().child("User");
-      usersRef.child(firebaseUser.uid).set(usermap);
+      usersRef.child(idTextEditingController.text).set(usermap);
+
       Toast.show(
         "สมัครสมาชิกสำเร็จ",
         context,
