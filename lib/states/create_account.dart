@@ -551,8 +551,8 @@ class _CreateAccountState extends State<CreateAccount> {
       };
 
       DatabaseReference usersRef =
-          FirebaseDatabase.instance.ref().child("User");
-      usersRef.child(idTextEditingController.text).set(usermap);
+          FirebaseDatabase.instance.ref().child("Users");
+        usersRef.child(idTextEditingController.text).set(usermap);
 
       Toast.show(
         "สมัครสมาชิกสำเร็จ",
