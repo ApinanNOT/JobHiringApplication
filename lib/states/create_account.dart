@@ -33,6 +33,82 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
+  //connect database and authen
+  saveUserInformation() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังบันทึกข้อมูล",
+        );
+      },
+    );
+    final User? firebaseUser = (await fAuth
+        .createUserWithEmailAndPassword(
+      email: emailTextEditingController.text.trim(),
+      password: passwordTextEditingController.text.trim(),
+    )
+        .catchError(
+          (msg) {
+        Navigator.pop(context);
+        Toast.show(
+          "อีเมลนี้ถูกใช้งานแล้ว",
+          context,
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.red,
+          textStyle: MyConstant().texttoast(),
+        );
+      },
+    ))
+        .user;
+
+    if (firebaseUser != null) {
+      Map usermap = {
+        "User UID": firebaseUser.uid,
+        "name": nameTextEditingController.text.trim(),
+        "lastname": lastnameTextEditingController.text.trim(),
+        //"id": idTextEditingController.text.trim(),
+        "gender": selectedgendertype,
+        "address": addressTextEditingController.text.trim(),
+        "phone": phoneTextEditingController.text.trim(),
+        "age": ageTextEditingController.text.trim(),
+        "email": emailTextEditingController.text.trim(),
+        "password": passwordTextEditingController.text.trim(),
+      };
+
+
+        DatabaseReference usersRef =
+        FirebaseDatabase.instance.ref().child("Users");
+        usersRef.child(idTextEditingController.text).set(usermap);
+
+      Toast.show(
+        "สมัครสมาชิกสำเร็จ",
+        context,
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.green,
+        textStyle: MyConstant().texttoast(),
+      );
+      currentFirebaseUser = firebaseUser;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+    } else {
+      Navigator.pop(context);
+      Toast.show(
+        "สมัครสมาชิกล้มเหลว",
+        context,
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.red,
+        textStyle: MyConstant().texttoast(),
+      );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+    }
+  }
+
   Row buildName(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -115,25 +191,27 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.7,
           child: TextFormField(
             style: MyConstant().textinput(),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.number,
             controller: idTextEditingController,
             validator: (idTextEditingController) {
               if (idTextEditingController!.isEmpty) {
-                return 'กรุณากรอกเลขบัตรประชาชน';
+                return 'กรุณากรอกหมายเลขบัตรประชาชน';
               } else if (!RegExp(r'[0-9]').hasMatch(idTextEditingController)) {
                 return 'ต้องเป็นตัวเลข 0-9';
               } else if (idTextEditingController.length < 13) {
                 return 'กรุณากรอกให้ครบ 13 หลัก';
               } else if (idTextEditingController.length > 13) {
-                return 'เลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
+                return 'หมายเลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
               } else if (RegExp(r'[\s]').hasMatch(idTextEditingController)) {
                 return 'ต้องไม่มีช่องว่าง';
-              } else {}
+              } else if (idTextEditingController == idTextEditingController) {
+                return 'หมายเลขบัตรประชาชนถูกใช้งานแล้ว';
+              }else{}
             },
             decoration: InputDecoration(
               errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
-              labelText: 'เลขบัตรประชาชน',
+              labelText: 'หมายเลขบัตรประชาชน',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.dark),
                 borderRadius: BorderRadius.circular(30),
@@ -286,7 +364,7 @@ class _CreateAccountState extends State<CreateAccount> {
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: ageTextEditingController,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.number,
             validator: (ageTextEditingController) {
               if (ageTextEditingController!.isEmpty) {
                 return 'กรุณากรอกอายุ';
@@ -503,81 +581,6 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ],
     );
-  }
-
-  //connect database and authen
-  saveUserInformation() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext c) {
-        return ProgressDialog(
-          message: "กำลังบันทึกข้อมูล",
-        );
-      },
-    );
-    final User? firebaseUser = (await fAuth
-            .createUserWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
-    )
-            .catchError(
-      (msg) {
-        Navigator.pop(context);
-        Toast.show(
-          "อีเมลนี้ถูกใช้งานแล้ว",
-          context,
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: Colors.red,
-          textStyle: MyConstant().texttoast(),
-        );
-      },
-    ))
-        .user;
-
-    if (firebaseUser != null) {
-      Map usermap = {
-        "User UID": firebaseUser.uid,
-        "name": nameTextEditingController.text.trim(),
-        "lastname": lastnameTextEditingController.text.trim(),
-        //"id": idTextEditingController.text.trim(),
-        "gender": selectedgendertype,
-        "address": addressTextEditingController.text.trim(),
-        "phone": phoneTextEditingController.text.trim(),
-        "age": ageTextEditingController.text.trim(),
-        "email": emailTextEditingController.text.trim(),
-        "password": passwordTextEditingController.text.trim(),
-      };
-
-      DatabaseReference usersRef =
-          FirebaseDatabase.instance.ref().child("Users");
-        usersRef.child(idTextEditingController.text).set(usermap);
-
-      Toast.show(
-        "สมัครสมาชิกสำเร็จ",
-        context,
-        duration: Toast.lengthLong,
-        gravity: Toast.center,
-        backgroundColor: Colors.green,
-        textStyle: MyConstant().texttoast(),
-      );
-      currentFirebaseUser = firebaseUser;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
-    } else {
-      Navigator.pop(context);
-      Toast.show(
-        "สมัครสมาชิกล้มเหลว",
-        context,
-        duration: Toast.lengthLong,
-        gravity: Toast.center,
-        backgroundColor: Colors.red,
-        textStyle: MyConstant().texttoast(),
-      );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
-    }
   }
 
   @override
