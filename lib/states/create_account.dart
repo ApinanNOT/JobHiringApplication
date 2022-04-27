@@ -8,6 +8,7 @@ import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
 import 'package:tbib_toast/tbib_toast.dart';
+import '../utility/my_dialog.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class _CreateAccountState extends State<CreateAccount> {
         );
       },
     );
+
     final User? firebaseUser = (await fAuth
         .createUserWithEmailAndPassword(
       email: emailTextEditingController.text.trim(),
@@ -69,7 +71,6 @@ class _CreateAccountState extends State<CreateAccount> {
         "User UID": firebaseUser.uid,
         "name": nameTextEditingController.text.trim(),
         "lastname": lastnameTextEditingController.text.trim(),
-        //"id": idTextEditingController.text.trim(),
         "gender": selectedgendertype,
         "address": addressTextEditingController.text.trim(),
         "phone": phoneTextEditingController.text.trim(),
@@ -77,27 +78,41 @@ class _CreateAccountState extends State<CreateAccount> {
         "email": emailTextEditingController.text.trim(),
         "password": passwordTextEditingController.text.trim(),
       };
-
-
-        DatabaseReference usersRef =
-        FirebaseDatabase.instance.ref().child("Users");
-        usersRef.child(idTextEditingController.text).set(usermap);
-
-      Toast.show(
-        "สมัครสมาชิกสำเร็จ",
-        context,
-        duration: Toast.lengthLong,
-        gravity: Toast.center,
-        backgroundColor: Colors.green,
-        textStyle: MyConstant().texttoast(),
-      );
-      currentFirebaseUser = firebaseUser;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+        DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
+        usersRef.child(idTextEditingController.text).once().then((userid)
+        {
+          final snap = userid.snapshot;
+          if(snap.value != null)
+            {
+              Navigator.pop(context);
+              Toast.show(
+                "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
+                context,
+                duration: Toast.lengthLong,
+                gravity: Toast.center,
+                backgroundColor: Colors.red,
+                textStyle: MyConstant().texttoast(),
+              );
+            }
+          else{
+            usersRef.child(idTextEditingController.text).set(usermap);
+            Toast.show(
+              "สมัครสมาชิกสำเร็จ",
+              context,
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: Colors.green,
+              textStyle: MyConstant().texttoast(),
+            );
+            currentFirebaseUser = firebaseUser;
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+          }
+        });
     } else {
       Navigator.pop(context);
       Toast.show(
-        "สมัครสมาชิกล้มเหลว",
+        "เกิดข้อผิดพลาดในการสมัครสมาชิก",
         context,
         duration: Toast.lengthLong,
         gravity: Toast.center,
@@ -108,6 +123,7 @@ class _CreateAccountState extends State<CreateAccount> {
           context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
     }
   }
+
 
   Row buildName(double size) {
     return Row(
@@ -204,9 +220,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'หมายเลขบัตรประชาชนต้องไม่เกิน 13 หลัก';
               } else if (RegExp(r'[\s]').hasMatch(idTextEditingController)) {
                 return 'ต้องไม่มีช่องว่าง';
-              } else if (idTextEditingController == idTextEditingController) {
-                return 'หมายเลขบัตรประชาชนถูกใช้งานแล้ว';
-              }else{}
+              } else{}
             },
             decoration: InputDecoration(
               errorStyle: MyConstant().errortext(),
