@@ -8,7 +8,6 @@ import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
 import 'package:tbib_toast/tbib_toast.dart';
-import '../utility/my_dialog.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -36,15 +35,15 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //connect database and authen
   saveUserInformation() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext c) {
-        return ProgressDialog(
-          message: "กำลังบันทึกข้อมูล",
-        );
-      },
-    );
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (BuildContext c) {
+    //     return ProgressDialog(
+    //       message: "กำลังบันทึกข้อมูล",
+    //     );
+    //   },
+    // );
 
     final User? firebaseUser = (await fAuth
         .createUserWithEmailAndPassword(
@@ -78,38 +77,26 @@ class _CreateAccountState extends State<CreateAccount> {
         "email": emailTextEditingController.text.trim(),
         "password": passwordTextEditingController.text.trim(),
       };
-        DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
-        usersRef.child(idTextEditingController.text).once().then((userid)
-        {
-          final snap = userid.snapshot;
-          if(snap.value != null)
-            {
-              Navigator.pop(context);
-              Toast.show(
-                "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
-                context,
-                duration: Toast.lengthLong,
-                gravity: Toast.center,
-                backgroundColor: Colors.red,
-                textStyle: MyConstant().texttoast(),
-              );
-            }
-          else{
-            usersRef.child(idTextEditingController.text).set(usermap);
-            Toast.show(
-              "สมัครสมาชิกสำเร็จ",
-              context,
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
-              backgroundColor: Colors.green,
-              textStyle: MyConstant().texttoast(),
-            );
-            currentFirebaseUser = firebaseUser;
-            Navigator.push(
-                context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
-          }
-        });
-    } else {
+
+      DatabaseReference usersRef =
+      FirebaseDatabase.instance.ref().child("Users");
+      usersRef.child(idTextEditingController.text).set(usermap);
+
+      Toast.show(
+        "สมัครสมาชิกสำเร็จ",
+        context,
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.green,
+        textStyle: MyConstant().texttoast(),
+      );
+
+      currentFirebaseUser = firebaseUser;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+    }
+
+    else {
       Navigator.pop(context);
       Toast.show(
         "เกิดข้อผิดพลาดในการสมัครสมาชิก",
@@ -124,6 +111,37 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
+  checkUserInformation() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังบันทึกข้อมูล",
+        );
+      },
+    );
+
+    DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
+    usersRef.child(idTextEditingController.text).once().then((userid)
+    {
+      final snap = userid.snapshot;
+      if(snap.value != null)
+      {
+        Navigator.pop(context);
+        Toast.show(
+          "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
+          context,
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.red,
+          textStyle: MyConstant().texttoast(),
+        );
+      }else{
+        saveUserInformation();
+      }
+    });
+  }
 
   Row buildName(double size) {
     return Row(
@@ -426,7 +444,7 @@ class _CreateAccountState extends State<CreateAccount> {
               if (emailTextEditingController!.isEmpty) {
                 return 'กรุณากรอกอีเมล';
               } else if (!RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                   .hasMatch(emailTextEditingController)) {
                 return 'กรุณากรอกอีเมลที่ถูกต้อง';
               } else if (RegExp(r'[\s]').hasMatch(emailTextEditingController)) {
@@ -497,13 +515,13 @@ class _CreateAccountState extends State<CreateAccount> {
                 },
                 icon: statusRedEye
                     ? Icon(
-                        Icons.visibility_off,
-                        color: MyConstant.dark,
-                      )
+                  Icons.visibility_off,
+                  color: MyConstant.dark,
+                )
                     : Icon(
-                        Icons.visibility,
-                        color: MyConstant.dark,
-                      ),
+                  Icons.visibility,
+                  color: MyConstant.dark,
+                ),
               ),
               labelStyle: MyConstant().h3Style(),
               labelText: 'รหัสผ่าน',
@@ -573,7 +591,7 @@ class _CreateAccountState extends State<CreateAccount> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              saveUserInformation();
+              checkUserInformation();
             },
             child: Text(
               'ยืนยัน',
