@@ -35,15 +35,6 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //connect database and authen
   saveUserInformation() async {
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (BuildContext c) {
-    //     return ProgressDialog(
-    //       message: "กำลังบันทึกข้อมูล",
-    //     );
-    //   },
-    // );
 
     final User? firebaseUser = (await fAuth
         .createUserWithEmailAndPassword(
@@ -111,6 +102,39 @@ class _CreateAccountState extends State<CreateAccount> {
     }
   }
 
+  // //check phone user
+  // checkPhoneInformation() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext c) {
+  //       return ProgressDialog(
+  //         message: "กำลังบันทึกข้อมูล",
+  //       );
+  //     },
+  //   );
+  //
+  //   DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
+  //   usersRef.child(idTextEditingController.text).child("phone").once().then((phone)
+  //   {
+  //     final snap = phone.snapshot;
+  //     if((snap.value == phoneTextEditingController.text)){
+  //       Navigator.pop(context);
+  //       Toast.show(
+  //         "เบอร์โทรนี้ถูกใช้งานแล้ว",
+  //         context,
+  //         duration: Toast.lengthLong,
+  //         gravity: Toast.center,
+  //         backgroundColor: Colors.red,
+  //         textStyle: MyConstant().texttoast(),
+  //       );
+  //     }else{
+  //       checkUserInformation();
+  //     }
+  //   });
+  // }
+
+  //check data user
   checkUserInformation() {
     showDialog(
       context: context,
