@@ -135,12 +135,12 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
   TextStyle userinfo3() => GoogleFonts.prompt(
-        fontSize: 16,
+        fontSize: 14,
         color: Colors.black,
         fontWeight: FontWeight.bold,
       );
   TextStyle userinfo4() => GoogleFonts.prompt(
-        fontSize: 14,
+        fontSize: 12,
         color: Colors.grey,
         fontWeight: FontWeight.normal,
       );
