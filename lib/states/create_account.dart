@@ -35,6 +35,15 @@ class _CreateAccountState extends State<CreateAccount> {
 
   //connect database and authen
   saveUserInformation() async {
+    showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext c) {
+            return ProgressDialog(
+              message: "กำลังบันทึกข้อมูล",
+            );
+          },
+        );
 
     final User? firebaseUser = (await fAuth
         .createUserWithEmailAndPassword(
@@ -59,6 +68,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if (firebaseUser != null) {
       Map usermap = {
         "User UID": firebaseUser.uid,
+        "id" : idTextEditingController.text.trim(),
         "name": nameTextEditingController.text.trim(),
         "lastname": lastnameTextEditingController.text.trim(),
         "gender": selectedgendertype,
@@ -71,7 +81,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
       DatabaseReference usersRef =
       FirebaseDatabase.instance.ref().child("Users");
-      usersRef.child(idTextEditingController.text).set(usermap);
+      usersRef.child(firebaseUser.uid).set(usermap);
 
       Toast.show(
         "สมัครสมาชิกสำเร็จ",
@@ -133,39 +143,40 @@ class _CreateAccountState extends State<CreateAccount> {
   //     }
   //   });
   // }
+  //
 
-  //check data user
-  checkUserInformation() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext c) {
-        return ProgressDialog(
-          message: "กำลังบันทึกข้อมูล",
-        );
-      },
-    );
-
-    DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
-    usersRef.child(idTextEditingController.text).once().then((userid)
-    {
-      final snap = userid.snapshot;
-      if(snap.value != null)
-      {
-        Navigator.pop(context);
-        Toast.show(
-          "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
-          context,
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: Colors.red,
-          textStyle: MyConstant().texttoast(),
-        );
-      }else{
-        saveUserInformation();
-      }
-    });
-  }
+  // //check data user
+  // checkUserInformation() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext c) {
+  //       return ProgressDialog(
+  //         message: "กำลังบันทึกข้อมูล",
+  //       );
+  //     },
+  //   );
+  //
+  //   DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
+  //   usersRef.child(idTextEditingController.text).once().then((userid)
+  //   {
+  //     final snap = userid.snapshot;
+  //     if(snap.value != null)
+  //     {
+  //       Navigator.pop(context);
+  //       Toast.show(
+  //         "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
+  //         context,
+  //         duration: Toast.lengthLong,
+  //         gravity: Toast.center,
+  //         backgroundColor: Colors.red,
+  //         textStyle: MyConstant().texttoast(),
+  //       );
+  //     }else{
+  //       saveUserInformation();
+  //     }
+  //   });
+  // }
 
   Row buildName(double size) {
     return Row(
@@ -615,7 +626,8 @@ class _CreateAccountState extends State<CreateAccount> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              checkUserInformation();
+              saveUserInformation();
+
             },
             child: Text(
               'ยืนยัน',

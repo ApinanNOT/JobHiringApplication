@@ -123,6 +123,28 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle userinfo1() => GoogleFonts.prompt(
+        fontSize: 24,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      );
+
+  TextStyle userinfo2() => GoogleFonts.prompt(
+        fontSize: 14,
+        color: Colors.grey,
+        fontWeight: FontWeight.bold,
+      );
+  TextStyle userinfo3() => GoogleFonts.prompt(
+        fontSize: 16,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      );
+  TextStyle userinfo4() => GoogleFonts.prompt(
+        fontSize: 14,
+        color: Colors.grey,
+        fontWeight: FontWeight.normal,
+      );
+
   TextStyle texttoast() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Colors.white,
