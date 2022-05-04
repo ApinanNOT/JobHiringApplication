@@ -16,15 +16,6 @@ class AssistantMethods{
       if(snap.snapshot.value != null)
         {
           userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
-          print("id : " + userModelCurrentInfo!.id.toString());
-          print("name : " + userModelCurrentInfo!.name.toString());
-          print("lastname : " + userModelCurrentInfo!.lastname.toString());
-          print("phone : " + userModelCurrentInfo!.phone.toString());
-          print("age : " + userModelCurrentInfo!.age.toString());
-          print("gender : " + userModelCurrentInfo!.gender.toString());
-          print("address : " + userModelCurrentInfo!.address.toString());
-          print("email : " + userModelCurrentInfo!.email.toString());
-          print("password : " + userModelCurrentInfo!.password.toString());
         }
     });
   }

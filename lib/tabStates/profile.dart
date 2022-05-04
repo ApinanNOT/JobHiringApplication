@@ -15,8 +15,6 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     super.initState();
-
-    AssistantMethods.readCurrentOnlineUserInfo();
   }
 
   @override
@@ -27,11 +25,13 @@ class _ProfileTabState extends State<ProfileTab> {
         profilepicture(),
         const SizedBox(height: 10, width: 10),
         Text(
-          "อภินันท์" " " "ประแกกัน",
+          userModelCurrentInfo!.name.toString() +
+              " " +
+              userModelCurrentInfo!.lastname.toString(),
           style: MyConstant().userinfo1(),
         ),
         Text(
-          "25n6gTe4tVgGCCsWC14yFrbgasH2",
+          currentFirebaseUser!.uid,
           style: MyConstant().userinfo2(),
         ),
         const SizedBox(height: 30, width: 10),
@@ -73,13 +73,13 @@ class _ProfileTabState extends State<ProfileTab> {
                 width: size * 0.85,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
                       offset: new Offset(0.0, 0.0),
-                      blurRadius: 10.0,
-                      spreadRadius: 2.0,
+                      blurRadius: 20.0,
+                      spreadRadius: 3.0,
                     ), //BoxShadow
                   ],
                 ),
@@ -92,7 +92,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "1529902069405",
+                        userModelCurrentInfo!.id.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 8, width: 8),
@@ -101,7 +101,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "0612953013",
+                        userModelCurrentInfo!.phone.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 8, width: 8),
@@ -110,7 +110,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "148/1 หมู่ 6 ตำบล ท่าผา อำเภอ เกาะคา จังหวัด ลำปาง",
+                        userModelCurrentInfo!.address.toString(),
                         style: MyConstant().userinfo4(),
                         textAlign: TextAlign.center,
                       ),
@@ -120,7 +120,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "not.254355@gmail.com",
+                        userModelCurrentInfo!.email.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 8, width: 8),
@@ -129,7 +129,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "ชาย",
+                        userModelCurrentInfo!.gender.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 8, width: 8),
@@ -138,7 +138,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        "22",
+                        userModelCurrentInfo!.age.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 13, width: 13),

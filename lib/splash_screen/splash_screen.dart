@@ -5,6 +5,8 @@ import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../assistants/assistant_methods.dart';
+
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({Key? key}) : super(key: key);
 
@@ -14,6 +16,9 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
+
+    fAuth.currentUser != null ?  AssistantMethods.readCurrentOnlineUserInfo() : null; //เรียกใช้งานเมื่อเข้าสู่ระบบสำเร็จ
+
     Timer(const Duration(seconds: 2), () async {
       if (await fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;

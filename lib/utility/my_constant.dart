@@ -52,7 +52,7 @@ class MyConstant {
       );
 
   TextStyle h6Style() => GoogleFonts.sarabun(
-        fontSize: 12,
+        fontSize: 10,
         color: dark,
         fontWeight: FontWeight.normal,
       );

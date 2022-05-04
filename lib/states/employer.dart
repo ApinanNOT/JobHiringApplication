@@ -5,6 +5,8 @@ import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../tabStates/history.dart';
+
 class Employer extends StatefulWidget {
   const Employer({Key? key}) : super(key: key);
 
@@ -30,7 +32,7 @@ class _EmployerState extends State<Employer>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -50,8 +52,9 @@ class _EmployerState extends State<Employer>
         controller: tabController,
         children: const [
           HomeTab(),
-          PostTab(),
           RatingTab(),
+          PostTab(),
+          HistoryTab(),
           ProfileTab(),
         ],
       ),
@@ -67,12 +70,16 @@ class _EmployerState extends State<Employer>
           label: 'หน้าหลัก',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.star),
+          label: 'ให้คะแนน',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.post_add),
           label: 'ประกาศงาน',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.star),
-          label: 'ให้คะแนน',
+          icon: Icon(Icons.history),
+          label: 'ประวัติ',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

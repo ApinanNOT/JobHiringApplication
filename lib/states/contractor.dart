@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobhiring/tabStates/findjob.dart';
+import 'package:jobhiring/tabStates/history.dart';
 import 'package:jobhiring/tabStates/home.dart';
 import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
@@ -30,7 +31,7 @@ class _ContractorState extends State<Contractor>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -50,8 +51,9 @@ class _ContractorState extends State<Contractor>
         controller: tabController,
         children: const [
           HomeTab(),
-          FindTab(),
           RatingTab(),
+          FindTab(),
+          HistoryTab(),
           ProfileTab(),
         ],
       ),
@@ -67,12 +69,16 @@ class _ContractorState extends State<Contractor>
           label: 'หน้าหลัก',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.star),
+          label: 'ให้คะแนน',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'ค้นหางาน',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.star),
-          label: 'ให้คะแนน',
+          icon: Icon(Icons.history),
+          label: 'ประวัติ',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
