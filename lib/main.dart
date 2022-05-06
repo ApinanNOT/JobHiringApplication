@@ -9,11 +9,11 @@ import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 final Map<String, WidgetBuilder> map = {
-  '/authen': (BuildContext context) => Authen(),
-  '/createaccount': (BuildContext context) => CreateAccount(),
-  '/employer': (BuildContext context) => Employer(),
-  '/contractor': (BuildContext context) => Contractor(),
-  '/mode': (BuildContext context) => Mode(),
+  '/authen': (BuildContext context) => const Authen(),
+  '/createaccount': (BuildContext context) => const CreateAccount(),
+  '/employer': (BuildContext context) => const Employer(),
+  '/contractor': (BuildContext context) => const Contractor(),
+  '/mode': (BuildContext context) => const Mode(),
 };
 
 String? initlalRoute;

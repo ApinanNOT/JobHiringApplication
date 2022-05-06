@@ -1,13 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:jobhiring/global/global.dart';
-import 'package:jobhiring/splash_screen/splash_screen.dart';
-import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
 import '../utility/my_constant.dart';
-import 'package:tbib_toast/tbib_toast.dart';
 
 class PostTab extends StatefulWidget {
   const PostTab({Key? key}) : super(key: key);
@@ -190,8 +184,8 @@ class _PostTabState extends State<PostTab> {
           child: SizedBox(
             width: size * 0.7,
             child: DropdownButtonFormField<String>(
-              validator: (selectedgendertype) {
-                if (selectedgendertype == null) {
+              validator: (selectedjobgendertype) {
+                if (selectedjobgendertype == null) {
                   return 'กรุณาระบุเพศที่ต้องการ';
                 } else {}
               },

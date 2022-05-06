@@ -627,7 +627,6 @@ class _CreateAccountState extends State<CreateAccount> {
             onPressed: () {
               Navigator.pop(context);
               saveUserInformation();
-
             },
             child: Text(
               'ยืนยัน',
