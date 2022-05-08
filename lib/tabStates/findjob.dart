@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utility/my_constant.dart';
+import '../utility/progress_dialog.dart';
 import '../widgets/show_image.dart';
 import '../widgets/show_title.dart';
 
@@ -19,6 +20,27 @@ class _FindTabState extends State<FindTab> {
   List<String> searchsafelist = ["ปลอดภัย", "เสี่ยง", "อันตราย"]; //gender
   String? selectedsearchsafetype;
 
+  List<String> searchagelist = [
+    "18 - 20 ปี",
+    "21 - 30 ปี",
+    "31 - 40 ปี",
+    "41 - 50 ปี",
+    "51 - 60 ปี"
+  ]; //gender
+  String? selectedsearchagetype;
+
+  List<String> searchmoneylist = [
+    "น้อยกว่า 100 บาท",
+    "100 - 500 บาท",
+    "501 - 1000 บาท",
+    "1001 - 1500 บาท",
+    "1501 - 2000 บาท",
+    "2001 - 2500 บาท",
+    "2501 - 3000 บาท",
+    "มากกว่า 3000 บาท"
+  ]; //gender
+  String? selectedsearchmoneytype;
+
   TextEditingController searchmoneyTextEditingController =
       TextEditingController();
   TextEditingController searchgenderTextEditingController =
@@ -28,37 +50,56 @@ class _FindTabState extends State<FindTab> {
   TextEditingController searchageTextEditingController =
       TextEditingController();
 
+  //searchdetailsjob
+  searchdetails() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังค้นหาข้อมูล",
+        );
+      },
+    );
+  }
+
   Row buildSearchMoney(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
-          child: TextFormField(
-            style: MyConstant().textinput(),
-            controller: searchmoneyTextEditingController,
-            keyboardType: TextInputType.number,
-            validator: (searchmoneyTextEditingController) {
-              if (searchmoneyTextEditingController!.isEmpty) {
-                return 'กรุณากรอกค่าตอบแทน';
-              } else if (RegExp(r'[\s]')
-                  .hasMatch(searchmoneyTextEditingController)) {
-                return 'ต้องไม่มีช่องว่าง';
-              } else {}
-            },
-            decoration: InputDecoration(
-              errorStyle: MyConstant().errortext(),
-              labelStyle: MyConstant().h3Style(),
-              labelText: "ค่าตอบแทน",
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.dark),
-                borderRadius: BorderRadius.circular(30),
+          margin: const EdgeInsets.only(top: 20),
+          child: SizedBox(
+            width: size * 0.6,
+            child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                errorStyle: MyConstant().errortext(),
+                labelText: 'ค่าตอบแทน',
+                labelStyle: MyConstant().h3Style(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.dark),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.light),
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.light),
-                borderRadius: BorderRadius.circular(30),
-              ),
+              value: selectedsearchmoneytype,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedsearchmoneytype = newValue.toString();
+                });
+              },
+              items: searchmoneylist.map((money) {
+                return DropdownMenuItem(
+                  child: Text(
+                    money,
+                    style: MyConstant().textinput(),
+                  ),
+                  value: money,
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -73,13 +114,8 @@ class _FindTabState extends State<FindTab> {
         Container(
           margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
-            width: size * 0.7,
+            width: size * 0.6,
             child: DropdownButtonFormField<String>(
-              validator: (selectedsearchgendertype) {
-                if (selectedsearchgendertype == null) {
-                  return 'กรุณาระบุเพศที่ต้องการ';
-                } else {}
-              },
               decoration: InputDecoration(
                 errorStyle: MyConstant().errortext(),
                 labelText: 'เพศที่ต้องการ',
@@ -122,13 +158,8 @@ class _FindTabState extends State<FindTab> {
         Container(
           margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
-            width: size * 0.7,
+            width: size * 0.6,
             child: DropdownButtonFormField<String>(
-              validator: (selectedsearchsafetype) {
-                if (selectedsearchsafetype == null) {
-                  return 'กรุณาระบุความปลอดภัย';
-                } else {}
-              },
               decoration: InputDecoration(
                 errorStyle: MyConstant().errortext(),
                 labelText: 'ระดับความปลอดภัย',
@@ -169,32 +200,38 @@ class _FindTabState extends State<FindTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
-          child: TextFormField(
-            style: MyConstant().textinput(),
-            controller: searchageTextEditingController,
-            //keyboardType: TextInputType.number,
-            validator: (searchageTextEditingController) {
-              if (searchageTextEditingController!.isEmpty) {
-                return 'กรุณากรอกช่วงอายุที่ต้องการ';
-              } else if (RegExp(r'[\s]')
-                  .hasMatch(searchageTextEditingController)) {
-                return 'ต้องไม่มีช่องว่าง';
-              } else {}
-            },
-            decoration: InputDecoration(
-              errorStyle: MyConstant().errortext(),
-              labelStyle: MyConstant().h3Style(),
-              labelText: 'ช่วงอายุ',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.dark),
-                borderRadius: BorderRadius.circular(30),
+          margin: const EdgeInsets.only(top: 20),
+          child: SizedBox(
+            width: size * 0.6,
+            child: DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                errorStyle: MyConstant().errortext(),
+                labelText: 'ช่วงอายุ',
+                labelStyle: MyConstant().h3Style(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.dark),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.light),
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.light),
-                borderRadius: BorderRadius.circular(30),
-              ),
+              value: selectedsearchagetype,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedsearchagetype = newValue.toString();
+                });
+              },
+              items: searchagelist.map((age) {
+                return DropdownMenuItem(
+                  child: Text(
+                    age,
+                    style: MyConstant().textinput(),
+                  ),
+                  value: age,
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -207,7 +244,7 @@ class _FindTabState extends State<FindTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          width: size * 0.3,
+          width: size * 0.7,
           child: ShowImage(path: MyConstant.imagelogo),
         ),
       ],
@@ -219,13 +256,13 @@ class _FindTabState extends State<FindTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.symmetric(vertical: 18),
+          width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                //showDialogRegister();
+                //searchdetails();
               }
             },
             child: Text(
@@ -248,7 +285,7 @@ class _FindTabState extends State<FindTab> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              //Navigator.pushformsearch(context, size);
+              dialogformsearch(size);
             },
             child: Text(
               'ค้นหาแบบละเอียด',
@@ -257,6 +294,43 @@ class _FindTabState extends State<FindTab> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<dynamic> dialogformsearch(double size) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          scrollable: true,
+          title: Text(
+            "รายละเอียด",
+            style: MyConstant().h2Style(),
+            textAlign: TextAlign.center,
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    buildSearchMoney(size),
+                    buildSearchGender(size),
+                    buildSearchSafe(size),
+                    buildSearchAge(size),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            buildSearch(size),
+          ],
+        );
+      },
     );
   }
 
@@ -285,27 +359,6 @@ class _FindTabState extends State<FindTab> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
-    return formsearch(context, size);
-    // return Scaffold(
-    //   body: SafeArea(
-    //     child: GestureDetector(
-    //       onTap: () => FocusScope.of(context).requestFocus(
-    //         FocusNode(),
-    //       ),
-    //       behavior: HitTestBehavior.opaque,
-    //       child: ListView(
-    //         children: [
-    //           buildImage(size),
-    //           buildSearchNormal(size),
-    //           buildSearchDetails(size),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-  }
-
-  Scaffold formsearch(BuildContext context, double size) {
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(
@@ -318,12 +371,8 @@ class _FindTabState extends State<FindTab> {
             child: Column(
               children: [
                 buildImage(size),
-                buildTitle1("ระบุรายละเอียด"),
-                buildSearchMoney(size),
-                buildSearchGender(size),
-                buildSearchSafe(size),
-                buildSearchAge(size),
-                buildSearch(size),
+                buildSearchNormal(size),
+                buildSearchDetails(size)
               ],
             ),
           ),
