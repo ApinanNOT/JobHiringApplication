@@ -21,12 +21,13 @@ class _FindTabState extends State<FindTab> {
   String? selectedsearchsafetype;
 
   List<String> searchagelist = [
+    "ตั้งแต่ 18 ปี แต่ไม่เกิน 60 ปี",
     "18 - 20 ปี",
     "21 - 30 ปี",
     "31 - 40 ปี",
     "41 - 50 ปี",
     "51 - 60 ปี"
-  ]; //gender
+  ]; //age
   String? selectedsearchagetype;
 
   List<String> searchmoneylist = [
@@ -38,7 +39,7 @@ class _FindTabState extends State<FindTab> {
     "2001 - 2500 บาท",
     "2501 - 3000 บาท",
     "มากกว่า 3000 บาท"
-  ]; //gender
+  ]; //money
   String? selectedsearchmoneytype;
 
   TextEditingController searchmoneyTextEditingController =
@@ -57,7 +58,7 @@ class _FindTabState extends State<FindTab> {
       barrierDismissible: false,
       builder: (BuildContext c) {
         return ProgressDialog(
-          message: "กำลังค้นหาข้อมูล",
+          message: "กำลังค้นหางาน",
         );
       },
     );
@@ -262,7 +263,8 @@ class _FindTabState extends State<FindTab> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                //searchdetails();
+                Navigator.pop(context);
+                searchdetails();
               }
             },
             child: Text(

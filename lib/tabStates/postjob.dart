@@ -1,7 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jobhiring/states/employer.dart';
+import 'package:jobhiring/tabStates/home.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
+import 'package:tbib_toast/tbib_toast.dart';
+import '../global/global.dart';
 import '../utility/my_constant.dart';
+import '../utility/progress_dialog.dart';
 
 class PostTab extends StatefulWidget {
   const PostTab({Key? key}) : super(key: key);
@@ -19,86 +26,65 @@ class _PostTabState extends State<PostTab> {
   List<String> jobsafelist = ["ปลอดภัย", "เสี่ยง", "อันตราย"]; //gender
   String? selectedjobsafetype;
 
+  List<String> jobagelist = [
+    "ตั้งแต่ 18 ปี แต่ไม่เกิน 60 ปี",
+    "18 - 20 ปี",
+    "21 - 30 ปี",
+    "31 - 40 ปี",
+    "41 - 50 ปี",
+    "51 - 60 ปี"
+  ]; //age
+  String? selectedjobagetype;
+
   TextEditingController jobnameTextEditingController = TextEditingController();
   TextEditingController jobmoneyTextEditingController = TextEditingController();
-  TextEditingController jobgenderTextEditingController =
-      TextEditingController();
+  TextEditingController jobgenderTextEditingController = TextEditingController();
   TextEditingController jobsafeTextEditingController = TextEditingController();
   TextEditingController jobageTextEditingController = TextEditingController();
   TextEditingController jobdateTextEditingController = TextEditingController();
   TextEditingController jobtimeTextEditingController = TextEditingController();
-  TextEditingController jobaddressTextEditingController =
-      TextEditingController();
-  TextEditingController jobdetailsTextEditingController =
-      TextEditingController();
+  TextEditingController jobaddressTextEditingController = TextEditingController();
+  TextEditingController jobdetailTextEditingController = TextEditingController();
 
-  //connect database and authen
+  //connect database
 
-  // //check phone user
-  // checkPhoneInformation() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext c) {
-  //       return ProgressDialog(
-  //         message: "กำลังบันทึกข้อมูล",
-  //       );
-  //     },
-  //   );
-  //
-  //   DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
-  //   usersRef.child(idTextEditingController.text).child("phone").once().then((phone)
-  //   {
-  //     final snap = phone.snapshot;
-  //     if((snap.value == phoneTextEditingController.text)){
-  //       Navigator.pop(context);
-  //       Toast.show(
-  //         "เบอร์โทรนี้ถูกใช้งานแล้ว",
-  //         context,
-  //         duration: Toast.lengthLong,
-  //         gravity: Toast.center,
-  //         backgroundColor: Colors.red,
-  //         textStyle: MyConstant().texttoast(),
-  //       );
-  //     }else{
-  //       checkUserInformation();
-  //     }
-  //   });
-  // }
-  //
+  saveJobInformation() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังบันทึกข้อมูล",
+        );
+      },
+    );
 
-  // //check data user
-  // checkUserInformation() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext c) {
-  //       return ProgressDialog(
-  //         message: "กำลังบันทึกข้อมูล",
-  //       );
-  //     },
-  //   );
-  //
-  //   DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("Users");
-  //   usersRef.child(idTextEditingController.text).once().then((userid)
-  //   {
-  //     final snap = userid.snapshot;
-  //     if(snap.value != null)
-  //     {
-  //       Navigator.pop(context);
-  //       Toast.show(
-  //         "หมายเลขบัตรประชาชนนี้ถูกใช้งานแล้ว",
-  //         context,
-  //         duration: Toast.lengthLong,
-  //         gravity: Toast.center,
-  //         backgroundColor: Colors.red,
-  //         textStyle: MyConstant().texttoast(),
-  //       );
-  //     }else{
-  //       saveUserInformation();
-  //     }
-  //   });
-  // }
+        Map jobmap = {
+          "name": jobnameTextEditingController.text.trim(),
+          "money": jobmoneyTextEditingController.text.trim(),
+          "gender": selectedjobgendertype,
+          "safe": selectedjobsafetype,
+          "age": selectedjobagetype,
+          "date": jobdateTextEditingController.text.trim(),
+          "time": jobtimeTextEditingController.text.trim(),
+          "address": jobaddressTextEditingController.text.trim(),
+          "detail": jobdetailTextEditingController.text.trim(),
+        };
+
+        DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
+        jobRef.child(currentFirebaseUser!.uid).set(jobmap);
+
+        Toast.show(
+          "ประกาศงานสำเร็จ",
+          context,
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.green,
+          textStyle: MyConstant().texttoast(),
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const Employer()));
+      }
 
   Row buildJobName(double size) {
     return Row(
@@ -278,32 +264,43 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
-          child: TextFormField(
-            style: MyConstant().textinput(),
-            controller: jobageTextEditingController,
-            //keyboardType: TextInputType.number,
-            validator: (jobageTextEditingController) {
-              if (jobageTextEditingController!.isEmpty) {
-                return 'กรุณากรอกช่วงอายุที่ต้องการ';
-              } else if (RegExp(r'[\s]')
-                  .hasMatch(jobageTextEditingController)) {
-                return 'ต้องไม่มีช่องว่าง';
-              } else {}
-            },
-            decoration: InputDecoration(
-              errorStyle: MyConstant().errortext(),
-              labelStyle: MyConstant().h3Style(),
-              labelText: 'ช่วงอายุ',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.dark),
-                borderRadius: BorderRadius.circular(30),
+          margin: const EdgeInsets.only(top: 20),
+          child: SizedBox(
+            width: size * 0.7,
+            child: DropdownButtonFormField<String>(
+              validator: (selectedjobagetype) {
+                if (selectedjobagetype == null) {
+                  return 'กรุณาระบุช่วงอายุ';
+                } else {}
+              },
+              decoration: InputDecoration(
+                errorStyle: MyConstant().errortext(),
+                labelText: 'ช่วงอายุ',
+                labelStyle: MyConstant().h3Style(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.dark),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.light),
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: MyConstant.light),
-                borderRadius: BorderRadius.circular(30),
-              ),
+              value: selectedjobagetype,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedjobagetype = newValue.toString();
+                });
+              },
+              items: jobagelist.map((age) {
+                return DropdownMenuItem(
+                  child: Text(
+                    age,
+                    style: MyConstant().textinput(),
+                  ),
+                  value: age,
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -430,10 +427,9 @@ class _PostTabState extends State<PostTab> {
           width: size * 0.7,
           child: TextFormField(
             style: MyConstant().textinput(),
-            keyboardType: TextInputType.phone,
-            controller: jobdetailsTextEditingController,
-            validator: (jobdetailsTextEditingController) {
-              if (jobdetailsTextEditingController!.isEmpty) {
+            controller: jobdetailTextEditingController,
+            validator: (jobdetailTextEditingController) {
+              if (jobdetailTextEditingController!.isEmpty) {
                 return 'กรุณากรอกรายละเอียดเพิ่มเติม';
               } else {}
             },
@@ -467,7 +463,7 @@ class _PostTabState extends State<PostTab> {
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                //showDialogRegister();
+                saveJobInformation();
               }
             },
             child: Text(
@@ -523,8 +519,8 @@ class _PostTabState extends State<PostTab> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          width: size * 0.7,
+        SizedBox(
+          width: size * 0.3,
           child: ShowImage(path: MyConstant.imagelogo),
         ),
       ],
