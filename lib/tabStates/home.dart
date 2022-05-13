@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobhiring/global/global.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -12,6 +13,10 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+
+  List<Marker> markers = [];
+  int id = 1; //id marker
+
   //GoogleMap
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController? newGoogleMapController;
@@ -27,11 +32,10 @@ class _HomeTabState extends State<HomeTab> {
 
   LocationPermission? _locationPermission;
 
-  checkIfLocationPermissionAllowed() async{
+  checkIfLocationPermissionAllowed() async {
     _locationPermission = await Geolocator.requestPermission();
 
-    if(_locationPermission == LocationPermission.denied)
-    {
+    if (_locationPermission == LocationPermission.denied) {
       _locationPermission = await Geolocator.requestPermission();
     }
   }
@@ -52,12 +56,12 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
-  void initState()
-  {
+  void initState() {
     super.initState();
 
     checkIfLocationPermissionAllowed();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +72,22 @@ class _HomeTabState extends State<HomeTab> {
           GoogleMap(
             mapType: MapType.normal,
             myLocationButtonEnabled: true,
+            //marker when tap
+            onTap: (LatLng latLng){
+              Marker newMarker = Marker(
+                markerId: MarkerId('$id'),
+                position: LatLng(latLng.latitude,latLng.longitude),
+                infoWindow: InfoWindow(title: "ชื่องาน"),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueRed,
+                ),
+              );
+              markers.add(newMarker);
+              setState((){
+              id = id + 1;
+              });
+            },
+            //finish marker when tap
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
@@ -78,6 +98,8 @@ class _HomeTabState extends State<HomeTab> {
 
               locateUserPosition(); //Call GPS
             },
+            //marker on tap
+            markers: markers.map((e) => e).toSet(),
           ),
         ],
       ),
