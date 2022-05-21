@@ -11,6 +11,7 @@ class MyConstant {
   static String routeContractor = '/contractor';
   static String routeEmployer = '/employer';
   static String routeMode = '/mode';
+  static String routeMarkerJob = '/markerjob';
 
   // Image
   static String imagelogo = 'images/logo.png';
@@ -20,6 +21,9 @@ class MyConstant {
   static Color dark = const Color(0xff8e0000);
   static Color light = const Color(0xffff5f52);
 
+  //more
+  static Color confirm = const Color(0xff00b900);
+  static Color cancel = const Color(0xffB71C1C);
   // Style
   TextStyle h1Style() => GoogleFonts.prompt(
         fontSize: 24,
@@ -111,6 +115,18 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle textbutton3() => GoogleFonts.sarabun(
+    fontSize:17,
+    color: const Color(0xffffffff),
+    fontWeight: FontWeight.bold,
+  );
+
+  TextStyle textbutton4() => GoogleFonts.sarabun(
+    fontSize:15,
+    color: const Color(0xffffffff),
+    fontWeight: FontWeight.bold,
+  );
+
   TextStyle textdialog() => GoogleFonts.notoSansThai(
         fontSize: 15,
         color: Colors.black,
@@ -171,4 +187,18 @@ class MyConstant {
           borderRadius: BorderRadius.circular(30),
         ),
       );
+
+  ButtonStyle myButtonStyle4() => ElevatedButton.styleFrom(
+    primary: MyConstant.confirm,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30),
+    ),
+  );
+
+  ButtonStyle myButtonStyle5() => ElevatedButton.styleFrom(
+    primary: MyConstant.cancel,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30),
+    ),
+  );
 }

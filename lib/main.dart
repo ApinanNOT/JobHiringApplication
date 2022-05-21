@@ -5,6 +5,7 @@ import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/contractor.dart';
 import 'package:jobhiring/states/create_account.dart';
 import 'package:jobhiring/states/employer.dart';
+import 'package:jobhiring/states/markerjob.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
@@ -14,6 +15,7 @@ final Map<String, WidgetBuilder> map = {
   '/employer': (BuildContext context) => const Employer(),
   '/contractor': (BuildContext context) => const Contractor(),
   '/mode': (BuildContext context) => const Mode(),
+  '/markerjob': (BuildContext context) => const MarkerJob(),
 };
 
 String? initlalRoute;

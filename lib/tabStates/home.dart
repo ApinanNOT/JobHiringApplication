@@ -14,9 +14,6 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
 
-  List<Marker> markers = [];
-  int id = 1; //id marker
-
   //GoogleMap
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
   GoogleMapController? newGoogleMapController;
@@ -55,11 +52,47 @@ class _HomeTabState extends State<HomeTab> {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
+  List<Marker> jobMarker = [];
+
   @override
   void initState() {
     super.initState();
+    intilize();
+    checkIfLocationPermissionAllowed(); //check permission
+  }
 
-    checkIfLocationPermissionAllowed();
+  intilize(){
+    Marker one = const Marker(
+        markerId: MarkerId("1"),
+        position: LatLng(18.2888,99.4909),
+        infoWindow: InfoWindow(
+          title: "ลำปาง",
+          snippet: "ประเทศไทย",
+        ),
+    );
+    Marker two = const Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(18.3,99.51),
+      infoWindow: InfoWindow(
+        title: "เชียงใหม่",
+        snippet: "ประเทศไทย",
+      ),
+    );
+    Marker three = const Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(18.2889,99.500),
+      infoWindow: InfoWindow(
+        title: "พะเยา",
+        snippet: "ประเทศไทย",
+      ),
+    );
+
+    jobMarker.add(one);
+    jobMarker.add(two);
+    jobMarker.add(three);
+    setState((){
+
+    });
   }
 
 
@@ -71,35 +104,20 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           GoogleMap(
             mapType: MapType.normal,
+            mapToolbarEnabled: false,
             myLocationButtonEnabled: true,
-            //marker when tap
-            onTap: (LatLng latLng){
-              Marker newMarker = Marker(
-                markerId: MarkerId('$id'),
-                position: LatLng(latLng.latitude,latLng.longitude),
-                infoWindow: InfoWindow(title: "ชื่องาน"),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed,
-                ),
-              );
-              markers.add(newMarker);
-              setState((){
-              id = id + 1;
-              });
-            },
-            //finish marker when tap
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
             initialCameraPosition: _kGooglePlex,
+            //markers: Set<Marker>.of(jobMarker),
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
 
               locateUserPosition(); //Call GPS
             },
-            //marker on tap
-            markers: markers.map((e) => e).toSet(),
+            markers: jobMarker.map((e)=>e).toSet(),
           ),
         ],
       ),

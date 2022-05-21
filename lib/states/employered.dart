@@ -7,14 +7,14 @@ import 'package:jobhiring/utility/my_constant.dart';
 
 import '../tabStates/history.dart';
 
-class Employer2 extends StatefulWidget {
-  const Employer2({Key? key}) : super(key: key);
+class Employered extends StatefulWidget {
+  const Employered({Key? key}) : super(key: key);
 
   @override
-  State<Employer2> createState() => _Employer2State();
+  State<Employered> createState() => _EmployeredState();
 }
 
-class _Employer2State extends State<Employer2>
+class _EmployeredState extends State<Employered>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
   int selectedIndex = 0;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
 import '../widgets/show_image.dart';
@@ -21,7 +22,7 @@ class _FindTabState extends State<FindTab> {
   String? selectedsearchsafetype;
 
   List<String> searchagelist = [
-    "ตั้งแต่ 18 ปี แต่ไม่เกิน 60 ปี",
+    "18 - 60 ปี",
     "18 - 20 ปี",
     "21 - 30 ปี",
     "31 - 40 ปี",
@@ -262,9 +263,23 @@ class _FindTabState extends State<FindTab> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              if (formKey.currentState!.validate()) {
+              if((selectedsearchmoneytype != null) ||
+                  (selectedsearchgendertype != null) ||
+                  (selectedsearchsafetype != null) ||
+                  (selectedsearchsafetype != null) ||
+                  (selectedsearchagetype != null))
+              {
                 Navigator.pop(context);
                 searchdetails();
+              }else{
+              Toast.show(
+              "กรุณาระบุรายละเอียดอย่างน้อย 1 อย่าง",
+              context,
+              duration: Toast.lengthLong,
+              gravity: Toast.center,
+              backgroundColor: Colors.red,
+              textStyle: MyConstant().texttoast(),
+              );
               }
             },
             child: Text(
@@ -318,7 +333,7 @@ class _FindTabState extends State<FindTab> {
             child: Form(
               child: SingleChildScrollView(
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     buildSearchMoney(size),
                     buildSearchGender(size),
                     buildSearchSafe(size),

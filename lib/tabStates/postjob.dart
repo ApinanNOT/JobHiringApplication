@@ -1,14 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/states/employer.dart';
-import 'package:jobhiring/tabStates/home.dart';
-import 'package:jobhiring/widgets/show_image.dart';
-import 'package:jobhiring/widgets/show_title.dart';
+import 'package:jobhiring/states/markerjob.dart';
 import 'package:tbib_toast/tbib_toast.dart';
-import '../global/global.dart';
+
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
+import '../widgets/show_image.dart';
+import '../widgets/show_title.dart';
 
 class PostTab extends StatefulWidget {
   const PostTab({Key? key}) : super(key: key);
@@ -18,8 +23,10 @@ class PostTab extends StatefulWidget {
 }
 
 class _PostTabState extends State<PostTab> {
-  String? typeUser;
+
   final formKey = GlobalKey<FormState>(); //create variable
+
+  String? typeUser;
   List<String> jobgenderlist = ["ชาย", "หญิง", "LGBTQ", "ทุกเพศ"]; //gender
   String? selectedjobgendertype;
 
@@ -27,7 +34,7 @@ class _PostTabState extends State<PostTab> {
   String? selectedjobsafetype;
 
   List<String> jobagelist = [
-    "ตั้งแต่ 18 ปี แต่ไม่เกิน 60 ปี",
+    "18 - 60 ปี",
     "18 - 20 ปี",
     "21 - 30 ปี",
     "31 - 40 ปี",
@@ -46,8 +53,6 @@ class _PostTabState extends State<PostTab> {
   TextEditingController jobaddressTextEditingController = TextEditingController();
   TextEditingController jobdetailTextEditingController = TextEditingController();
 
-  //connect database
-
   saveJobInformation() async {
     showDialog(
       context: context,
@@ -59,40 +64,32 @@ class _PostTabState extends State<PostTab> {
       },
     );
 
-        Map jobmap = {
-          "name": jobnameTextEditingController.text.trim(),
-          "money": jobmoneyTextEditingController.text.trim(),
-          "gender": selectedjobgendertype,
-          "safe": selectedjobsafetype,
-          "age": selectedjobagetype,
-          "date": jobdateTextEditingController.text.trim(),
-          "time": jobtimeTextEditingController.text.trim(),
-          "address": jobaddressTextEditingController.text.trim(),
-          "detail": jobdetailTextEditingController.text.trim(),
-        };
+    Map jobmap = {
+      "name": jobnameTextEditingController.text.trim(),
+      "money": jobmoneyTextEditingController.text.trim(),
+      "gender": selectedjobgendertype,
+      "safe": selectedjobsafetype,
+      "age": selectedjobagetype,
+      "date": jobdateTextEditingController.text.trim(),
+      "time": jobtimeTextEditingController.text.trim(),
+      "address": jobaddressTextEditingController.text.trim(),
+      "detail": jobdetailTextEditingController.text.trim(),
+    };
 
-        DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
-        jobRef.child(currentFirebaseUser!.uid).set(jobmap);
+    DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
+    jobRef.child(currentFirebaseUser!.uid).set(jobmap);
 
-        Toast.show(
-          "ประกาศงานสำเร็จ",
-          context,
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
-          backgroundColor: Colors.green,
-          textStyle: MyConstant().texttoast(),
-        );
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const Employer()));
-      }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (c) => const MarkerJob()));
+  }
 
   Row buildJobName(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobnameTextEditingController,
@@ -128,8 +125,8 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobmoneyTextEditingController,
@@ -168,7 +165,7 @@ class _PostTabState extends State<PostTab> {
         Container(
           margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
-            width: size * 0.7,
+            width: size * 0.6,
             child: DropdownButtonFormField<String>(
               validator: (selectedjobgendertype) {
                 if (selectedjobgendertype == null) {
@@ -217,7 +214,7 @@ class _PostTabState extends State<PostTab> {
         Container(
           margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
-            width: size * 0.7,
+            width: size * 0.6,
             child: DropdownButtonFormField<String>(
               validator: (selectedjobsafetype) {
                 if (selectedjobsafetype == null) {
@@ -266,7 +263,7 @@ class _PostTabState extends State<PostTab> {
         Container(
           margin: const EdgeInsets.only(top: 20),
           child: SizedBox(
-            width: size * 0.7,
+            width: size * 0.6,
             child: DropdownButtonFormField<String>(
               validator: (selectedjobagetype) {
                 if (selectedjobagetype == null) {
@@ -313,8 +310,8 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobdateTextEditingController,
@@ -351,8 +348,8 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobtimeTextEditingController,
@@ -389,8 +386,8 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobaddressTextEditingController,
@@ -423,8 +420,8 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobdetailTextEditingController,
@@ -452,27 +449,62 @@ class _PostTabState extends State<PostTab> {
     );
   }
 
-  Row buildNext(double size) {
+  Row buildConfirm(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 16),
-          width: size * 0.7,
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                saveJobInformation();
+              {
+                if(formKey.currentState!.validate())
+                {
+                  showDialogPost();
+                }
               }
             },
             child: Text(
-              'ถัดไป',
+              'บันทึกข้อมูล',
               style: MyConstant().textbutton1(),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Row buildImage(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: size * 0.3,
+          child: ShowImage(path: MyConstant.imagelogo),
+        ),
+      ],
+    );
+  }
+
+  Container buildTitle1(String title) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: ShowTitle(
+        title: title,
+        textStyle: MyConstant().h2Style(),
+      ),
+    );
+  }
+
+  Container buildTitle2(String title) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: ShowTitle(
+        title: title,
+        textStyle: MyConstant().h2Style(),
+      ),
     );
   }
 
@@ -503,7 +535,7 @@ class _PostTabState extends State<PostTab> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              //saveUserInformation();
+              saveJobInformation();
             },
             child: Text(
               'ยืนยัน',
@@ -512,18 +544,6 @@ class _PostTabState extends State<PostTab> {
           ),
         ],
       ),
-    );
-  }
-
-  Row buildImage(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: size * 0.3,
-          child: ShowImage(path: MyConstant.imagelogo),
-        ),
-      ],
     );
   }
 
@@ -552,7 +572,7 @@ class _PostTabState extends State<PostTab> {
                 buildJobTime(size),
                 buildJobAddress(size),
                 buildDetails(size),
-                buildNext(size),
+                buildConfirm(size),
               ],
             ),
           ),
@@ -561,23 +581,4 @@ class _PostTabState extends State<PostTab> {
     );
   }
 
-  Container buildTitle1(String title) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      child: ShowTitle(
-        title: title,
-        textStyle: MyConstant().h2Style(),
-      ),
-    );
-  }
-
-  Container buildTitle2(String title) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      child: ShowTitle(
-        title: title,
-        textStyle: MyConstant().h2Style(),
-      ),
-    );
-  }
 }
