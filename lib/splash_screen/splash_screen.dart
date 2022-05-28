@@ -18,6 +18,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
 
     fAuth.currentUser != null ?  AssistantMethods.readCurrentOnlineUserInfo() : null; //เรียกใช้งานเมื่อเข้าสู่ระบบสำเร็จ
+    fAuth.currentUser !=null ? AssistantMethods.readCurrentOnlineJobInfo() : null;
+
 
     Timer(const Duration(seconds: 2), () async {
       if (await fAuth.currentUser != null) {

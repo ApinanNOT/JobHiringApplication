@@ -64,12 +64,20 @@ class _MarkerJobState extends State<MarkerJob> {
   }
 
   saveCurrentLocation(){
-    Map joblocationmap = {
-      "latitude" : userCurrentPosition!.latitude,
-      "longitude" : userCurrentPosition!.longitude,
-    };
-    DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
-    jobRef.child(currentFirebaseUser!.uid).child("location").set(joblocationmap);
+
+    Geofire.initialize("JobLocation");
+
+    Geofire.setLocation(
+        currentFirebaseUser!.uid,
+        userCurrentPosition!.latitude,
+        userCurrentPosition!.longitude
+    );
+
+    DatabaseReference jobRef = FirebaseDatabase.instance.ref()
+        .child("Jobs")
+        .child(currentFirebaseUser!.uid);
+
+    jobRef.onValue.listen((event) {});
 
     Toast.show(
       "บันทึกงานสำเร็จ",
@@ -283,12 +291,19 @@ class _MarkerJobState extends State<MarkerJob> {
           )
       );
 
-      Map joblocationmap = {
-        "latitude" : tappedPoint.latitude,
-        "longitude" : tappedPoint.longitude,
-      };
-      DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
-      jobRef.child(currentFirebaseUser!.uid).child("location").set(joblocationmap);
+      Geofire.initialize("JobLocation");
+
+      Geofire.setLocation(
+          currentFirebaseUser!.uid,
+          tappedPoint.latitude,
+          tappedPoint.longitude
+      );
+
+      DatabaseReference jobRef = FirebaseDatabase.instance.ref()
+          .child("Jobs")
+          .child(currentFirebaseUser!.uid);
+
+      jobRef.onValue.listen((event) {});
 
       //tappedPoint;
     });

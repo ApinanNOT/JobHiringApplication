@@ -77,7 +77,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
-                      offset: new Offset(0.0, 0.0),
+                      offset: const Offset(0.0, 0.0),
                       blurRadius: 20.0,
                       spreadRadius: 3.0,
                     ), //BoxShadow
@@ -129,7 +129,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         style: MyConstant().userinfo3(),
                       ),
                       Text(
-                        userModelCurrentInfo!.gender.toString(),
+                       userModelCurrentInfo!.gender.toString(),
                         style: MyConstant().userinfo4(),
                       ),
                       const SizedBox(height: 8, width: 8),

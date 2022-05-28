@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_database/firebase_database.dart';
 
 class JobModel
@@ -11,11 +13,8 @@ class JobModel
   String? name;
   String? safe;
   String? time;
-  String? location;
-  String? latitude;
-  String? longitude;
 
-  JobModel({this.address,this.age,this.date,this.detail,this.gender,this.money,this.name,this.safe,this.time,this.location,this.latitude,this.longitude});
+  JobModel({this.address,this.age,this.date,this.detail,this.gender,this.money,this.name,this.safe,this.time});
 
   JobModel.fromSnapshot(DataSnapshot snap)
   {
@@ -28,8 +27,5 @@ class JobModel
     name = (snap.value as dynamic)["name"];
     safe = (snap.value as dynamic)["safe"];
     time = (snap.value as dynamic)["time"];
-    location = (snap.value as dynamic)["location"];
-    latitude = (snap.value as dynamic)["latitude"];
-    longitude = (snap.value as dynamic)["longitude"];
   }
 }
