@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,8 @@ import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_location.dart';
 
+import '../utility/my_constant.dart';
+
 class HomeTab extends StatefulWidget {
   const HomeTab({Key? key}) : super(key: key);
 
@@ -17,12 +22,25 @@ class HomeTab extends StatefulWidget {
   State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _HomeTabState extends State<HomeTab>
+{
 
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
   bool jobLocationKeysLoaded = false;
-  BitmapDescriptor? joblocationIcon;
+
+  // //customMarker
+  // Future<Uint8List> getBytesFromAsset({required String path,required int width})async {
+  //   ByteData data = await rootBundle.load(path);
+  //   ui.Codec codec = await ui.instantiateImageCodec(
+  //       data.buffer.asUint8List(),
+  //       targetWidth: width
+  //   );
+  //   ui.FrameInfo fi = await codec.getNextFrame();
+  //   return (await fi.image.toByteData(
+  //       format: ui.ImageByteFormat.png))!
+  //       .buffer.asUint8List();
+  // }
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
 
@@ -41,7 +59,8 @@ class _HomeTabState extends State<HomeTab> {
 
   LocationPermission? _locationPermission;
 
-  checkIfLocationPermissionAllowed() async {
+  checkIfLocationPermissionAllowed() async
+  {
     _locationPermission = await Geolocator.requestPermission();
 
     if (_locationPermission == LocationPermission.denied) {
@@ -49,7 +68,8 @@ class _HomeTabState extends State<HomeTab> {
     }
   }
 
-  locateUserPosition() async {
+  locateUserPosition() async
+  {
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
@@ -69,14 +89,16 @@ class _HomeTabState extends State<HomeTab> {
   @override
   void initState()
   {
+
     super.initState();
 
     checkIfLocationPermissionAllowed(); //check permission
   }
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context)
+  {
+    double size = MediaQuery.of(context).size.width;
     return Scaffold(
       key: sKey,
       //GoogleMap
@@ -84,14 +106,13 @@ class _HomeTabState extends State<HomeTab> {
         children: [
           GoogleMap(
             mapType: MapType.normal,
-            //markers: getMarker(),
             mapToolbarEnabled: false,
             myLocationButtonEnabled: true,
             markers: markersSet,
             circles: circlesSet,
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
-            zoomControlsEnabled: true,
+            zoomControlsEnabled: false,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
@@ -100,12 +121,14 @@ class _HomeTabState extends State<HomeTab> {
               locateUserPosition(); //Call GPS
             },
           ),
+          ButtonSearch(size)
         ],
       ),
     );
   }
 
-  initializeGeoFireListener() {
+  initializeGeoFireListener()
+  {
     Geofire.initialize("JobLocation");
 
     Geofire.queryAtLocation(
@@ -156,7 +179,13 @@ class _HomeTabState extends State<HomeTab> {
 
   showJoblocation()
   {
-      setState((){
+
+    // final Uint8List customMarker= await getBytesFromAsset(
+    //     path: 'images/location.png' , //paste the custom image path
+    //     width: 130 // size of custom image as marker
+    // );
+
+      setState(() {
       markersSet.clear();
       circlesSet.clear();
 
@@ -169,7 +198,8 @@ class _HomeTabState extends State<HomeTab> {
         Marker marker = Marker(
           markerId: MarkerId(eachJob.jobId!),
           position: eachJobLocationPosition,
-          icon: BitmapDescriptor.defaultMarker,
+          //icon: BitmapDescriptor.fromBytes(customMarker),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           rotation: 360,
         );
 
@@ -179,6 +209,34 @@ class _HomeTabState extends State<HomeTab> {
         markersSet = jobMarkerSet;
       });
     });
+  }
+
+  Positioned ButtonSearch(double size)
+  {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 40),
+            width: size * 0.5,
+            child: ElevatedButton(
+              style: MyConstant().myButtonStyle4(),
+              onPressed: () {
+                //function
+              },
+              child: Text(
+                'ค้นหางานรอบตัว',
+                style: MyConstant().textbutton3(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
