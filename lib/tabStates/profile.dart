@@ -4,6 +4,8 @@ import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../widgets/show_image.dart';
+
 class ProfileTab extends StatefulWidget {
   const ProfileTab({Key? key}) : super(key: key);
 
@@ -22,7 +24,8 @@ class _ProfileTabState extends State<ProfileTab> {
     double size = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        profilepicture(),
+        buildImage(size),
+        //profilepicture(),
         const SizedBox(height: 10, width: 10),
         Text(
           userModelCurrentInfo!.name.toString() +
@@ -153,16 +156,28 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  Padding profilepicture() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 30.0),
-      child: SizedBox(
-        height: 90,
-        width: 90,
-        child: CircleAvatar(
-          backgroundImage: AssetImage("images/profile.png"),
+  Row buildImage(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: size * 0.3,
+          child: ShowImage(path: MyConstant.imagelogo),
         ),
-      ),
+      ],
     );
   }
+
+  // Padding profilepicture() {
+  //   return const Padding(
+  //     padding: EdgeInsets.only(top: 30.0),
+  //     child: SizedBox(
+  //       height: 90,
+  //       width: 90,
+  //       child: CircleAvatar(
+  //         backgroundImage: AssetImage("images/logo.png"),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

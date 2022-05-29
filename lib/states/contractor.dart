@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jobhiring/tabStates/findjob.dart';
 import 'package:jobhiring/tabStates/history.dart';
-import 'package:jobhiring/tabStates/home.dart';
+import 'package:jobhiring/tabStates/homecontractor.dart';
+import 'package:jobhiring/tabStates/homeemployer.dart';
 import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
@@ -50,7 +51,7 @@ class _ContractorState extends State<Contractor>
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
         children: const [
-          HomeTab(),
+          HomeTabContractor(),
           RatingTab(),
           FindTab(),
           HistoryTab(),
@@ -74,7 +75,7 @@ class _ContractorState extends State<Contractor>
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          label: 'ค้นหางาน',
+          label: 'ค้นหาละเอียด',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.history),

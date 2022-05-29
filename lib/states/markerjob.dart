@@ -57,7 +57,7 @@ class _MarkerJobState extends State<MarkerJob> {
     LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
 
     CameraPosition cameraPosition =
-    CameraPosition(target: latLngPosition, zoom: 18);
+    CameraPosition(target: latLngPosition, zoom: 15);
 
     newGoogleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -351,13 +351,13 @@ class _MarkerJobState extends State<MarkerJob> {
     return Positioned(
       bottom: 570,
       left: 0,
-      right: 280,
+      right: 245,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             margin: const EdgeInsets.symmetric(vertical: 40),
-            width: size * 0.2,
+            width: size * 0.3,
             child: ElevatedButton(
               style: MyConstant().myButtonStyle5(),
               onPressed: () {

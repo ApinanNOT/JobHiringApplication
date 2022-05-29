@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jobhiring/tabStates/home.dart';
+import 'package:jobhiring/tabStates/homeemployer.dart';
 import 'package:jobhiring/tabStates/postjob.dart';
 import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
@@ -51,7 +51,7 @@ class _EmployerState extends State<Employer>
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
         children: const [
-          HomeTab(),
+          HomeTabEmployer(),
           RatingTab(),
           PostTab(),
           HistoryTab(),

@@ -14,15 +14,16 @@ import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_location.dart';
 
 import '../utility/my_constant.dart';
+import '../utility/progress_dialog.dart';
 
-class HomeTab extends StatefulWidget {
-  const HomeTab({Key? key}) : super(key: key);
+class HomeTabEmployer extends StatefulWidget {
+  const HomeTabEmployer({Key? key}) : super(key: key);
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  State<HomeTabEmployer> createState() => _HomeTabEmployerState();
 }
 
-class _HomeTabState extends State<HomeTab>
+class _HomeTabEmployerState extends State<HomeTabEmployer>
 {
 
   Set<Marker> markersSet = {};
@@ -78,7 +79,7 @@ class _HomeTabState extends State<HomeTab>
         LatLng(userCurrentPosition!.latitude, userCurrentPosition!.longitude);
 
     CameraPosition cameraPosition =
-        CameraPosition(target: latLngPosition, zoom: 14);
+        CameraPosition(target: latLngPosition, zoom: 15);
 
     newGoogleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
@@ -112,7 +113,7 @@ class _HomeTabState extends State<HomeTab>
             circles: circlesSet,
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
-            zoomControlsEnabled: false,
+            zoomControlsEnabled: true,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
               _controllerGoogleMap.complete(controller);
@@ -121,7 +122,7 @@ class _HomeTabState extends State<HomeTab>
               locateUserPosition(); //Call GPS
             },
           ),
-          ButtonSearch(size)
+          //ButtonSearch(size)
         ],
       ),
     );
@@ -185,7 +186,7 @@ class _HomeTabState extends State<HomeTab>
     //     width: 130 // size of custom image as marker
     // );
 
-      setState(() {
+      setState(() async{
       markersSet.clear();
       circlesSet.clear();
 
@@ -199,7 +200,7 @@ class _HomeTabState extends State<HomeTab>
           markerId: MarkerId(eachJob.jobId!),
           position: eachJobLocationPosition,
           //icon: BitmapDescriptor.fromBytes(customMarker),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'images/location.png'),
           rotation: 360,
         );
 
@@ -226,7 +227,7 @@ class _HomeTabState extends State<HomeTab>
             child: ElevatedButton(
               style: MyConstant().myButtonStyle4(),
               onPressed: () {
-                //function
+                //searchjob();
               },
               child: Text(
                 'ค้นหางานรอบตัว',

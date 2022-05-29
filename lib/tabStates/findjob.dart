@@ -246,7 +246,7 @@ class _FindTabState extends State<FindTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          width: size * 0.7,
+          width: size * 0.3,
           child: ShowImage(path: MyConstant.imagelogo),
         ),
       ],
@@ -269,7 +269,7 @@ class _FindTabState extends State<FindTab> {
                   (selectedsearchsafetype != null) ||
                   (selectedsearchagetype != null))
               {
-                Navigator.pop(context);
+                //Navigator.pop(context);
                 searchdetails();
               }else{
               Toast.show(
@@ -292,86 +292,86 @@ class _FindTabState extends State<FindTab> {
     );
   }
 
-  Row buildSearchDetails(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          width: size * 0.7,
-          child: ElevatedButton(
-            style: MyConstant().myButtonStyle1(),
-            onPressed: () {
-              dialogformsearch(size);
-            },
-            child: Text(
-              'ค้นหาแบบละเอียด',
-              style: MyConstant().textbutton1(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Row buildSearchDetails(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         margin: const EdgeInsets.symmetric(vertical: 20),
+  //         width: size * 0.7,
+  //         child: ElevatedButton(
+  //           style: MyConstant().myButtonStyle1(),
+  //           onPressed: () {
+  //             dialogformsearch(size);
+  //           },
+  //           child: Text(
+  //             'ค้นหาแบบละเอียด',
+  //             style: MyConstant().textbutton1(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Future<dynamic> dialogformsearch(double size) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          scrollable: true,
-          title: Text(
-            "รายละเอียด",
-            style: MyConstant().h2Style(),
-            textAlign: TextAlign.center,
-          ),
-          content: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    buildSearchMoney(size),
-                    buildSearchGender(size),
-                    buildSearchSafe(size),
-                    buildSearchAge(size),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            buildSearch(size),
-          ],
-        );
-      },
-    );
-  }
+  // Future<dynamic> dialogformsearch(double size) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(30),
+  //         ),
+  //         scrollable: true,
+  //         title: Text(
+  //           "รายละเอียด",
+  //           style: MyConstant().h2Style(),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         content: Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Form(
+  //             child: SingleChildScrollView(
+  //               child: Column(
+  //                 children: [
+  //                   buildSearchMoney(size),
+  //                   buildSearchGender(size),
+  //                   buildSearchSafe(size),
+  //                   buildSearchAge(size),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //         actions: [
+  //           buildSearch(size),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
-  Row buildSearchNormal(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          width: size * 0.7,
-          child: ElevatedButton(
-            style: MyConstant().myButtonStyle1(),
-            onPressed: () {
-              //Navigator.pushNamed(context, MyConstant.routeEmployer);
-            },
-            child: Text(
-              'ค้นหาในรัศมี 10 กิโลเมตร',
-              style: MyConstant().textbutton1(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Row buildSearchNormal(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         margin: const EdgeInsets.symmetric(vertical: 20),
+  //         width: size * 0.7,
+  //         child: ElevatedButton(
+  //           style: MyConstant().myButtonStyle1(),
+  //           onPressed: () {
+  //             //Navigator.pushNamed(context, MyConstant.routeEmployer);
+  //           },
+  //           child: Text(
+  //             'ค้นหาในรัศมี 10 กิโลเมตร',
+  //             style: MyConstant().textbutton1(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -388,8 +388,12 @@ class _FindTabState extends State<FindTab> {
             child: Column(
               children: [
                 buildImage(size),
-                buildSearchNormal(size),
-                buildSearchDetails(size)
+                buildTitle1("รายละเอียดงาน"),
+                buildSearchMoney(size),
+                buildSearchGender(size),
+                buildSearchSafe(size),
+                buildSearchAge(size),
+                buildSearch(size),
               ],
             ),
           ),
