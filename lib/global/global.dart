@@ -7,3 +7,4 @@ final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
 JobModel? jobModelCurrentInfo;
+List jList = []; //jobKeyList

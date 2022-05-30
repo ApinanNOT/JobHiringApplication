@@ -11,9 +11,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
+import 'package:jobhiring/main.dart';
 import 'package:jobhiring/models/job_location.dart';
+import 'package:jobhiring/states/select_job_nearest.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 import '../utility/my_constant.dart';
+import '../utility/progress_dialog.dart';
 
 class HomeTabContractor extends StatefulWidget {
   const HomeTabContractor({Key? key}) : super(key: key);
@@ -93,6 +97,62 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     super.initState();
 
     checkIfLocationPermissionAllowed(); //check permission
+  }
+
+  List<JobLocation> onlineJobList = [];
+
+  jobsearchinformation()
+  {
+    onlineJobList = GeoFireAssistant.jobLocationList;
+    searchJobNearest();
+  }
+
+  searchJobNearest() async
+  {
+    if(onlineJobList.length == 0)
+    {
+      Toast.show(
+        "ไม่มีงานรอบตัวคุณ",
+        context,
+        duration: Toast.lengthLong,
+        gravity: Toast.center,
+        backgroundColor: Colors.red,
+        textStyle: MyConstant().texttoast(),
+      );
+
+      return;
+    }
+
+    await retrieveOnlineJobInformation(onlineJobList);
+
+    Navigator.push(context,MaterialPageRoute(builder: (c)=> const SelectJobNearest()));
+  }
+
+  retrieveOnlineJobInformation(List onlineNearestJobList) async
+  {
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กำลังค้นหา",
+        );
+      },
+    );
+
+    DatabaseReference ref = FirebaseDatabase.instance.ref().child("Jobs");
+    for(int i=0; i<onlineNearestJobList.length; i++)
+    {
+      await ref.child(onlineNearestJobList[i].jobId.toString())
+          .once()
+          .then((dataSnapshot)
+      {
+        var jobKeyInfo = dataSnapshot.snapshot.value;
+        jList.add(jobKeyInfo);
+      });
+    }
+    Navigator.pop(context);
   }
 
   @override
@@ -198,7 +258,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         Marker marker = Marker(
           markerId: MarkerId(eachJob.jobId!),
           position: eachJobLocationPosition,
-          //icon: BitmapDescriptor.fromBytes(customMarker),
           //icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'images/location.png'),
           rotation: 360,
@@ -227,7 +286,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             child: ElevatedButton(
               style: MyConstant().myButtonStyle4(),
               onPressed: () {
-                //function
+                jobsearchinformation();
               },
               child: Text(
                 'ค้นหางานรอบตัว',

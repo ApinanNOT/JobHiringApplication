@@ -75,7 +75,7 @@ class _ContractorState extends State<Contractor>
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
-          label: 'ค้นหาละเอียด',
+          label: 'ระบุงาน',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.history),
