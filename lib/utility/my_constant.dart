@@ -161,11 +161,23 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle userinfo5() => GoogleFonts.prompt(
+    fontSize: 14,
+    color: Colors.black,
+    fontWeight: FontWeight.normal,
+  );
+
   TextStyle texttoast() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Colors.white,
         fontWeight: FontWeight.normal,
       );
+
+  TextStyle textnotificationRequest() => GoogleFonts.sarabun(
+    fontSize: 16,
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  );
 
   ButtonStyle myButtonStyle1() => ElevatedButton.styleFrom(
         primary: MyConstant.primary,

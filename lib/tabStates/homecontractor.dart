@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show SystemNavigator, rootBundle;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
@@ -28,10 +29,11 @@ class HomeTabContractor extends StatefulWidget {
 
 class _HomeTabContractorState extends State<HomeTabContractor>
 {
-
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
   bool jobLocationKeysLoaded = false;
+
+  //DatabaseReference? referenceJobRequest;
 
   // //customMarker
   // Future<Uint8List> getBytesFromAsset({required String path,required int width})async {
@@ -90,19 +92,40 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     initializeGeoFireListener();
   }
 
+
   @override
   void initState()
   {
 
     super.initState();
 
+
     checkIfLocationPermissionAllowed(); //check permission
+
   }
 
   List<JobLocation> onlineJobList = [];
 
+  DatabaseReference? referenceContractorRequest;
+
   jobsearchinformation()
   {
+
+    referenceContractorRequest = FirebaseDatabase.instance.ref().child("ContractorRequest").push();
+
+    Map contractorInformation =
+    {
+      "id" : userModelCurrentInfo!.id,
+      "name": userModelCurrentInfo!.name,
+      "lastname": userModelCurrentInfo!.lastname,
+      "gender": userModelCurrentInfo!.gender,
+      "address": userModelCurrentInfo!.address,
+      "phone": userModelCurrentInfo!.phone,
+      "age": userModelCurrentInfo!.age,
+    };
+
+    referenceContractorRequest!.set(contractorInformation);
+
     onlineJobList = GeoFireAssistant.jobLocationList;
     searchJobNearest();
   }
@@ -111,6 +134,9 @@ class _HomeTabContractorState extends State<HomeTabContractor>
   {
     if(onlineJobList.length == 0)
     {
+
+      referenceContractorRequest!.remove();
+
       Toast.show(
         "ไม่มีงานรอบตัวคุณ",
         context,
@@ -125,7 +151,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
     await retrieveOnlineJobInformation(onlineJobList);
 
-    Navigator.push(context,MaterialPageRoute(builder: (c)=> const SelectJobNearest()));
+    Navigator.push(context,MaterialPageRoute(builder: (c)=> SelectJobNearest(referenceContractorRequest: referenceContractorRequest)));
   }
 
   retrieveOnlineJobInformation(List onlineNearestJobList) async
@@ -152,6 +178,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         jList.add(jobKeyInfo);
       });
     }
+    //jList.clear();
     Navigator.pop(context);
   }
 
@@ -189,6 +216,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
   initializeGeoFireListener()
   {
+
     Geofire.initialize("JobLocation");
 
     Geofire.queryAtLocation(
@@ -233,7 +261,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         }
       }
 
-      setState(() {});
+      setState(() {
+      });
     });
   }
 

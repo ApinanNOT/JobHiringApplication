@@ -7,6 +7,8 @@ import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../global/global.dart';
+
 class Contractor extends StatefulWidget {
   const Contractor({Key? key}) : super(key: key);
 
@@ -94,7 +96,7 @@ class _ContractorState extends State<Contractor>
       unselectedLabelStyle: MyConstant().h6Style(),
       showUnselectedLabels: true,
       currentIndex: selectedIndex,
-      onTap: onItemClicked,
+      onTap: onItemClicked ,
     );
   }
 }

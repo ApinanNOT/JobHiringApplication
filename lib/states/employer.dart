@@ -5,6 +5,7 @@ import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../global/global.dart';
 import '../tabStates/history.dart';
 
 class Employer extends StatefulWidget {
@@ -21,7 +22,7 @@ class _EmployerState extends State<Employer>
 
   onItemClicked(int index) {
     setState(
-      () {
+      ()  {
         selectedIndex = index;
         tabController!.index = selectedIndex;
       },

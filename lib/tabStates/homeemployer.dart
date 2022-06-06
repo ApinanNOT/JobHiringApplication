@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_location.dart';
+import 'package:jobhiring/push_notifications/push_notification_system.dart';
 
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
@@ -87,6 +88,14 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
     initializeGeoFireListener();
   }
 
+  readCurrentContractorInformation() async
+  {
+    currentFirebaseUser = fAuth.currentUser;
+    PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
+    pushNotificationSystem.initializeCloudMessaging(context);
+    pushNotificationSystem.generateAndGetToken();
+  }
+
   @override
   void initState()
   {
@@ -94,6 +103,7 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
     super.initState();
 
     checkIfLocationPermissionAllowed(); //check permission
+    readCurrentContractorInformation();
   }
 
   @override
