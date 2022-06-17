@@ -1,21 +1,25 @@
 import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:jobhiring/global/global.dart';
+import 'package:jobhiring/models/job_data.dart';
 import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 import '../assistants/assistant_methods.dart';
+import '../models/contractorRequestinformation.dart';
 import '../widgets/show_image.dart';
 
-class JobEnd extends StatefulWidget {
-  const JobEnd({Key? key}) : super(key: key);
+class JobWait extends StatefulWidget {
+
+  const JobWait({Key? key}) : super(key: key);
 
   @override
-  _JobEndState createState() => _JobEndState();
+  _JobWaitState createState() => _JobWaitState();
 }
 
-class _JobEndState extends State<JobEnd> {
+class _JobWaitState extends State<JobWait> {
 
   @override
   void initState() {

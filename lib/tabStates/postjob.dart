@@ -52,6 +52,7 @@ class _PostTabState extends State<PostTab> {
   TextEditingController jobtimeTextEditingController = TextEditingController();
   TextEditingController jobaddressTextEditingController = TextEditingController();
   TextEditingController jobdetailTextEditingController = TextEditingController();
+  TextEditingController jobphoneTextEditingController = TextEditingController();
 
   saveJobInformation() async {
     showDialog(
@@ -65,6 +66,7 @@ class _PostTabState extends State<PostTab> {
     );
 
     Map jobmap = {
+      "jobId" : currentFirebaseUser!.uid,
       "name": jobnameTextEditingController.text.trim(),
       "money": jobmoneyTextEditingController.text.trim(),
       "gender": selectedjobgendertype,
@@ -74,6 +76,8 @@ class _PostTabState extends State<PostTab> {
       "time": jobtimeTextEditingController.text.trim(),
       "address": jobaddressTextEditingController.text.trim(),
       "detail": jobdetailTextEditingController.text.trim(),
+      "phone" : jobphoneTextEditingController.text.trim(),
+      "contractorId" : "idle",
     };
 
     DatabaseReference jobRef = FirebaseDatabase.instance.ref().child("Jobs");
@@ -143,6 +147,44 @@ class _PostTabState extends State<PostTab> {
               errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: "ค่าตอบแทน",
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildJobPhone(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          width: size * 0.6,
+          child: TextFormField(
+            style: MyConstant().textinput(),
+            controller: jobphoneTextEditingController,
+            keyboardType: TextInputType.number,
+            validator: (jobphoneTextEditingController) {
+              if (jobphoneTextEditingController!.isEmpty) {
+                return 'กรุณากรอกเบอร์ติดต่อ';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(jobphoneTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
+              } else {}
+            },
+            decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
+              labelStyle: MyConstant().h3Style(),
+              labelText: "เบอร์ติดต่อ",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.dark),
                 borderRadius: BorderRadius.circular(30),
@@ -568,6 +610,7 @@ class _PostTabState extends State<PostTab> {
                 buildJobGender(size),
                 buildJobSafe(size),
                 buildJobAge(size),
+                buildJobPhone(size),
                 buildJobDate(size),
                 buildJobTime(size),
                 buildJobAddress(size),

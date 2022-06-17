@@ -1,7 +1,11 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/contractorRequestinformation.dart';
+import 'package:jobhiring/states/job_wait.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
+
 
 class NotificationDialogBox extends StatefulWidget
 {
@@ -184,20 +188,60 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                         ),
                         onPressed: ()
                         {
-                          Navigator.pop(context);
+
+                          acceptContractorRequest(context);
+
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (c) => JobWait()));
                         },
                         child: Text(
                           "ยอมรับ".toUpperCase(),
                           style: MyConstant().textnotificationRequest(),
-                        )
+                        ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-
       ),
     );
   }
+
+  acceptContractorRequest(BuildContext context)
+  {
+    String getContractorId = "";
+    FirebaseDatabase.instance.ref()
+        .child("Jobs")
+        .child(currentFirebaseUser!.uid)
+        .child("contractorId")
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        getContractorId = snap.snapshot.value.toString();
+      }
+      else
+        {
+
+        }
+
+      print(widget.contractorRequestDetails!.jobId.toString());
+
+      if(getContractorId ==  widget.contractorRequestDetails!.jobId)
+      {
+        FirebaseDatabase.instance.ref()
+            .child("Jobs")
+            .child(currentFirebaseUser!.uid)
+            .child("contractorId")
+            .set("accepted");
+      }
+      else
+        {
+
+        }
+    });
+  }
+
 }

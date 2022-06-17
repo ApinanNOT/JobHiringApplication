@@ -63,6 +63,10 @@ class PushNotificationSystem
         String address = (snapData.snapshot.value! as Map)["address"];
         String phone = (snapData.snapshot.value! as Map)["phone"];
         String age = (snapData.snapshot.value! as Map)["age"];
+        //String jobId = (snapData.snapshot.value ! as Map)["jobId"];
+
+        //String? requestId = snapData.snapshot.key;
+        String? jobId = snapData.snapshot.key;
 
         ContractorRequestInformation contractorRequestDetails = ContractorRequestInformation();
         contractorRequestDetails.id = id;
@@ -72,6 +76,8 @@ class PushNotificationSystem
         contractorRequestDetails.address = address;
         contractorRequestDetails.phone = phone;
         contractorRequestDetails.age = age;
+        contractorRequestDetails.jobId = jobId;
+        //contractorRequestDetails.requestId = requestId;
 
         // print("This is contractor request information :: ");
         // print(contractorRequestDetails.id);
@@ -81,7 +87,7 @@ class PushNotificationSystem
         // print(contractorRequestDetails.address);
         // print(contractorRequestDetails.phone);
         // print(contractorRequestDetails.age);
-        
+
         showDialog(
             context: context,
             builder: (BuildContext context) => NotificationDialogBox(

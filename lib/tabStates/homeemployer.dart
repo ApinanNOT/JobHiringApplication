@@ -91,6 +91,42 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
   readCurrentContractorInformation() async
   {
     currentFirebaseUser = fAuth.currentUser;
+    
+    FirebaseDatabase.instance.ref()
+        .child("Jobs")
+        .child(currentFirebaseUser!.uid)
+        .once()
+        .then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        jobData.id = (snap.snapshot.value as Map)["jobId"];
+        jobData.name = (snap.snapshot.value as Map)["name"];
+        jobData.address = (snap.snapshot.value as Map)["address"];
+        jobData.age = (snap.snapshot.value as Map)["age"];
+        jobData.date = (snap.snapshot.value as Map)["date"];
+        jobData.detail = (snap.snapshot.value as Map)["detail"];
+        jobData.gender = (snap.snapshot.value as Map)["gender"];
+        jobData.money = (snap.snapshot.value as Map)["money"];
+        jobData.phone = (snap.snapshot.value as Map)["phone"];
+        jobData.safe = (snap.snapshot.value as Map)["safe"];
+        jobData.time = (snap.snapshot.value as Map)["time"];
+
+        print("Jobs Data : ************************************************");
+        print(jobData.id);
+        print(jobData.name);
+        print(jobData.address);
+        print(jobData.age);
+        print(jobData.date);
+        print(jobData.detail);
+        print(jobData.gender);
+        print(jobData.money);
+        print(jobData.phone);
+        print(jobData.safe);
+        print(jobData.time);
+      }
+    });
+    
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
     pushNotificationSystem.initializeCloudMessaging(context);
     pushNotificationSystem.generateAndGetToken();
@@ -220,34 +256,6 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
         markersSet = jobMarkerSet;
       });
     });
-  }
-
-  Positioned ButtonSearch(double size)
-  {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 40),
-            width: size * 0.5,
-            child: ElevatedButton(
-              style: MyConstant().myButtonStyle4(),
-              onPressed: () {
-                //searchjob();
-              },
-              child: Text(
-                'ค้นหางานรอบตัว',
-                style: MyConstant().textbutton3(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
 

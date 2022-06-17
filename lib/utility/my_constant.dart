@@ -67,6 +67,18 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle jobname() => GoogleFonts.prompt(
+    fontSize: 20,
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+  );
+
+  TextStyle jobmoney() => GoogleFonts.prompt(
+    fontSize: 16,
+    color: Colors.black45,
+    fontWeight: FontWeight.bold,
+  );
+
   TextStyle textinput() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Colors.black,

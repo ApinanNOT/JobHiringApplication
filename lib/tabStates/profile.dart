@@ -17,6 +17,9 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     super.initState();
+    print("เป็นอิหยังวะ");
+    print(jList);
+    print(jList.length);
   }
 
   @override

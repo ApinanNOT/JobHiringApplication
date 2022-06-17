@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:jobhiring/tabStates/findjob.dart';
 import 'package:jobhiring/tabStates/history.dart';
 import 'package:jobhiring/tabStates/homecontractor.dart';
-import 'package:jobhiring/tabStates/homeemployer.dart';
 import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../assistants/geofire_assistant.dart';
 import '../global/global.dart';
+import '../utility/progress_dialog.dart';
 
 class Contractor extends StatefulWidget {
   const Contractor({Key? key}) : super(key: key);
@@ -17,13 +18,14 @@ class Contractor extends StatefulWidget {
 }
 
 class _ContractorState extends State<Contractor>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin
+{
   TabController? tabController;
   int selectedIndex = 0;
 
   onItemClicked(int index) {
     setState(
-      () {
+          () {
         selectedIndex = index;
         tabController!.index = selectedIndex;
       },
@@ -34,7 +36,11 @@ class _ContractorState extends State<Contractor>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 5, vsync: this);
+    print("เป็นอิหยังวะ");
+    print(jList);
+    print(jList.length);
+
+    tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -54,7 +60,7 @@ class _ContractorState extends State<Contractor>
         controller: tabController,
         children: const [
           HomeTabContractor(),
-          RatingTab(),
+          //RatingTab(),
           FindTab(),
           HistoryTab(),
           ProfileTab(),
@@ -71,10 +77,10 @@ class _ContractorState extends State<Contractor>
           icon: Icon(Icons.home),
           label: 'หน้าหลัก',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.star),
-          label: 'ให้คะแนน',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.star),
+        //   label: 'ให้คะแนน',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'ระบุงาน',

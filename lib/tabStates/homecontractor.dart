@@ -15,8 +15,10 @@ import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/main.dart';
 import 'package:jobhiring/models/job_location.dart';
 import 'package:jobhiring/states/select_job_nearest.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:tbib_toast/tbib_toast.dart';
 
+import '../splash_screen/splash_screen.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
 
@@ -32,6 +34,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
   Set<Marker> markersSet = {};
   Set<Circle> circlesSet = {};
   bool jobLocationKeysLoaded = false;
+
+  int i=0;
 
   //DatabaseReference? referenceJobRequest;
 
@@ -76,6 +80,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
   locateUserPosition() async
   {
+
     Position cPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     userCurrentPosition = cPosition;
@@ -89,20 +94,20 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     newGoogleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
+    GeoFireAssistant.jobLocationList.clear();
+
     initializeGeoFireListener();
   }
-
 
   @override
   void initState()
   {
-
     super.initState();
 
-
     checkIfLocationPermissionAllowed(); //check permission
-
   }
+
+  @override
 
   List<JobLocation> onlineJobList = [];
 
@@ -122,6 +127,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       "address": userModelCurrentInfo!.address,
       "phone": userModelCurrentInfo!.phone,
       "age": userModelCurrentInfo!.age,
+      "requestId" : referenceContractorRequest!.key,
+      "jobId" : "waiting",
     };
 
     referenceContractorRequest!.set(contractorInformation);
@@ -151,7 +158,47 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
     await retrieveOnlineJobInformation(onlineJobList);
 
-    Navigator.push(context,MaterialPageRoute(builder: (c)=> SelectJobNearest(referenceContractorRequest: referenceContractorRequest)));
+    var response = await Navigator.push(context,MaterialPageRoute(
+        builder: (c)=> SelectJobNearest(referenceContractorRequest: referenceContractorRequest)));
+
+    if(response == "jobChoosed")
+    {
+      FirebaseDatabase.instance.ref()
+          .child("Jobs")
+          .child(chosenJobId!)
+          .once()
+          .then((snap)
+          {
+            if(snap.snapshot.value != null)
+            {
+              sendNotificationToEmployer(chosenJobId!);
+            }
+            else
+            {
+              Toast.show(
+                "เกิดข้อผิดพลาด กรุณาเลือกงานใหม่",
+                context,
+                duration: Toast.lengthLong,
+                gravity: Toast.center,
+                backgroundColor: Colors.red,
+                textStyle: MyConstant().texttoast(),
+              );
+            }
+          }
+      );
+    }
+  }
+
+  sendNotificationToEmployer(String chosenJobId)
+  {
+    //assign contractorRequestId to Jobs
+    FirebaseDatabase.instance.ref()
+        .child("Jobs")
+        .child(chosenJobId)
+        .child("contractorId")
+        .set(referenceContractorRequest!.key);
+
+    //automate the push notification
   }
 
   retrieveOnlineJobInformation(List onlineNearestJobList) async
@@ -168,7 +215,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     );
 
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("Jobs");
-    for(int i=0; i<onlineNearestJobList.length; i++)
+
+    for(i=0; i<onlineNearestJobList.length; i++)
     {
       await ref.child(onlineNearestJobList[i].jobId.toString())
           .once()
@@ -177,8 +225,11 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         var jobKeyInfo = dataSnapshot.snapshot.value;
         jList.add(jobKeyInfo);
       });
+      print("เป็นอะไรอีก");
+      print(onlineNearestJobList.length);
+      print("onlineNearestJobList[i] : $onlineNearestJobList");
+      print("ค่า i : $i");
     }
-    //jList.clear();
     Navigator.pop(context);
   }
 
@@ -208,7 +259,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
               locateUserPosition(); //Call GPS
             },
           ),
-          ButtonSearch(size)
+          ButtonSearch(size),
         ],
       ),
     );
@@ -296,6 +347,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       }
       setState(() {
         markersSet = jobMarkerSet;
+        jList.clear();
       });
     });
   }
@@ -314,7 +366,10 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             width: size * 0.5,
             child: ElevatedButton(
               style: MyConstant().myButtonStyle4(),
-              onPressed: () {
+              onPressed: ()
+              {
+                print("เป็นอิหยังแหมนิ");
+                print(i);
                 jobsearchinformation();
               },
               child: Text(

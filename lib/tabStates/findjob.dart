@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbib_toast/tbib_toast.dart';
+import '../global/global.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
 import '../widgets/show_image.dart';
@@ -42,6 +43,15 @@ class _FindTabState extends State<FindTab> {
     "มากกว่า 3000 บาท"
   ]; //money
   String? selectedsearchmoneytype;
+
+  @override
+  void initState()
+  {
+    super.initState();
+    print("เป็นอิหยังวะ");
+    print(jList);
+    print(jList.length);
+  }
 
   TextEditingController searchmoneyTextEditingController =
       TextEditingController();

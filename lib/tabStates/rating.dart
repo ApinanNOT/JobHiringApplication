@@ -15,6 +15,9 @@ class _RatingTabState extends State<RatingTab> {
   void initState()
   {
     super.initState();
+    print("เป็นอิหยังวะ");
+    print(jList);
+    print(jList.length);
   }
 
   @override

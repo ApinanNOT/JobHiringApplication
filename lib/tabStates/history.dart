@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../global/global.dart';
+
 class HistoryTab extends StatefulWidget {
   const HistoryTab({Key? key}) : super(key: key);
 
@@ -9,6 +11,16 @@ class HistoryTab extends StatefulWidget {
 }
 
 class _HistoryTabState extends State<HistoryTab> {
+
+  @override
+  void initState()
+  {
+    super.initState();
+    print("เป็นอิหยังวะ");
+    print(jList);
+    print(jList.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
