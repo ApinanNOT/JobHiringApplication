@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:flutter_launcher_icons/ios.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
@@ -91,7 +92,7 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
   readCurrentContractorInformation() async
   {
     currentFirebaseUser = fAuth.currentUser;
-    
+
     FirebaseDatabase.instance.ref()
         .child("Jobs")
         .child(currentFirebaseUser!.uid)
@@ -99,32 +100,32 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
         .then((snap)
     {
       if(snap.snapshot.value != null)
-      {
-        jobData.id = (snap.snapshot.value as Map)["jobId"];
-        jobData.name = (snap.snapshot.value as Map)["name"];
-        jobData.address = (snap.snapshot.value as Map)["address"];
-        jobData.age = (snap.snapshot.value as Map)["age"];
-        jobData.date = (snap.snapshot.value as Map)["date"];
-        jobData.detail = (snap.snapshot.value as Map)["detail"];
-        jobData.gender = (snap.snapshot.value as Map)["gender"];
-        jobData.money = (snap.snapshot.value as Map)["money"];
-        jobData.phone = (snap.snapshot.value as Map)["phone"];
-        jobData.safe = (snap.snapshot.value as Map)["safe"];
-        jobData.time = (snap.snapshot.value as Map)["time"];
+        {
+          jobData.id = (snap.snapshot.value as Map)["jobId"];
+          jobData.address = (snap.snapshot.value as Map)["address"];
+          jobData.age = (snap.snapshot.value as Map)["age"];
+          jobData.date = (snap.snapshot.value as Map)["date"];
+          jobData.detail = (snap.snapshot.value as Map)["detail"];
+          jobData.gender = (snap.snapshot.value as Map)["gender"];
+          jobData.money = (snap.snapshot.value as Map)["money"];
+          jobData.name = (snap.snapshot.value as Map)["name"];
+          jobData.phone = (snap.snapshot.value as Map)["phone"];
+          jobData.safe = (snap.snapshot.value as Map)["safe"];
+          jobData.time = (snap.snapshot.value as Map)["time"];
 
-        print("Jobs Data : ************************************************");
-        print(jobData.id);
-        print(jobData.name);
-        print(jobData.address);
-        print(jobData.age);
-        print(jobData.date);
-        print(jobData.detail);
-        print(jobData.gender);
-        print(jobData.money);
-        print(jobData.phone);
-        print(jobData.safe);
-        print(jobData.time);
-      }
+          print("*************************************");
+          print(jobData.id);
+          print(jobData.address);
+          print(jobData.age);
+          print(jobData.date);
+          print(jobData.detail);
+          print(jobData.gender);
+          print(jobData.money);
+          print(jobData.name);
+          print(jobData.phone);
+          print(jobData.safe);
+          print(jobData.time);
+        }
     });
     
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();

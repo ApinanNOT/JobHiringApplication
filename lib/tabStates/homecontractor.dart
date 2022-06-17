@@ -116,7 +116,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
   jobsearchinformation()
   {
 
-    referenceContractorRequest = FirebaseDatabase.instance.ref().child("ContractorRequest").push();
+    referenceContractorRequest = FirebaseDatabase.instance.ref()
+        .child("ContractorRequest").push();
 
     Map contractorInformation =
     {

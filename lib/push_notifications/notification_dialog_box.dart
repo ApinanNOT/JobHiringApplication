@@ -221,21 +221,30 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
       if(snap.snapshot.value != null)
       {
         getContractorId = snap.snapshot.value.toString();
+        print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+        print(getContractorId);
       }
       else
         {
 
         }
 
-      print(widget.contractorRequestDetails!.jobId.toString());
+      print(widget.contractorRequestDetails!.requestId.toString());
 
-      if(getContractorId ==  widget.contractorRequestDetails!.jobId)
+      print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+      print(getContractorId);
+      if(getContractorId ==  widget.contractorRequestDetails!.requestId)
       {
         FirebaseDatabase.instance.ref()
             .child("Jobs")
             .child(currentFirebaseUser!.uid)
             .child("contractorId")
             .set("accepted");
+
+        Navigator.push(context, MaterialPageRoute(builder: (c) => JobWait
+          (contractorRequestDetails: widget.contractorRequestDetails,
+
+        )));
       }
       else
         {

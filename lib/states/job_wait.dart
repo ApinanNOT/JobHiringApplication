@@ -13,7 +13,13 @@ import '../widgets/show_image.dart';
 
 class JobWait extends StatefulWidget {
 
-  const JobWait({Key? key}) : super(key: key);
+  //const JobWait({Key? key}) : super(key: key);
+
+  ContractorRequestInformation? contractorRequestDetails;
+
+  JobWait({
+    this.contractorRequestDetails,
+  });
 
   @override
   _JobWaitState createState() => _JobWaitState();
@@ -24,6 +30,7 @@ class _JobWaitState extends State<JobWait> {
   @override
   void initState() {
     super.initState();
+    saveAssignedJobDetailtoContractorRequest();
   }
 
   @override
@@ -78,5 +85,37 @@ class _JobWaitState extends State<JobWait> {
         ),
       ),
     );
+  }
+
+  saveAssignedJobDetailtoContractorRequest()
+  {
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref()
+        .child("ContractorRequest")
+        .child(widget.contractorRequestDetails!.requestId!);
+    
+    databaseReference.child("status").set("accepted");
+    databaseReference.child("jobId").set(jobData.id);
+    databaseReference.child("jobName").set(jobData.name);
+    databaseReference.child("jobAddress").set(jobData.address);
+    databaseReference.child("jobAge").set(jobData.age);
+    databaseReference.child("jobDate").set(jobData.date);
+    databaseReference.child("jobGender").set(jobData.gender);
+    databaseReference.child("jobMoney").set(jobData.money);
+    databaseReference.child("jobPhone").set(jobData.phone);
+    databaseReference.child("jobSafe").set(jobData.safe);
+    databaseReference.child("jobTime").set(jobData.time);
+
+
+    saveHistory();
+  }
+
+  saveHistory()
+  {
+    DatabaseReference historyRef = FirebaseDatabase.instance.ref()
+        .child("Users")
+        .child(currentFirebaseUser!.uid)
+        .child("history");
+    
+    historyRef.child(widget.contractorRequestDetails!.requestId!).set(true);
   }
 }

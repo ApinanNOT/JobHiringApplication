@@ -25,6 +25,8 @@ class PushNotificationSystem
       {
         //display contractor request information - user information who request a job
         readContractorRequestInformation(remoteMessage.data["ContractorRequestId"], context);
+        print("This is Remote Message :: ");
+        print(remoteMessage.data);
       }
     });
 
@@ -35,6 +37,8 @@ class PushNotificationSystem
     {
       //display contractor request information - user information who request a job
       readContractorRequestInformation(remoteMessage!.data["ContractorRequestId"], context);
+      print("This is Remote Message :: ");
+      print(remoteMessage.data);
     });
     
     
@@ -43,6 +47,8 @@ class PushNotificationSystem
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage)
     {
       readContractorRequestInformation(remoteMessage!.data["ContractorRequestId"], context);
+      print("This is Remote Message :: ");
+      print(remoteMessage.data);
     });
   }
 
@@ -66,7 +72,8 @@ class PushNotificationSystem
         //String jobId = (snapData.snapshot.value ! as Map)["jobId"];
 
         //String? requestId = snapData.snapshot.key;
-        String? jobId = snapData.snapshot.key;
+        //String? jobId = snapData.snapshot.key;
+        String? requestId = snapData.snapshot.key;
 
         ContractorRequestInformation contractorRequestDetails = ContractorRequestInformation();
         contractorRequestDetails.id = id;
@@ -76,17 +83,20 @@ class PushNotificationSystem
         contractorRequestDetails.address = address;
         contractorRequestDetails.phone = phone;
         contractorRequestDetails.age = age;
-        contractorRequestDetails.jobId = jobId;
+        //contractorRequestDetails.jobId = jobId;
         //contractorRequestDetails.requestId = requestId;
 
-        // print("This is contractor request information :: ");
-        // print(contractorRequestDetails.id);
-        // print(contractorRequestDetails.name);
-        // print(contractorRequestDetails.lastname);
-        // print(contractorRequestDetails.gender);
-        // print(contractorRequestDetails.address);
-        // print(contractorRequestDetails.phone);
-        // print(contractorRequestDetails.age);
+        contractorRequestDetails.requestId = requestId;
+
+        print("This is contractor request information :: ");
+        print(contractorRequestDetails.id);
+        print(contractorRequestDetails.name);
+        print(contractorRequestDetails.lastname);
+        print(contractorRequestDetails.gender);
+        print(contractorRequestDetails.address);
+        print(contractorRequestDetails.phone);
+        print(contractorRequestDetails.age);
+        print(contractorRequestDetails.jobId);
 
         showDialog(
             context: context,
