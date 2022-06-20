@@ -96,7 +96,7 @@ class PushNotificationSystem
         print(contractorRequestDetails.address);
         print(contractorRequestDetails.phone);
         print(contractorRequestDetails.age);
-        print(contractorRequestDetails.jobId);
+        print(contractorRequestDetails.requestId);
 
         showDialog(
             context: context,

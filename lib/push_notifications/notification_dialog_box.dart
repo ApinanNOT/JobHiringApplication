@@ -1,10 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/contractorRequestinformation.dart';
 import 'package:jobhiring/states/job_wait.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 
 class NotificationDialogBox extends StatefulWidget
@@ -172,7 +174,43 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                       ),
                         onPressed: ()
                         {
+                          
+                          //cancel
+                          FirebaseDatabase.instance.ref()
+                              .child("ContractorRequest")
+                              .child(widget.contractorRequestDetails!.requestId!)
+                              .remove().then((value)
+                          {
+                            FirebaseDatabase.instance.ref()
+                                .child("Jobs")
+                                .child(currentFirebaseUser!.uid)
+                                .child("contractorId")
+                                .set("idle");
+                          }).then((value)
+                          {
+                            FirebaseDatabase.instance.ref()
+                                .child("Users")
+                                .child(currentFirebaseUser!.uid)
+                                .child("history")
+                                .child(widget.contractorRequestDetails!.requestId!)
+                                .remove();
+                          }).then((value)
+                          {
+                            Toast.show(
+                              "ผู้ว่าจ้างปฏิเสธ",
+                              context,
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center,
+                              backgroundColor: Colors.red,
+                              textStyle: MyConstant().texttoast(),
+                            );
+                          });
+
                           Navigator.pop(context);
+                          //SystemNavigator.pop();
+
+                          print("Cancel");
+
                         },
                         child: Text(
                           "ยกเลิก".toUpperCase(),

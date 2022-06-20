@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_data.dart';
 import 'package:jobhiring/states/authen.dart';
+import 'package:jobhiring/states/emppoint.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 import '../assistants/assistant_methods.dart';
 import '../models/contractorRequestinformation.dart';
+import '../utility/progress_dialog.dart';
 import '../widgets/show_image.dart';
 
 class JobWait extends StatefulWidget {
@@ -73,7 +75,9 @@ class _JobWaitState extends State<JobWait> {
                 ),
                 onPressed: ()
                 {
-
+                  //Finish Job
+                  //push to point
+                  endJob();
                 },
                 child: Text(
                   "ยอมรับ".toUpperCase(),
@@ -105,7 +109,6 @@ class _JobWaitState extends State<JobWait> {
     databaseReference.child("jobSafe").set(jobData.safe);
     databaseReference.child("jobTime").set(jobData.time);
 
-
     saveHistory();
   }
 
@@ -118,4 +121,27 @@ class _JobWaitState extends State<JobWait> {
     
     historyRef.child(widget.contractorRequestDetails!.requestId!).set(true);
   }
+
+  endJob() async
+  {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext c) {
+        return ProgressDialog(
+          message: "กรุณารอสักครู่"
+        );
+      },
+    );
+
+    await FirebaseDatabase.instance.ref()
+        .child("ContractorRequest")
+        .child(widget.contractorRequestDetails!.requestId!)
+        .child("status")
+        .set("JobEnd");
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (c) => EmpPoint()));
+  }
+
 }

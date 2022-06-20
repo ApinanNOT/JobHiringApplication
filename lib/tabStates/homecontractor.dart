@@ -10,10 +10,13 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobhiring/assistants/assistant_methods.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/main.dart';
 import 'package:jobhiring/models/job_location.dart';
+import 'package:jobhiring/states/empaccepted.dart';
+import 'package:jobhiring/states/empcancel.dart';
 import 'package:jobhiring/states/select_job_nearest.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:tbib_toast/tbib_toast.dart';
@@ -21,6 +24,7 @@ import 'package:tbib_toast/tbib_toast.dart';
 import '../splash_screen/splash_screen.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomeTabContractor extends StatefulWidget {
   const HomeTabContractor({Key? key}) : super(key: key);
@@ -53,6 +57,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
   // }
 
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  //double boxwaiting = 220;
+  double waitingResponseFromEmployerContainerHeight = 0 ;
 
   //GoogleMap
   final Completer<GoogleMapController> _controllerGoogleMap = Completer();
@@ -172,7 +178,38 @@ class _HomeTabContractorState extends State<HomeTabContractor>
           {
             if(snap.snapshot.value != null)
             {
+              //send notification to that specific employer
               sendNotificationToEmployer(chosenJobId!);
+
+              //Display Waiting Response form a Employer
+              showWaitingResponseFromEmployerUI();
+
+              //Response from Employer
+              FirebaseDatabase.instance.ref()
+                  .child("Jobs")
+                  .child(chosenJobId!)
+                  .child("contractorId")
+                  .onValue.listen((eventSnapshot)
+              {
+                //1. Employer Cancel
+                //contractorId : "idle"
+                if(eventSnapshot.snapshot.value == "idle")
+                {
+                  print("ผู้ว่าจ้างปฏิเสธ");
+                  //Navigator.pop(context);
+                  //SystemNavigator.pop();
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (c) => const EmpCancel()));
+                }
+                //2. Employer Confirm
+                //contractorId : "accepted"
+                if(eventSnapshot.snapshot.value == "accepted")
+                {
+                  print("ผู้ว่าจ้างยอมรับ");
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (c) => EmpAccepted()));
+                }
+              });
             }
             else
             {
@@ -190,6 +227,14 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     }
   }
 
+  showWaitingResponseFromEmployerUI()
+  {
+    setState(()
+    {
+      waitingResponseFromEmployerContainerHeight = 220;
+    });
+  }
+
   sendNotificationToEmployer(String chosenJobId)
   {
     //assign contractorRequestId to Jobs
@@ -200,6 +245,38 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         .set(referenceContractorRequest!.key);
 
     //automate the push notification
+    FirebaseDatabase.instance.ref()
+        .child("Users")
+        .child(chosenJobId)
+        .child("token")
+        .once()
+        .then((snap) {
+      if (snap.snapshot.value != null) {
+        String usersToken = snap.snapshot.value.toString();
+
+        //send Notification Now
+        AssistantMethods.sendNotificationToEmployerNow(
+          usersToken,
+          referenceContractorRequest!.key.toString(),
+          context,
+        );
+
+        print("ส่งการแจ้งเตือนสำเร็จ");
+
+      }
+      else
+      {
+        Toast.show(
+          "เกิดข้อผิดพลาด กรุณาเลือกงานใหม่",
+          context,
+          duration: Toast.lengthLong,
+          gravity: Toast.center,
+          backgroundColor: Colors.red,
+          textStyle: MyConstant().texttoast(),
+        );
+        return;
+      }
+    });
   }
 
   retrieveOnlineJobInformation(List onlineNearestJobList) async
@@ -261,6 +338,42 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             },
           ),
           ButtonSearch(size),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: waitingResponseFromEmployerContainerHeight,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      FadeAnimatedText(
+                        'รอผู้ว่าจ้างตอบรับ',
+                        duration: const Duration(seconds: 3),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(fontSize: 30.0, color: Colors.black ,fontWeight: FontWeight.bold),
+                      ),
+                      ScaleAnimatedText(
+                        'กรุณารอสักครู่',
+                        duration: const Duration(seconds: 4),
+                        textAlign: TextAlign.center,
+                        textStyle: const TextStyle(fontSize: 32.0, color: Colors.black ,fontFamily: 'Canterbury'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
