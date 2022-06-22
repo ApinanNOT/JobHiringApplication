@@ -60,21 +60,6 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: Container(
-                    //         child: Text(
-                    //           "หมายเลขบัตร : " + widget.contractorRequestDetails!.id!,
-                    //           style: MyConstant().userinfo5(),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    //
-                    // const SizedBox(height: 18.0),
-
                     Row(
                       children: [
                         Expanded(
@@ -158,7 +143,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                       allowHalfRating: true,
                       starCount: 5,
                       size: 20,
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -174,7 +159,6 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                       ),
                         onPressed: ()
                         {
-                          
                           //cancel
                           FirebaseDatabase.instance.ref()
                               .child("ContractorRequest")

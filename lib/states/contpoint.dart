@@ -36,7 +36,7 @@ class _ContPointState extends State<ContPoint> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                  "คะแนนผู้ว่าจ้าง"
+                  "คะแนนผู้รับจ้าง"
               ),
               const SizedBox(height: 22.0,),
 

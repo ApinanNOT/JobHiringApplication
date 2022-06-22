@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_data.dart';
 import 'package:jobhiring/states/authen.dart';
+import 'package:jobhiring/states/contpoint.dart';
 import 'package:jobhiring/states/emppoint.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
@@ -36,7 +37,8 @@ class _JobWaitState extends State<JobWait> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -134,6 +136,8 @@ class _JobWaitState extends State<JobWait> {
       },
     );
 
+    //fare amount
+
     await FirebaseDatabase.instance.ref()
         .child("ContractorRequest")
         .child(widget.contractorRequestDetails!.requestId!)
@@ -141,7 +145,8 @@ class _JobWaitState extends State<JobWait> {
         .set("JobEnd");
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (c) => EmpPoint()));
+        context, MaterialPageRoute(builder: (c) => ContPoint()));
+
   }
 
 }

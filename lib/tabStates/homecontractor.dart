@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+//import 'dart:html';
 import 'package:flutter/services.dart' show SystemNavigator, rootBundle;
 import 'dart:ui' as ui;
 import 'dart:typed_data';
@@ -17,6 +18,7 @@ import 'package:jobhiring/main.dart';
 import 'package:jobhiring/models/job_location.dart';
 import 'package:jobhiring/states/empaccepted.dart';
 import 'package:jobhiring/states/empcancel.dart';
+import 'package:jobhiring/states/emppoint.dart';
 import 'package:jobhiring/states/select_job_nearest.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:tbib_toast/tbib_toast.dart';
@@ -25,6 +27,9 @@ import '../splash_screen/splash_screen.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+
+import '../widgets/show_image.dart';
+import '../widgets/show_title.dart';
 
 class HomeTabContractor extends StatefulWidget {
   const HomeTabContractor({Key? key}) : super(key: key);
@@ -40,6 +45,10 @@ class _HomeTabContractorState extends State<HomeTabContractor>
   bool jobLocationKeysLoaded = false;
 
   int i=0;
+
+  StreamSubscription<DatabaseEvent>? statusContractorRequestInfoStreamSubscription;
+
+  String contractorRequestStatus = "" ;
 
   //DatabaseReference? referenceJobRequest;
 
@@ -139,6 +148,23 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     };
 
     referenceContractorRequest!.set(contractorInformation);
+    
+    statusContractorRequestInfoStreamSubscription = referenceContractorRequest!.onValue.listen((eventSnap)
+    {
+      if(eventSnap.snapshot.value == null)
+        {
+          return;
+        }
+      if((eventSnap.snapshot.value as Map)["status"] != null)
+        {
+          contractorRequestStatus = (eventSnap.snapshot.value as Map)["status"].toString();
+          if(contractorRequestStatus == "JobEnd")
+            {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (c) => EmpPoint()));
+            }
+        }
+    });
 
     onlineJobList = GeoFireAssistant.jobLocationList;
     searchJobNearest();
@@ -205,9 +231,49 @@ class _HomeTabContractorState extends State<HomeTabContractor>
                 //contractorId : "accepted"
                 if(eventSnapshot.snapshot.value == "accepted")
                 {
-                  print("ผู้ว่าจ้างยอมรับ");
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (c) => EmpAccepted()));
+                  showDialog(
+                    barrierDismissible: false, //no touch freespace for exits
+                    context: context,
+                    builder: (context) =>
+                      Scaffold(
+                        appBar: AppBar(
+                          centerTitle: true,
+                          title: Text(
+                            'ผู้ว่าจ้างยอมรับคุณทำงาน',
+                            style: MyConstant().headbar(),
+                          ),
+                          backgroundColor: MyConstant.primary,
+                          automaticallyImplyLeading: false,
+                        ),
+                        body: Container(
+                          color: Colors.white,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'รอผู้ว่าจ้างยอมรับงาน',
+                                  style: MyConstant().logotext(),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Text(
+                                  'ผู้ว่าจ้างจะยอมรับงานเมื่อคุณได้ทำงานสำเร็จ',
+                                  style: MyConstant().h3Style(),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  );
                 }
               });
             }
@@ -225,6 +291,48 @@ class _HomeTabContractorState extends State<HomeTabContractor>
           }
       );
     }
+  }
+
+  showJobConfirm()
+  {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'ผู้ว่าจ้างยอมรับคุณทำงาน',
+          style: MyConstant().headbar(),
+        ),
+        backgroundColor: MyConstant.primary,
+        automaticallyImplyLeading: false,
+      ),
+      body: Container(
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'รอผู้ว่าจ้างยอมรับงาน',
+                style: MyConstant().logotext(),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Text(
+                'ผู้ว่าจ้างจะยอมรับงานเมื่อคุณได้ทำงานสำเร็จ',
+                style: MyConstant().h3Style(),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   showWaitingResponseFromEmployerUI()
@@ -496,5 +604,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       ),
     );
   }
+
 }
 

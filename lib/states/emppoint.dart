@@ -36,7 +36,7 @@ class _EmpPointState extends State<EmpPoint> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "คะแนนผู้รับจ้าง"
+                "คะแนนผู้ว่าจ้าง"
               ),
               const SizedBox(height: 22.0,),
 
