@@ -1,14 +1,14 @@
 import 'dart:convert';
 //import 'dart:js';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:jobhiring/global/global.dart';
 import '../models/user_model.dart';
 import 'package:http/http.dart' as http;
 
 class AssistantMethods{
-  static void readCurrentOnlineUserInfo() async{
+  static void readCurrentOnlineUserInfo() async
+  {
     currentFirebaseUser = fAuth.currentUser;
     DatabaseReference userRef = FirebaseDatabase.instance
         .ref()
@@ -62,5 +62,4 @@ class AssistantMethods{
     );
 
   }
-
 }

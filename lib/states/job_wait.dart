@@ -144,9 +144,45 @@ class _JobWaitState extends State<JobWait> {
         .child("status")
         .set("JobEnd");
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (c) => ContPoint()));
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (c) => ContPoint()));
 
+    toContPoint();
   }
 
+  StreamSubscription<DatabaseEvent>? statusContractorRequestInfoStreamSubscription;
+
+  String contractorRequestStatus = "" ;
+
+  toContPoint()
+  {
+
+    //save point to Contractor
+    DatabaseReference referenceContractorRequest = FirebaseDatabase.instance.ref()
+        .child("ContractorRequest")
+        .child(widget.contractorRequestDetails!.requestId!);
+
+    statusContractorRequestInfoStreamSubscription = referenceContractorRequest.onValue.listen((eventSnap)
+    {
+      if(eventSnap.snapshot.value == null)
+      {
+        return;
+      }
+      if((eventSnap.snapshot.value as Map)["status"] != null)
+      {
+        contractorRequestStatus = (eventSnap.snapshot.value as Map)["status"].toString();
+        if(contractorRequestStatus == "JobEnd")
+        {
+          if((eventSnap.snapshot.value as Map)["User UID"] != null)
+          {
+            String assignedContId = (eventSnap.snapshot.value as Map)["User UID"].toString();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => ContPoint(
+              assignedContId: assignedContId,
+            )));
+          }
+        }
+      }
+    });
+  }
 }

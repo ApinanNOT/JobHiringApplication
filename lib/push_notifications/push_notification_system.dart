@@ -1,11 +1,9 @@
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:jobhiring/models/contractorRequestinformation.dart';
 import 'package:jobhiring/push_notifications/notification_dialog_box.dart';
-import 'package:tbib_toast/tbib_toast.dart';
 
 import '../global/global.dart';
 import '../utility/my_constant.dart';

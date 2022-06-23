@@ -52,7 +52,6 @@ class _EmployeredState extends State<Employered>
         controller: tabController,
         children: const [
           HomeTabEmployer(),
-          //RatingTab(),
           HistoryTab(),
           ProfileTab(),
         ],

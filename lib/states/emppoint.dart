@@ -1,9 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 
 import '../global/global.dart';
+import 'authen.dart';
 
 class EmpPoint extends StatefulWidget {
   //const EmpPoint({Key? key}) : super(key: key);
@@ -19,7 +21,7 @@ class _EmpPointState extends State<EmpPoint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: MyConstant.primary,
       body: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
@@ -30,13 +32,14 @@ class _EmpPointState extends State<EmpPoint> {
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 22.0),
               Text(
-                "คะแนนผู้ว่าจ้าง"
+                "คะแนนผู้ว่าจ้าง" , style: MyConstant().h1Style(),
               ),
               const SizedBox(height: 22.0,),
 
@@ -49,6 +52,8 @@ class _EmpPointState extends State<EmpPoint> {
                 allowHalfRating: false,
                 starCount: 5,
                 size: 46,
+                color: Colors.yellow,
+                borderColor: Colors.yellow,
                 onRatingChanged: (valueOfStarsChoosed)
                 {
                   countRatingStars = valueOfStarsChoosed;
@@ -56,13 +61,13 @@ class _EmpPointState extends State<EmpPoint> {
                   if(countRatingStars == 1)
                     {
                       setState((){
-                        titleStarsRating = "แย่";
+                        titleStarsRating = "ปรับปรุง";
                       });
                     }
                   if(countRatingStars == 2)
                   {
                     setState((){
-                      titleStarsRating = "ค่อนข้างแย่";
+                      titleStarsRating = "พอใช้";
                     });
                   }
                   if(countRatingStars == 3)
@@ -74,52 +79,74 @@ class _EmpPointState extends State<EmpPoint> {
                   if(countRatingStars == 4)
                   {
                     setState((){
-                      titleStarsRating = "ค่อนข้างดีมาก";
+                      titleStarsRating = "ดีมาก";
                     });
                   }
                   if(countRatingStars == 5)
                   {
                     setState((){
-                      titleStarsRating = "ดีมาก";
+                      titleStarsRating = "ดีเยี่ยม";
                     });
                   }
                 },
               ),
 
+              const SizedBox(height: 15.0),
+
               Text(
-                titleStarsRating,
+                titleStarsRating, style: MyConstant().jobmoney(),
               ),
 
-              const SizedBox(height: 18.0,),
+              const SizedBox(height: 15.0,),
 
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                primary: MyConstant.confirm,
+                  padding: const EdgeInsets.symmetric(horizontal: 38),
+                ),
                 onPressed: ()
                 {
-                  // DatabaseReference rateEmployerRef = FirebaseDatabase.instance.ref()
-                  //     .child("Users")
-                  //     .child(widget.assignedEmpId!)
-                  //     .child("ratings");
-                  //
-                  // rateEmployerRef.once().then((snap)
-                  //     {
-                  //       if(snap.snapshot.value == null)
-                  //         {
-                  //           rateEmployerRef.set(countRatingStars.toString());
-                  //
-                  //           SystemNavigator.pop();
-                  //         }
-                  //       else
-                  //       {
-                  //         double pastRatings = double.parse(snap.snapshot.value.toString());
-                  //         double newAvgRatings = (pastRatings + countRatingStars) / 2;
-                  //         rateEmployerRef.set(newAvgRatings.toString());
-                  //       }
-                  //     });
+                  DatabaseReference rateEmployerRef = FirebaseDatabase.instance.ref()
+                      .child("Users")
+                      .child(widget.assignedUsersId!)
+                      .child("ratings");
+
+                  rateEmployerRef.once().then((snap)
+                      {
+                        if(snap.snapshot.value == null)
+                          {
+                            rateEmployerRef.set(countRatingStars.toString());
+
+                            fAuth.signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (c) => const Authen(),
+                              ),
+                            );
+                          }
+                        else
+                        {
+                          double pastRatings = double.parse(snap.snapshot.value.toString());
+                          double newAvgRatings = (pastRatings + countRatingStars) / 2;
+                          rateEmployerRef.set(newAvgRatings.toString());
+
+                          fAuth.signOut();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (c) => const Authen(),
+                            ),
+                          );
+                        }
+                      });
                 },
                 child: Text(
-                  "ยืนยัน"
+                  "ยืนยัน" , style: MyConstant().textbutton3(),
                 ),
               ),
+
+              const SizedBox(height: 18.0),
             ],
           ),
         ),

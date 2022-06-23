@@ -16,6 +16,7 @@ import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/main.dart';
 import 'package:jobhiring/models/job_location.dart';
+import 'package:jobhiring/states/contractor.dart';
 import 'package:jobhiring/states/empaccepted.dart';
 import 'package:jobhiring/states/empcancel.dart';
 import 'package:jobhiring/states/emppoint.dart';
@@ -136,6 +137,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
     Map contractorInformation =
     {
+      "User UID" : currentFirebaseUser!.uid,
       "id" : userModelCurrentInfo!.id,
       "name": userModelCurrentInfo!.name,
       "lastname": userModelCurrentInfo!.lastname,
@@ -160,8 +162,14 @@ class _HomeTabContractorState extends State<HomeTabContractor>
           contractorRequestStatus = (eventSnap.snapshot.value as Map)["status"].toString();
           if(contractorRequestStatus == "JobEnd")
             {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (c) => EmpPoint()));
+              if((eventSnap.snapshot.value as Map)["jobId"] != null)
+                {
+                  String assignedUsersId = (eventSnap.snapshot.value as Map)["jobId"].toString();
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (c) => EmpPoint(
+                    assignedUsersId: assignedUsersId,
+                  )));
+                }
             }
         }
     });
