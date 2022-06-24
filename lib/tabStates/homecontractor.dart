@@ -52,21 +52,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
   String contractorRequestStatus = "" ;
 
-  //DatabaseReference? referenceJobRequest;
-
-  // //customMarker
-  // Future<Uint8List> getBytesFromAsset({required String path,required int width})async {
-  //   ByteData data = await rootBundle.load(path);
-  //   ui.Codec codec = await ui.instantiateImageCodec(
-  //       data.buffer.asUint8List(),
-  //       targetWidth: width
-  //   );
-  //   ui.FrameInfo fi = await codec.getNextFrame();
-  //   return (await fi.image.toByteData(
-  //       format: ui.ImageByteFormat.png))!
-  //       .buffer.asUint8List();
-  // }
-
   GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   //double boxwaiting = 220;
   double waitingResponseFromEmployerContainerHeight = 0 ;
@@ -420,31 +405,23 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             right: 0,
             child: Container(
               height: waitingResponseFromEmployerContainerHeight,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
+              decoration: BoxDecoration(
+                color: MyConstant.primary,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(30),
                 ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Center(
                   child: AnimatedTextKit(
-                    animatedTexts: [
-                      FadeAnimatedText(
-                        'รอผู้ว่าจ้างตอบรับ',
-                        duration: const Duration(seconds: 3),
-                        textAlign: TextAlign.center,
-                        textStyle: const TextStyle(fontSize: 30.0, color: Colors.black ,fontWeight: FontWeight.bold),
-                      ),
-                      ScaleAnimatedText(
-                        'กรุณารอสักครู่',
-                        duration: const Duration(seconds: 4),
-                        textAlign: TextAlign.center,
-                        textStyle: const TextStyle(fontSize: 32.0, color: Colors.black ,fontFamily: 'Canterbury'),
-                      ),
-                    ],
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          "รอผู้ว่าจ้างยอมรับคุณ",
+                          textStyle: MyConstant().headbar(),
+                        ),
+                      ],
                   ),
                 ),
               ),

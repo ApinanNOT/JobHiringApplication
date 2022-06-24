@@ -103,6 +103,12 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
+  TextStyle headbar2() => GoogleFonts.prompt(
+    fontSize: 50,
+    color: const Color(0xffffffff),
+    fontWeight: FontWeight.bold,
+  );
+
   TextStyle logotext() => GoogleFonts.prompt(
         fontSize: 30,
         color: dark,

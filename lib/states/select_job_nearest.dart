@@ -83,11 +83,13 @@ class _SelectJobNearestState extends State<SelectJobNearest>
             return GestureDetector(
               onTap: ()
               {
+
                 //dialogdetail(context, index);
                 setState(()
                 {
                   chosenJobId = jList[index]["jobId"].toString();
                 });
+
 
                 Navigator.pop(context,"jobChoosed");
               },
