@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jobhiring/tabStates/homeemployer.dart';
 import 'package:jobhiring/tabStates/postjob.dart';
 import 'package:jobhiring/tabStates/profile.dart';
-import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 import '../global/global.dart';

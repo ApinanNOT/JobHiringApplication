@@ -3,7 +3,6 @@ import 'package:jobhiring/tabStates/findjob.dart';
 import 'package:jobhiring/tabStates/history.dart';
 import 'package:jobhiring/tabStates/homecontractor.dart';
 import 'package:jobhiring/tabStates/profile.dart';
-import 'package:jobhiring/tabStates/rating.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 import '../assistants/geofire_assistant.dart';

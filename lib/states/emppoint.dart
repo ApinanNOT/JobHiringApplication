@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 import '../global/global.dart';
 import 'authen.dart';
@@ -112,10 +113,20 @@ class _EmpPointState extends State<EmpPoint> {
                       .child("ratings");
 
                   rateEmployerRef.once().then((snap)
-                      {
+                      async {
                         if(snap.snapshot.value == null)
                           {
-                            rateEmployerRef.set(countRatingStars.toString());
+
+                            Toast.show(
+                              "งานสำเร็จ กำลังออกจากระบบ",
+                              context,
+                              duration: Toast.lengthLong,
+                              gravity: Toast.center,
+                              backgroundColor: Colors.green,
+                              textStyle: MyConstant().texttoast(),
+                            );
+
+                            await rateEmployerRef.set(countRatingStars.toString());
 
                             fAuth.signOut();
                             Navigator.push(
@@ -127,9 +138,19 @@ class _EmpPointState extends State<EmpPoint> {
                           }
                         else
                         {
+
+                          Toast.show(
+                            "งานสำเร็จ กำลังออกจากระบบ",
+                            context,
+                            duration: Toast.lengthLong,
+                            gravity: Toast.center,
+                            backgroundColor: Colors.green,
+                            textStyle: MyConstant().texttoast(),
+                          );
+
                           double pastRatings = double.parse(snap.snapshot.value.toString());
                           double newAvgRatings = (pastRatings + countRatingStars) / 2;
-                          rateEmployerRef.set(newAvgRatings.toString());
+                          await rateEmployerRef.set(newAvgRatings.toString());
 
                           fAuth.signOut();
                           Navigator.push(

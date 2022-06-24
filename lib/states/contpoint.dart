@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
+import 'package:tbib_toast/tbib_toast.dart';
 
 import '../global/global.dart';
 import '../models/contractorRequestinformation.dart';
+import '../utility/progress_dialog.dart';
 import 'authen.dart';
 
 class ContPoint extends StatefulWidget {
@@ -21,6 +23,7 @@ class ContPoint extends StatefulWidget {
 }
 
 class _ContPointState extends State<ContPoint> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,10 +118,20 @@ class _ContPointState extends State<ContPoint> {
                       .child("ratings");
 
                   rateContractorRef.once().then((snap)
-                  {
+                  async {
                     if(snap.snapshot.value == null)
                     {
-                      rateContractorRef.set(countRatingStars.toString());
+
+                      Toast.show(
+                        "งานสำเร็จ กำลังออกจากระบบ",
+                        context,
+                        duration: Toast.lengthLong,
+                        gravity: Toast.center,
+                        backgroundColor: Colors.green,
+                        textStyle: MyConstant().texttoast(),
+                      );
+
+                      await rateContractorRef.set(countRatingStars.toString());
 
                       fAuth.signOut();
                       Navigator.push(
@@ -131,11 +144,20 @@ class _ContPointState extends State<ContPoint> {
                     else
                     {
 
+                      Toast.show(
+                        "งานสำเร็จ กำลังออกจากระบบ",
+                        context,
+                        duration: Toast.lengthLong,
+                        gravity: Toast.center,
+                        backgroundColor: Colors.green,
+                        textStyle: MyConstant().texttoast(),
+                      );
+
                       double pastRatings = double.parse(snap.snapshot.value.toString());
                       double newAvgRatings = (pastRatings + countRatingStars) / 2;
-                      rateContractorRef.set(newAvgRatings.toString());
+                      await rateContractorRef.set(newAvgRatings.toString());
 
-                      fAuth.signOut();
+                     fAuth.signOut();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
