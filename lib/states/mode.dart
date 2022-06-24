@@ -47,7 +47,7 @@ class _ModeState extends State<Mode> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 20),
           width: size * 0.7,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
@@ -70,7 +70,7 @@ class _ModeState extends State<Mode> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 20),
           width: size * 0.7,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),

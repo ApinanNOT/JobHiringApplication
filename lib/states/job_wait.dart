@@ -144,9 +144,6 @@ class _JobWaitState extends State<JobWait> {
         .child("status")
         .set("JobEnd");
 
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (c) => ContPoint()));
-
     toContPoint();
   }
 
@@ -176,6 +173,13 @@ class _JobWaitState extends State<JobWait> {
           if((eventSnap.snapshot.value as Map)["User UID"] != null)
           {
             String assignedContId = (eventSnap.snapshot.value as Map)["User UID"].toString();
+
+            DatabaseReference historyyRef = FirebaseDatabase.instance.ref()
+                .child("Users")
+                .child(assignedContId)
+                .child("history");
+            historyyRef.child(widget.contractorRequestDetails!.requestId!).set(true);
+
             Navigator.push(
                 context, MaterialPageRoute(builder: (c) => ContPoint(
               assignedContId: assignedContId,

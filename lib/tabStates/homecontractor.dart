@@ -24,6 +24,7 @@ import 'package:jobhiring/states/select_job_nearest.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:tbib_toast/tbib_toast.dart';
 
+import '../models/contractorRequestinformation.dart';
 import '../splash_screen/splash_screen.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
@@ -168,6 +169,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
                   Navigator.push(
                       context, MaterialPageRoute(builder: (c) => EmpPoint(
                     assignedUsersId: assignedUsersId,
+
                   )));
                 }
             }
@@ -299,48 +301,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
           }
       );
     }
-  }
-
-  showJobConfirm()
-  {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'ผู้ว่าจ้างยอมรับคุณทำงาน',
-          style: MyConstant().headbar(),
-        ),
-        backgroundColor: MyConstant.primary,
-        automaticallyImplyLeading: false,
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'รอผู้ว่าจ้างยอมรับงาน',
-                style: MyConstant().logotext(),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Text(
-                'ผู้ว่าจ้างจะยอมรับงานเมื่อคุณได้ทำงานสำเร็จ',
-                style: MyConstant().h3Style(),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   showWaitingResponseFromEmployerUI()

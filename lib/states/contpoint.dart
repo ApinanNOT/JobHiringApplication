@@ -5,13 +5,16 @@ import 'package:jobhiring/utility/my_constant.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 
 import '../global/global.dart';
+import '../models/contractorRequestinformation.dart';
 import 'authen.dart';
 
 class ContPoint extends StatefulWidget {
   //const EmpPoint({Key? key}) : super(key: key);
   String? assignedContId;
 
-  ContPoint({this.assignedContId});
+  ContPoint({
+    this.assignedContId
+  });
 
   @override
   State<ContPoint> createState() => _ContPointState();
@@ -127,6 +130,7 @@ class _ContPointState extends State<ContPoint> {
                     }
                     else
                     {
+
                       double pastRatings = double.parse(snap.snapshot.value.toString());
                       double newAvgRatings = (pastRatings + countRatingStars) / 2;
                       rateContractorRef.set(newAvgRatings.toString());
