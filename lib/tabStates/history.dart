@@ -1,4 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jobhiring/states/trips_history_screen.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
 import '../global/global.dart';
@@ -16,38 +18,34 @@ class _HistoryTabState extends State<HistoryTab> {
   void initState()
   {
     super.initState();
-    print("เป็นอิหยังวะ");
-    print(jList);
-    print(jList.length);
   }
 
   @override
   Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  child: Card(
-                    color: MyConstant.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    elevation: 8,
-                    child: Container(
-                      child: Center(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: TripsHistoryScreen(),
     );
   }
+  // Row buildContractor(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         margin: const EdgeInsets.symmetric(vertical: 20),
+  //         width: size * 0.7,
+  //         child: ElevatedButton(
+  //           style: MyConstant().myButtonStyle1(),
+  //           onPressed: () {
+  //             Navigator.push(context, MaterialPageRoute(builder: (c) => TripsHistoryScreen()));
+  //           },
+  //           child: Text(
+  //             'ผู้รับจ้าง',
+  //             style: MyConstant().textbutton1(),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

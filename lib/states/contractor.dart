@@ -59,7 +59,6 @@ class _ContractorState extends State<Contractor>
         controller: tabController,
         children: const [
           HomeTabContractor(),
-          //RatingTab(),
           FindTab(),
           HistoryTab(),
           ProfileTab(),

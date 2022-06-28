@@ -10,6 +10,7 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_launcher_icons/ios.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jobhiring/assistants/assistant_methods.dart';
 import 'package:jobhiring/assistants/geofire_assistant.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/models/job_location.dart';
@@ -128,6 +129,7 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
 
     checkIfLocationPermissionAllowed(); //check permission
     readCurrentContractorInformation();
+    AssistantMethods.readTripsKeysForOnlineUser(context);
   }
 
   @override

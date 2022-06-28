@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobhiring/states/contractor.dart';
+import 'package:jobhiring/states/employer.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 
@@ -75,7 +76,8 @@ class _ModeState extends State<Mode> {
           child: ElevatedButton(
             style: MyConstant().myButtonStyle1(),
             onPressed: () {
-              Navigator.pushNamed(context, MyConstant.routeEmployer);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (c) => const Employer()));
             },
             child: Text(
               'ผู้ว่าจ้าง',

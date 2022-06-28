@@ -9,6 +9,7 @@ import '../global/global.dart';
 import '../models/contractorRequestinformation.dart';
 import '../utility/progress_dialog.dart';
 import 'authen.dart';
+import 'mode.dart';
 
 class ContPoint extends StatefulWidget {
   //const EmpPoint({Key? key}) : super(key: key);
@@ -123,7 +124,7 @@ class _ContPointState extends State<ContPoint> {
                     {
 
                       Toast.show(
-                        "งานสำเร็จ กำลังออกจากระบบ",
+                        "งานสำเร็จ",
                         context,
                         duration: Toast.lengthLong,
                         gravity: Toast.center,
@@ -133,11 +134,11 @@ class _ContPointState extends State<ContPoint> {
 
                       await rateContractorRef.set(countRatingStars.toString());
 
-                      fAuth.signOut();
+                      //fAuth.signOut();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (c) => const Authen(),
+                          builder: (c) => const Mode(),
                         ),
                       );
                     }
@@ -145,7 +146,7 @@ class _ContPointState extends State<ContPoint> {
                     {
 
                       Toast.show(
-                        "งานสำเร็จ กำลังออกจากระบบ",
+                        "งานสำเร็จ",
                         context,
                         duration: Toast.lengthLong,
                         gravity: Toast.center,
@@ -157,11 +158,11 @@ class _ContPointState extends State<ContPoint> {
                       double newAvgRatings = (pastRatings + countRatingStars) / 2;
                       await rateContractorRef.set(newAvgRatings.toString());
 
-                     fAuth.signOut();
+                     //fAuth.signOut();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (c) => const Authen(),
+                          builder: (c) => const Mode(),
                         ),
                       );
                     }

@@ -7,6 +7,7 @@ import 'package:tbib_toast/tbib_toast.dart';
 
 import '../global/global.dart';
 import 'authen.dart';
+import 'mode.dart';
 
 class EmpPoint extends StatefulWidget {
   //const EmpPoint({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _EmpPointState extends State<EmpPoint> {
                           {
 
                             Toast.show(
-                              "งานสำเร็จ กำลังออกจากระบบ",
+                              "งานสำเร็จ",
                               context,
                               duration: Toast.lengthLong,
                               gravity: Toast.center,
@@ -128,11 +129,11 @@ class _EmpPointState extends State<EmpPoint> {
 
                             await rateEmployerRef.set(countRatingStars.toString());
 
-                            fAuth.signOut();
+                            //fAuth.signOut();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (c) => const Authen(),
+                                builder: (c) => const Mode(),
                               ),
                             );
                           }
@@ -140,7 +141,7 @@ class _EmpPointState extends State<EmpPoint> {
                         {
 
                           Toast.show(
-                            "งานสำเร็จ กำลังออกจากระบบ",
+                            "งานสำเร็จ",
                             context,
                             duration: Toast.lengthLong,
                             gravity: Toast.center,
@@ -152,11 +153,11 @@ class _EmpPointState extends State<EmpPoint> {
                           double newAvgRatings = (pastRatings + countRatingStars) / 2;
                           await rateEmployerRef.set(newAvgRatings.toString());
 
-                          fAuth.signOut();
+                          //fAuth.signOut();
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (c) => const Authen(),
+                              builder: (c) => const Mode(),
                             ),
                           );
                         }

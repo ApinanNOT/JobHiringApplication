@@ -107,6 +107,8 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     super.initState();
 
     checkIfLocationPermissionAllowed(); //check permission
+
+    AssistantMethods.readTripsKeysForOnlineUser(context);
   }
 
   @override
