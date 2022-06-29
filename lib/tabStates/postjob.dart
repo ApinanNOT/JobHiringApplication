@@ -77,6 +77,7 @@ class _PostTabState extends State<PostTab> {
       "address": jobaddressTextEditingController.text.trim(),
       "detail": jobdetailTextEditingController.text.trim(),
       "phone" : jobphoneTextEditingController.text.trim(),
+      "ratings" : userModelCurrentInfo!.ratings,
       "contractorId" : "idle",
     };
 

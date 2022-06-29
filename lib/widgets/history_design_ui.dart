@@ -165,7 +165,21 @@ class _HistoryDesignUIWidgetState extends State<HistoryDesignUIWidget> {
                         ),
                       ],
                     ),
-                    //const SizedBox(height: 13.0),
+
+                    const SizedBox(height: 13.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "รายละเอียด : " + widget.tripsHistoryModel!.jobDetail!,
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

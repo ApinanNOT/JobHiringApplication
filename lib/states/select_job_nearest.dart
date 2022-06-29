@@ -126,9 +126,9 @@ class _SelectJobNearestState extends State<SelectJobNearest>
 
                         //point of employer
                         SmoothStarRating(
-                          rating: 2,
+                          rating: double.parse(jList[index]["ratings"]),
                           color: Colors.yellow,
-                          borderColor: Colors.grey[600],
+                          borderColor: Colors.yellow,
                           allowHalfRating: true,
                           starCount: 5,
                           size: 15,

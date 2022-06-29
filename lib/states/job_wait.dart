@@ -110,6 +110,7 @@ class _JobWaitState extends State<JobWait> {
     databaseReference.child("jobPhone").set(jobData.phone);
     databaseReference.child("jobSafe").set(jobData.safe);
     databaseReference.child("jobTime").set(jobData.time);
+    databaseReference.child("jobDetail").set(jobData.detail);
 
     saveHistory();
   }

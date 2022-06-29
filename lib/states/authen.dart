@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/splash_screen/splash_screen.dart';
+import 'package:jobhiring/states/create_account.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
@@ -118,8 +119,10 @@ class _AuthenState extends State<Authen> {
           textStyle: MyConstant().h4Style(),
         ),
         TextButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.routeCreateAccount),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (c) => const CreateAccount()));
+          },
           child: Text(
             'สร้างบัญชีผู้ใช้',
             style: MyConstant().h5Style(),

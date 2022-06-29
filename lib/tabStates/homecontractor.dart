@@ -134,6 +134,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       "phone": userModelCurrentInfo!.phone,
       "age": userModelCurrentInfo!.age,
       "requestId" : referenceContractorRequest!.key,
+      "ratings" : userModelCurrentInfo!.ratings,
       "jobId" : "waiting",
     };
 

@@ -136,9 +136,9 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
 
                     //คะแนนการทำงานเฉลี่ย
                     SmoothStarRating(
-                      rating: 3.5,
+                      rating: double.parse(widget.contractorRequestDetails!.ratings!),
                       color: Colors.yellow,
-                      borderColor: Colors.grey[600],
+                      borderColor: Colors.yellow,
                       allowHalfRating: true,
                       starCount: 5,
                       size: 20,

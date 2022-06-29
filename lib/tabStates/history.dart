@@ -27,25 +27,25 @@ class _HistoryTabState extends State<HistoryTab> {
       body: TripsHistoryScreen(),
     );
   }
-  // Row buildContractor(double size) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       Container(
-  //         margin: const EdgeInsets.symmetric(vertical: 20),
-  //         width: size * 0.7,
-  //         child: ElevatedButton(
-  //           style: MyConstant().myButtonStyle1(),
-  //           onPressed: () {
-  //             Navigator.push(context, MaterialPageRoute(builder: (c) => TripsHistoryScreen()));
-  //           },
-  //           child: Text(
-  //             'ผู้รับจ้าง',
-  //             style: MyConstant().textbutton1(),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+// Row buildContractor(double size) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       Container(
+//         margin: const EdgeInsets.symmetric(vertical: 20),
+//         width: size * 0.7,
+//         child: ElevatedButton(
+//           style: MyConstant().myButtonStyle1(),
+//           onPressed: () {
+//             Navigator.push(context, MaterialPageRoute(builder: (c) => TripsHistoryScreen()));
+//           },
+//           child: Text(
+//             'ผู้รับจ้าง',
+//             style: MyConstant().textbutton1(),
+//           ),
+//         ),
+//       ),
+//     ],
+//   );
+// }
 }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class ContractorRequestInformation
 {
   String? requestId;
@@ -9,6 +11,7 @@ class ContractorRequestInformation
   String? address;
   String? phone;
   String? age;
+  String? ratings;
 
   ContractorRequestInformation({
     this.requestId,
@@ -20,5 +23,6 @@ class ContractorRequestInformation
     this.address,
     this.phone,
     this.age,
+    this.ratings,
 });
 }

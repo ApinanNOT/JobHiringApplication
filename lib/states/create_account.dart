@@ -77,6 +77,7 @@ class _CreateAccountState extends State<CreateAccount> {
         "age": ageTextEditingController.text.trim(),
         "email": emailTextEditingController.text.trim(),
         "password": passwordTextEditingController.text.trim(),
+        "ratings" : 0.toString(),
       };
 
       DatabaseReference usersRef =

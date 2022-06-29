@@ -21,9 +21,9 @@ class AssistantMethods{
     userRef.once().then((snap)
     {
       if(snap.snapshot.value != null)
-        {
-          userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
-        }
+      {
+        userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
+      }
     });
   }
 
@@ -78,24 +78,24 @@ class AssistantMethods{
         .then((snap)
     {
       if(snap.snapshot.value != null)
+      {
+        Map keysTripsId =  snap.snapshot.value as Map;
+        int overAllTripsCounter = keysTripsId.length;
+
+        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsCounter(overAllTripsCounter);
+
+        List<String> tripsKeysList = [];
+        keysTripsId.forEach((key, value)
         {
-          Map keysTripsId =  snap.snapshot.value as Map;
-          int overAllTripsCounter = keysTripsId.length;
+          tripsKeysList.add(key);
+        });
 
-          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsCounter(overAllTripsCounter);
+        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsKeys(tripsKeysList);
 
-          List<String> tripsKeysList = [];
-          keysTripsId.forEach((key, value) 
-          { 
-            tripsKeysList.add(key);
-          });
+        //get trips keys data - read trips complete information
+        readTripsHistoryInformation(context);
 
-          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsKeys(tripsKeysList);
-
-          //get trips keys data - read trips complete information
-          readTripsHistoryInformation(context);
-
-        }
+      }
     });
   }
 
@@ -104,18 +104,18 @@ class AssistantMethods{
     var tripsAllKeys = Provider.of<AppInfo>(context, listen: false).historyTripsKeysList;
 
     for(String eachKey in tripsAllKeys)
+    {
+      FirebaseDatabase.instance.ref()
+          .child("ContractorRequest")
+          .child(eachKey)
+          .once()
+          .then((snap)
       {
-        FirebaseDatabase.instance.ref()
-            .child("ContractorRequest")
-            .child(eachKey)
-            .once()
-            .then((snap)
-        {
-          var eachTripHistory = TripsHistoryModel.fromSnapshort(snap.snapshot);
+        var eachTripHistory = TripsHistoryModel.fromSnapshort(snap.snapshot);
 
-          //update OverAllTrips History Data
-          Provider.of<AppInfo>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
-        });
-      }
+        //update OverAllTrips History Data
+        Provider.of<AppInfo>(context, listen: false).updateOverAllTripsHistoryInformation(eachTripHistory);
+      });
+    }
   }
 }

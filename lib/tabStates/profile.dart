@@ -3,6 +3,7 @@ import 'package:jobhiring/assistants/assistant_methods.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/utility/my_constant.dart';
+import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 
 import '../widgets/show_image.dart';
 
@@ -40,9 +41,19 @@ class _ProfileTabState extends State<ProfileTab> {
           currentFirebaseUser!.uid,
           style: MyConstant().userinfo2(),
         ),
-        const SizedBox(height: 30, width: 10),
+        const SizedBox(height: 10, width: 10),
+
+        SmoothStarRating(
+          rating: double.parse(userModelCurrentInfo!.ratings!),
+          color: Colors.yellow,
+          borderColor: Colors.yellow,
+          allowHalfRating: true,
+          starCount: 5,
+          size: 20,
+        ),
+        const SizedBox(height: 10, width: 10),
         userinfo(size),
-        const SizedBox(height: 15, width: 15),
+        const SizedBox(height: 10, width: 10),
         signoutbutton(context)
       ],
     );
