@@ -1,6 +1,5 @@
 import 'dart:convert';
 //import 'dart:js';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/infoHandler/app_info.dart';

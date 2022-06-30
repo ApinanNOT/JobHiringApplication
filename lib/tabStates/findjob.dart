@@ -14,6 +14,7 @@ class FindTab extends StatefulWidget {
 }
 
 class _FindTabState extends State<FindTab> {
+
   String? typeUser;
   final formKey = GlobalKey<FormState>(); //create variable
   List<String> searchgenderlist = ["ชาย", "หญิง", "LGBTQ", "ทุกเพศ"]; //gender
@@ -324,42 +325,42 @@ class _FindTabState extends State<FindTab> {
   //   );
   // }
 
-  // Future<dynamic> dialogformsearch(double size) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(30),
-  //         ),
-  //         scrollable: true,
-  //         title: Text(
-  //           "รายละเอียด",
-  //           style: MyConstant().h2Style(),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         content: Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: Form(
-  //             child: SingleChildScrollView(
-  //               child: Column(
-  //                 children: [
-  //                   buildSearchMoney(size),
-  //                   buildSearchGender(size),
-  //                   buildSearchSafe(size),
-  //                   buildSearchAge(size),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //         actions: [
-  //           buildSearch(size),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  Future<dynamic> dialogformsearch(double size) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          scrollable: true,
+          title: Text(
+            "รายละเอียด",
+            style: MyConstant().h2Style(),
+            textAlign: TextAlign.center,
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildSearchMoney(size),
+                    buildSearchGender(size),
+                    buildSearchSafe(size),
+                    buildSearchAge(size),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            buildSearch(size),
+          ],
+        );
+      },
+    );
+  }
 
   // Row buildSearchNormal(double size) {
   //   return Row(

@@ -39,7 +39,7 @@ class _ContractorState extends State<Contractor>
     print(jList);
     print(jList.length);
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -59,7 +59,7 @@ class _ContractorState extends State<Contractor>
         controller: tabController,
         children: const [
           HomeTabContractor(),
-          FindTab(),
+          //FindTab(),
           HistoryTab(),
           ProfileTab(),
         ],
@@ -79,10 +79,10 @@ class _ContractorState extends State<Contractor>
         //   icon: Icon(Icons.star),
         //   label: 'ให้คะแนน',
         // ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'ระบุงาน',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.search),
+        //   label: 'ระบุงาน',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.history),
           label: 'ประวัติ',
