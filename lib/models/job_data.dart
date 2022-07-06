@@ -11,6 +11,7 @@ class JobData
   String? phone;
   String? safe;
   String? time;
+  String? ratings;
 
   JobData({
     this.phone,
@@ -24,5 +25,6 @@ class JobData
     this.detail,
     this.safe,
     this.time,
+    this.ratings,
   });
 }

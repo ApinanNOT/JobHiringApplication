@@ -85,6 +85,12 @@ class MyConstant {
         fontWeight: FontWeight.normal,
       );
 
+  TextStyle searchtext() => GoogleFonts.sarabun(
+    fontSize: 16,
+    color: Colors.white,
+    fontWeight: FontWeight.normal,
+  );
+
   TextStyle confirmbutton() => GoogleFonts.sarabun(
         fontSize: 16,
         color: Colors.green,

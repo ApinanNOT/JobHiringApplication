@@ -26,6 +26,8 @@ import 'package:tbib_toast/tbib_toast.dart';
 
 import '../models/contractorRequestinformation.dart';
 import '../splash_screen/splash_screen.dart';
+import '../states/test.dart';
+import '../states/test.dart';
 import '../utility/my_constant.dart';
 import '../utility/progress_dialog.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -111,8 +113,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     AssistantMethods.readTripsKeysForOnlineUser(context);
   }
 
-  @override
-
   List<JobLocation> onlineJobList = [];
 
   DatabaseReference? referenceContractorRequest;
@@ -170,7 +170,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
   searchJobNearest() async
   {
-    if(onlineJobList.length == 0)
+    if(onlineJobList.isEmpty)
     {
 
       referenceContractorRequest!.remove();
@@ -369,9 +369,11 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       });
       print("เป็นอะไรอีก");
       print(onlineNearestJobList.length);
+      print("#######################################");
       print("onlineNearestJobList[i] : $onlineNearestJobList");
       print("ค่า i : $i");
     }
+
     Navigator.pop(context);
   }
 
@@ -402,6 +404,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             },
           ),
           ButtonSearch(size),
+          //ButtonTest(size),
           Positioned(
             bottom: 0,
             left: 0,
@@ -509,7 +512,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
           markerId: MarkerId(eachJob.jobId!),
           position: eachJobLocationPosition,
           //icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          icon: await BitmapDescriptor.fromAssetImage(ImageConfiguration(), 'images/location.png'),
+          icon: await BitmapDescriptor.fromAssetImage(const ImageConfiguration(), 'images/location.png'),
           rotation: 360,
         );
 
@@ -544,6 +547,37 @@ class _HomeTabContractorState extends State<HomeTabContractor>
               },
               child: Text(
                 'ค้นหางานรอบตัว',
+                style: MyConstant().textbutton3(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Positioned ButtonTest(double size)
+  {
+    return Positioned(
+      bottom: 50,
+      left: 0,
+      right: 0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 40),
+            width: size * 0.5,
+            child: ElevatedButton(
+              style: MyConstant().myButtonStyle4(),
+              onPressed: ()
+              {
+              Navigator.push(
+              context, MaterialPageRoute(builder: (c) => Test()));
+              print("TESSSSSSSSSSSS");
+              },
+              child: Text(
+                'ทดสอบ',
                 style: MyConstant().textbutton3(),
               ),
             ),
