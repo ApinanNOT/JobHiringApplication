@@ -203,6 +203,13 @@ class MyConstant {
     fontWeight: FontWeight.bold,
   );
 
+  TextStyle searchmatch() => GoogleFonts.prompt(
+    fontSize: 14,
+    color: Colors.black45,
+    fontWeight: FontWeight.bold,
+  );
+
+
   ButtonStyle myButtonStyle1() => ElevatedButton.styleFrom(
         primary: MyConstant.primary,
         shape: RoundedRectangleBorder(

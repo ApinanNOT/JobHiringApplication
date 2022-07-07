@@ -74,6 +74,7 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
 
   @override
   Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
     return Scaffold(
         key: globalKey,
         appBar: AppBar(
@@ -139,12 +140,7 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                       String jobname = searchresult[index];
                       return GestureDetector(
                         onTap: () {
-                          //dialogdetail(context, index);
-                          setState(() {
-                            chosenJobId = jList[index]["jobId"].toString();
-                          });
-
-                          Navigator.pop(context, "jobChoosed");
+                          dialogdetail(context, index);
                         },
                         child: Card(
                           color: Colors.white,
@@ -165,8 +161,8 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    //jList[index]["name"],
-                                    jobname.toString(),
+                                    jList[index]["name"],
+                                    // jobname.toString(),
                                     style: MyConstant().jobname(),
                                   ),
 
@@ -188,17 +184,40 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                                     starCount: 5,
                                     size: 15,
                                   ),
+
+                                  const SizedBox(height: 5.0),
+
+                                  Text(
+                                    "คำค้นหาที่ตรงกัน : " + jobname.toString(),
+                                    style: MyConstant().searchmatch(),
+                                  ),
                                 ],
                               ),
-                              // trailing: Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     const SizedBox(height: 2,),
-                              //     Text(
-                              //       "10 กิโลเมตร", style: MyConstant().h4Style(),
-                              //     )
-                              //   ],
-                              // ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(height: 4),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: MyConstant.confirm,
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                    ),
+                                    onPressed: ()
+                                    {
+                                      setState(()
+                                      {
+                                        chosenJobId = jList[index]["jobId"].toString();
+                                      });
+
+                                      Navigator.pop(context,"jobChoosed");
+                                    },
+                                    child: Text(
+                                      "สนใจ".toUpperCase(),
+                                      style: MyConstant().textnotificationRequest(),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -213,12 +232,7 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                       String jobname = _list[index]["name"];
                       return GestureDetector(
                         onTap: () {
-                          //dialogdetail(context, index);
-                          setState(() {
-                            chosenJobId = jList[index]["jobId"].toString();
-                          });
-
-                          Navigator.pop(context, "jobChoosed");
+                          dialogdetail(context, index);
                         },
                         child: Card(
                           color: Colors.white,
@@ -261,6 +275,8 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                                     starCount: 5,
                                     size: 15,
                                   ),
+
+                                  //const SizedBox(height: 2.0),
                                 ],
                               ),
                               // trailing: Column(
@@ -272,6 +288,32 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
                               //     )
                               //   ],
                               // ),
+
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(height: 4),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: MyConstant.confirm,
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                    ),
+                                    onPressed: ()
+                                    {
+                                      setState(()
+                                      {
+                                        chosenJobId = jList[index]["jobId"].toString();
+                                      });
+
+                                      Navigator.pop(context,"jobChoosed");
+                                    },
+                                    child: Text(
+                                      "สนใจ".toUpperCase(),
+                                      style: MyConstant().textnotificationRequest(),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -284,13 +326,15 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
         ));
   }
 
-  void _handleSearchStart() {
+  void _handleSearchStart()
+  {
     setState(() {
       _isSearching = true;
     });
   }
 
-  void _handleSearchEnd() {
+  void _handleSearchEnd()
+  {
     setState(() {
       icon = const Icon(
         Icons.cancel,
@@ -306,7 +350,8 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
     });
   }
 
-  void searchOperation(String searchText) {
+  void searchOperation(String searchText)
+  {
     searchresult.clear();
     if (_isSearching != null)
     {
@@ -335,4 +380,236 @@ class _SelectJobNearestState extends State<SelectJobNearest> {
       }
     }
   }
+
+  Future<dynamic> dialogdetail(BuildContext context, int index)
+  {
+  return showDialog(
+    barrierDismissible: true, //no touch freespace for exits
+            context: context,
+            builder: (context) => Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              elevation: 10,
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                width: 10,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+
+                    const SizedBox(height: 5),
+
+                    Text(
+                      jList[index]["name"],
+                      style: MyConstant().jobname(),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "ค่าตอบแทน : " + jList[index]["money"] + " " + "บาท",
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "เพศที่ต้องการ : " + jList[index]["gender"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "ระดับความปลอดภัย : " + jList[index]["safe"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "อายุที่ต้องการ : " + jList[index]["age"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "เบอร์ติดต่อ : " + jList[index]["phone"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "วันที่ทำ : " + jList[index]["date"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "เวลา : " + jList[index]["time"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "สถานที่ : " + jList[index]["address"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Text(
+                                      "เพิ่มเติม : " + jList[index]["detail"],
+                                      style: MyConstant().userinfo5(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0),
+
+                            //คะแนนการทำงานเฉลี่ย
+                            SmoothStarRating(
+                              rating: double.parse(jList[index]["ratings"]),
+                              color: Colors.yellow,
+                              borderColor: Colors.yellow,
+                              allowHalfRating: true,
+                              starCount: 5,
+                              size: 20,
+                            ),
+                          ],
+                      ),
+                    ),
+
+                    // Padding(
+                    //   padding: const EdgeInsets.all(15.0),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       ElevatedButton(
+                    //           style: ElevatedButton.styleFrom(
+                    //             primary: Colors.red,
+                    //           ),
+                    //           onPressed: ()
+                    //           {
+                    //             Navigator.pop(context);
+                    //           },
+                    //           child: Text(
+                    //             "ไม่สนใจ".toUpperCase(),
+                    //             style: MyConstant().textnotificationRequest(),
+                    //           )
+                    //       ),
+                    //
+                    //       const SizedBox(width: 40.0),
+                    //
+                    //       ElevatedButton(
+                    //         style: ElevatedButton.styleFrom(
+                    //           primary: MyConstant.confirm,
+                    //         ),
+                    //         onPressed: ()
+                    //         {
+                    //
+                    //           setState(()
+                    //           {
+                    //             chosenJobId = jList[index]["jobId"].toString();
+                    //           });
+                    //
+                    //           Navigator.pop(context,"jobChoosed");
+                    //
+                    //         },
+                    //         child: Text(
+                    //           "สนใจ".toUpperCase(),
+                    //           style: MyConstant().textnotificationRequest(),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
+          );
+    }
+
 }
