@@ -31,585 +31,414 @@ class SelectJobNearest extends StatefulWidget {
   State<SelectJobNearest> createState() => _SelectJobNearestState();
 }
 
-class _SelectJobNearestState extends State<SelectJobNearest> {
+class _SelectJobNearestState extends State<SelectJobNearest>
+{
 
-  Widget appBarTitle =
-  Text(
-    "งานรอบตัวคุณ",
-    style: MyConstant().headbar(),
-  );
-  Icon icon = const Icon(
-    Icons.search,
-    color: Colors.white,
-  );
+  final List<dynamic> _allJobs = jList;
 
-  final globalKey = GlobalKey<ScaffoldState>();
-  final TextEditingController _controller = TextEditingController();
-  final List<dynamic> _list = jList;
-  late bool _isSearching;
-  String _searchText = "";
-  List searchresult = [];
+  // This list holds the data for the list view
+  List<dynamic> _foundJobs = [];
+  @override
+  initState() {
+    // at the beginning, all users are shown
+    _foundJobs = _allJobs;
+    super.initState();
+  }
 
-  _SelectJobNearestState() {
-    _controller.addListener(() {
-      if (_controller.text.isEmpty) {
-        setState(() {
-          _isSearching = false;
-          _searchText = "";
-        });
-      } else {
-        setState(() {
-          _isSearching = true;
-          _searchText = _controller.text;
-        });
-      }
+  // This function is called whenever the text field changes
+  void _runFilter(String enteredKeyword) {
+    List<dynamic> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = _allJobs;
+    } else{
+      results = _allJobs
+          .where((job) =>
+          job["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+          .toList();
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundJobs = results;
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _isSearching = false;
-  }
+  bool searchState = false;
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-        key: globalKey,
-        appBar: AppBar(
-            centerTitle: true,
-            title: appBarTitle,
-            backgroundColor: MyConstant.primary,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: () {
-                widget.referenceContractorRequest!.remove();
-                Navigator.pop(context);
-                jList.clear();
-              },
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: MyConstant.primary,
+        title: !searchState
+            ? Text(
+          "งานรอบตัวคุณ",
+          style: MyConstant().headbar(),
+        )
+            : TextField(
+          style: MyConstant().searchtext(),
+          decoration: InputDecoration(
+            icon: const Icon(Icons.search, color: Colors.white, size: 25),
+            hintText: "ค้นหา",
+            hintStyle: MyConstant().searchtext(),
+          ),
+          onChanged: (value) {
+            //search
+            _runFilter(value);
+          },
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.close,
+            color: Colors.white,
+            size: 30,
+          ),
+          onPressed: () {
+            widget.referenceContractorRequest!.remove();
+            Navigator.pop(context);
+            jList.clear();
+          },
+        ),
+        actions: <Widget>[
+          !searchState
+              ? IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 25,
             ),
-              actions: [
-          IconButton(
-            icon: icon,
             onPressed: () {
+              //jobFormSearch(size);
               setState(() {
-                if (icon.icon == Icons.search) {
-                  icon =  const Icon(
-                    Icons.cancel,
-                    color: Colors.white,
-                    size: 25,
-                  );
-                  appBarTitle = TextField(
-                    controller: _controller,
-                    style: MyConstant().searchtext(),
-                    decoration: InputDecoration(
-                      icon: const Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: 25),
-                      hintText: "ค้นหา",
-                      hintStyle: MyConstant().searchtext(),
-                    ),
-                    onChanged: searchOperation,
-                  );
-                  _handleSearchStart();
-                } else {
-                  _handleSearchEnd();
-                }
+                searchState = !searchState;
+              });
+            },
+          )
+              : IconButton(
+            icon: const Icon(
+              Icons.cancel,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {
+              //jobFormSearch(size);
+              setState(() {
+                searchState = !searchState;
               });
             },
           ),
-        ]),
-        body: Container(
+          const SizedBox(width: 10)
+        ],
+      ),
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Flexible(
-                  child: searchresult.isNotEmpty || _controller.text.isNotEmpty
-                      ? ListView.builder(
-                    //เมื่อมีการค้นหา
-                    shrinkWrap: true,
-                    itemCount: searchresult.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String jobname = searchresult[index];
-                      return GestureDetector(
-                        onTap: () {
-                          dialogdetail(context, index);
-                        },
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          elevation: 5,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 24.0),
-                            child: ListTile(
-                              //image for safe type
-                              // leading: Image.asset(
-                              //   'images/' + jList[index]['safe'].toString() + ".png",
-                              // ),
-                              title: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    jList[index]["name"],
-                                    // jobname.toString(),
-                                    style: MyConstant().jobname(),
+              const SizedBox(
+                height: 5,
+              ),
+              Expanded(
+                child: _foundJobs.isNotEmpty
+                    ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _foundJobs.length,
+                  itemBuilder: (context, index)
+                  {
+                    return GestureDetector(
+                      onTap: ()
+                      {
+                        dialogdetail(context,index);
+                      },
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        elevation: 5,
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 24.0),
+                          child: ListTile(
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _foundJobs[index]["name"],
+                                  style: MyConstant().jobname(),
+                                ),
+
+                                const SizedBox(height: 10.0),
+
+                                Text(
+                                  _foundJobs[index]["money"] + " " + "บาท",
+                                  style: MyConstant().jobmoney(),
+                                ),
+
+                                const SizedBox(height: 13.0),
+
+                                //point of employer
+                                SmoothStarRating(
+                                  rating: double.parse(_foundJobs[index]["ratings"]),
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                  allowHalfRating: true,
+                                  starCount: 5,
+                                  size: 15,
+                                ),
+
+                                const SizedBox(height: 5.0),
+                              ],
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 4),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: MyConstant.confirm,
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                                   ),
-
-                                  const SizedBox(height: 10.0),
-
-                                  Text(
-                                    jList[index]["money"] + " " + "บาท",
-                                    style: MyConstant().jobmoney(),
-                                  ),
-
-                                  const SizedBox(height: 13.0),
-
-                                  //point of employer
-                                  SmoothStarRating(
-                                    rating: double.parse(jList[index]["ratings"]),
-                                    color: Colors.yellow,
-                                    borderColor: Colors.yellow,
-                                    allowHalfRating: true,
-                                    starCount: 5,
-                                    size: 15,
-                                  ),
-
-                                  const SizedBox(height: 5.0),
-
-                                  Text(
-                                    "คำค้นหาที่ตรงกัน : " + jobname.toString(),
-                                    style: MyConstant().searchmatch(),
-                                  ),
-                                ],
-                              ),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: MyConstant.confirm,
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                    ),
-                                    onPressed: ()
+                                  onPressed: ()
+                                  {
+                                    setState(()
                                     {
-                                      setState(()
-                                      {
-                                        chosenJobId = jList[index]["jobId"].toString();
-                                      });
+                                      chosenJobId = jList[index]["jobId"].toString();
+                                    });
 
-                                      Navigator.pop(context,"jobChoosed");
-                                    },
-                                    child: Text(
-                                      "สนใจ".toUpperCase(),
-                                      style: MyConstant().textnotificationRequest(),
-                                    ),
+                                    Navigator.pop(context,"jobChoosed");
+                                  },
+                                  child: Text(
+                                    "สนใจ".toUpperCase(),
+                                    style: MyConstant().textnotificationRequest(),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  )
-                  //เมื่อไม่มีการค้นหา
-                      : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      String jobname = _list[index]["name"];
-                      return GestureDetector(
-                        onTap: () {
-                          dialogdetail(context, index);
-                        },
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          elevation: 5,
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 24.0),
-                            child: ListTile(
-                              //image for safe type
-                              // leading: Image.asset(
-                              //   'images/' + jList[index]['safe'].toString() + ".png",
-                              // ),
-                              title: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    jList[index]["name"],
-                                    style: MyConstant().jobname(),
-                                  ),
-
-                                  const SizedBox(height: 10.0),
-
-                                  Text(
-                                    jList[index]["money"] + " " + "บาท",
-                                    style: MyConstant().jobmoney(),
-                                  ),
-
-                                  const SizedBox(height: 13.0),
-
-                                  //point of employer
-                                  SmoothStarRating(
-                                    rating: double.parse(jList[index]["ratings"]),
-                                    color: Colors.yellow,
-                                    borderColor: Colors.yellow,
-                                    allowHalfRating: true,
-                                    starCount: 5,
-                                    size: 15,
-                                  ),
-
-                                  //const SizedBox(height: 2.0),
-                                ],
-                              ),
-                              // trailing: Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     const SizedBox(height: 2,),
-                              //     Text(
-                              //       "10 กิโลเมตร", style: MyConstant().h4Style(),
-                              //     )
-                              //   ],
-                              // ),
-
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 4),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: MyConstant.confirm,
-                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                    ),
-                                    onPressed: ()
-                                    {
-                                      setState(()
-                                      {
-                                        chosenJobId = jList[index]["jobId"].toString();
-                                      });
-
-                                      Navigator.pop(context,"jobChoosed");
-                                    },
-                                    child: Text(
-                                      "สนใจ".toUpperCase(),
-                                      style: MyConstant().textnotificationRequest(),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      ),
+                    );
+                  }
+                )
+                    : Column(
+                      children: [
+                        const SizedBox(height: 150),
+                          const Center(
+                            child: Icon(
+                                Icons.search_off ,
+                                size: 60,
+                                color: Colors.grey
                             ),
                           ),
+                        const SizedBox(height: 10),
+
+                        Center(
+                          child: Text(
+                            "ไม่เจอสิ่งที่ค้นหา",
+                            style: MyConstant().searchmatch(),
+                          ),
                         ),
-                      );
-                    },
-                  ),
+                      ],
+                    ),
               ),
             ],
           ),
-        ));
-  }
-
-  void _handleSearchStart()
-  {
-    setState(() {
-      _isSearching = true;
-    });
-  }
-
-  void _handleSearchEnd()
-  {
-    setState(() {
-      icon = const Icon(
-        Icons.cancel,
-        color: Colors.white,
-        size: 25,
-      );
-      appBarTitle = Text(
-        "งานรอบตัวคุณ",
-        style: MyConstant().headbar(),
-      );
-      _isSearching = false;
-      _controller.clear();
-    });
-  }
-
-  void searchOperation(String searchText)
-  {
-    searchresult.clear();
-    if (_isSearching != null)
-    {
-      for (int i = 0; i < _list.length; i++) {
-        String name = _list[i]["name"];
-        String money = _list[i]["money"];
-        String safe = _list[i]["safe"];
-        String gender = _list[i]["gender"];
-
-        if (name.toLowerCase().contains(searchText.toLowerCase()))
-        {
-          searchresult.add(name);
-        }
-        else if(money.toLowerCase().contains(searchText.toLowerCase()))
-        {
-          searchresult.add(money);
-        }
-        else if(safe.toLowerCase().contains(searchText.toLowerCase()))
-        {
-          searchresult.add(safe);
-        }
-        else if(gender.toLowerCase().contains(searchText.toLowerCase()))
-        {
-          searchresult.add(gender);
-        }
-      }
-    }
+        ),
+      ),
+    );
   }
 
   Future<dynamic> dialogdetail(BuildContext context, int index)
   {
-  return showDialog(
-    barrierDismissible: true, //no touch freespace for exits
-            context: context,
-            builder: (context) => Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+    return showDialog(
+      barrierDismissible: true, //no touch freespace for exits
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 10,
+        child: Container(
+          margin: const EdgeInsets.all(5),
+          width: 10,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              const SizedBox(height: 5),
+
+              Text(
+                _foundJobs[index]["name"],
+                style: MyConstant().jobname(),
               ),
-              elevation: 10,
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                width: 10,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                ),
+
+              Padding(
+                padding: const EdgeInsets.all(18.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      jList[index]["name"],
-                      style: MyConstant().jobname(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "ค่าตอบแทน : " + _foundJobs[index]["money"] + " " + "บาท",
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "ค่าตอบแทน : " + jList[index]["money"] + " " + "บาท",
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "เพศที่ต้องการ : " + _foundJobs[index]["gender"],
+                              style: MyConstant().userinfo5(),
                             ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "เพศที่ต้องการ : " + jList[index]["gender"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "ระดับความปลอดภัย : " + jList[index]["safe"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "อายุที่ต้องการ : " + jList[index]["age"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "เบอร์ติดต่อ : " + jList[index]["phone"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "วันที่ทำ : " + jList[index]["date"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "เวลา : " + jList[index]["time"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "สถานที่ : " + jList[index]["address"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Text(
-                                      "เพิ่มเติม : " + jList[index]["detail"],
-                                      style: MyConstant().userinfo5(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            //คะแนนการทำงานเฉลี่ย
-                            SmoothStarRating(
-                              rating: double.parse(jList[index]["ratings"]),
-                              color: Colors.yellow,
-                              borderColor: Colors.yellow,
-                              allowHalfRating: true,
-                              starCount: 5,
-                              size: 20,
-                            ),
-                          ],
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
 
-                    // Padding(
-                    //   padding: const EdgeInsets.all(15.0),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       ElevatedButton(
-                    //           style: ElevatedButton.styleFrom(
-                    //             primary: Colors.red,
-                    //           ),
-                    //           onPressed: ()
-                    //           {
-                    //             Navigator.pop(context);
-                    //           },
-                    //           child: Text(
-                    //             "ไม่สนใจ".toUpperCase(),
-                    //             style: MyConstant().textnotificationRequest(),
-                    //           )
-                    //       ),
-                    //
-                    //       const SizedBox(width: 40.0),
-                    //
-                    //       ElevatedButton(
-                    //         style: ElevatedButton.styleFrom(
-                    //           primary: MyConstant.confirm,
-                    //         ),
-                    //         onPressed: ()
-                    //         {
-                    //
-                    //           setState(()
-                    //           {
-                    //             chosenJobId = jList[index]["jobId"].toString();
-                    //           });
-                    //
-                    //           Navigator.pop(context,"jobChoosed");
-                    //
-                    //         },
-                    //         child: Text(
-                    //           "สนใจ".toUpperCase(),
-                    //           style: MyConstant().textnotificationRequest(),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "ระดับความปลอดภัย : " + _foundJobs[index]["safe"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "อายุที่ต้องการ : " + _foundJobs[index]["age"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "เบอร์ติดต่อ : " + _foundJobs[index]["phone"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "วันที่ทำ : " + _foundJobs[index]["date"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "เวลา : " + _foundJobs[index]["time"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "สถานที่ : " + _foundJobs[index]["address"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "เพิ่มเติม : " + _foundJobs[index]["detail"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    //คะแนนการทำงานเฉลี่ย
+                    SmoothStarRating(
+                      rating: double.parse(_foundJobs[index]["ratings"]),
+                      color: Colors.yellow,
+                      borderColor: Colors.yellow,
+                      allowHalfRating: true,
+                      starCount: 5,
+                      size: 20,
+                    ),
                   ],
                 ),
               ),
-            ),
-          );
-    }
-
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

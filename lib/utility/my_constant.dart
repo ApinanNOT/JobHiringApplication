@@ -204,8 +204,8 @@ class MyConstant {
   );
 
   TextStyle searchmatch() => GoogleFonts.prompt(
-    fontSize: 14,
-    color: Colors.black45,
+    fontSize: 20,
+    color: Colors.grey,
     fontWeight: FontWeight.bold,
   );
 
