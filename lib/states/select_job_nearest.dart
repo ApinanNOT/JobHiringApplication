@@ -54,7 +54,9 @@ class _SelectJobNearestState extends State<SelectJobNearest>
     } else{
       results = _allJobs
           .where((job) =>
-          job["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
+          job["safe"].toLowerCase().contains(enteredKeyword.toLowerCase())
+              || job["money"].toLowerCase().contains(enteredKeyword.toLowerCase())
+              || job["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
       // we use the toLowerCase() method to make it case-insensitive
     }

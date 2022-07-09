@@ -209,6 +209,13 @@ class MyConstant {
     fontWeight: FontWeight.bold,
   );
 
+  TextStyle forgotpass() => GoogleFonts.prompt(
+    fontSize: 12,
+    color: MyConstant.dark,
+    fontWeight: FontWeight.normal,
+    decoration: TextDecoration.underline,
+  );
+
 
   ButtonStyle myButtonStyle1() => ElevatedButton.styleFrom(
         primary: MyConstant.primary,

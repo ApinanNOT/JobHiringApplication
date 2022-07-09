@@ -102,7 +102,9 @@ class _AuthenState extends State<Authen> {
               buildEmail(size),
               buildPassword(size),
               buildLogin(size),
-              buildCreatAccount()
+              buildCreatAccount(),
+              // const SizedBox(height: 30),
+              // buildForgotPassword(),
             ],
           ),
         ),
@@ -126,6 +128,24 @@ class _AuthenState extends State<Authen> {
           child: Text(
             'สร้างบัญชีผู้ใช้',
             style: MyConstant().h5Style(),
+          ),
+        )
+      ],
+    );
+  }
+
+  Row buildForgotPassword() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          onPressed: ()
+          {
+
+          },
+          child: Text(
+            'ลืมรหัสผ่าน?',
+            style: MyConstant().forgotpass(),
           ),
         )
       ],
