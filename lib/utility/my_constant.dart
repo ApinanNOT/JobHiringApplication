@@ -73,6 +73,12 @@ class MyConstant {
     fontWeight: FontWeight.bold,
   );
 
+  TextStyle jobname2() => GoogleFonts.prompt(
+    fontSize: 24,
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+  );
+
   TextStyle jobmoney() => GoogleFonts.prompt(
     fontSize: 16,
     color: Colors.black45,
@@ -188,6 +194,12 @@ class MyConstant {
   TextStyle userinfo5() => GoogleFonts.prompt(
     fontSize: 14,
     color: Colors.black,
+    fontWeight: FontWeight.normal,
+  );
+
+  TextStyle userinfo6() => GoogleFonts.prompt(
+    fontSize: 16,
+    color: Colors.white,
     fontWeight: FontWeight.normal,
   );
 

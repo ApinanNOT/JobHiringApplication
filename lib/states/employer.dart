@@ -32,7 +32,7 @@ class _EmployerState extends State<Employer>
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -53,7 +53,7 @@ class _EmployerState extends State<Employer>
         children: const [
           HomeTabEmployer(),
           PostTab(),
-          HistoryTab(),
+          // HistoryTab(),
           ProfileTab(),
         ],
       ),
@@ -76,10 +76,10 @@ class _EmployerState extends State<Employer>
           icon: Icon(Icons.post_add),
           label: 'ประกาศงาน',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: 'ประวัติ',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.history),
+        //   label: 'ประวัติ',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'โปรไฟล์',

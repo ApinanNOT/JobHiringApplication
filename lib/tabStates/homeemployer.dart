@@ -74,6 +74,9 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
     newGoogleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
+
+    GeoFireAssistant.jobLocationList.clear();
+
     initializeGeoFireListener();
   }
 
@@ -205,6 +208,7 @@ class _HomeTabEmployerState extends State<HomeTabEmployer>
             break;
 
           case Geofire.onGeoQueryReady:
+            jobLocationKeysLoaded = true;
             showJoblocation();
             break;
         }

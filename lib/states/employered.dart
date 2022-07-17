@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jobhiring/tabStates/homeemployer.dart';
+import 'package:jobhiring/tabStates/myjob.dart';
 import 'package:jobhiring/tabStates/postjob.dart';
 import 'package:jobhiring/tabStates/profile.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 
+import '../assistants/assistant_methods.dart';
+import '../global/global.dart';
 import '../tabStates/history.dart';
 
 class Employered extends StatefulWidget {
@@ -31,6 +34,8 @@ class _EmployeredState extends State<Employered>
   void initState() {
     super.initState();
 
+    AssistantMethods.readCurrentOnlineJobInfo();
+
     tabController = TabController(length: 3, vsync: this);
   }
 
@@ -51,7 +56,7 @@ class _EmployeredState extends State<Employered>
         controller: tabController,
         children: [
           HomeTabEmployer(),
-          HistoryTab(),
+          MyJob(),
           ProfileTab(),
         ],
       ),
@@ -71,8 +76,8 @@ class _EmployeredState extends State<Employered>
         //   label: 'ให้คะแนน',
         // ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.history),
-          label: 'ประวัติ',
+          icon: Icon(Icons.schedule),
+          label: 'รอผู้รับจ้าง',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

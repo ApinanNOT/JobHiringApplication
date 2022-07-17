@@ -111,6 +111,20 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     checkIfLocationPermissionAllowed(); //check permission
 
     AssistantMethods.readTripsKeysForOnlineUser(context);
+
+    print("Start : HomeContractor");
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+
+    jList = [];
+
+    print("Finish : HomeContractor");
+
+    // initializeGeoFireListener();
   }
 
   List<JobLocation> onlineJobList = [];
@@ -139,7 +153,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     };
 
     referenceContractorRequest!.set(contractorInformation);
-    
+
     statusContractorRequestInfoStreamSubscription = referenceContractorRequest!.onValue.listen((eventSnap)
     {
       if(eventSnap.snapshot.value == null)
@@ -158,7 +172,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
                       context, MaterialPageRoute(builder: (c) => EmpPoint(
                     assignedUsersId: assignedUsersId,
 
-                  )));
+                  ),),);
                 }
             }
         }
@@ -358,7 +372,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
     DatabaseReference ref = FirebaseDatabase.instance.ref().child("Jobs");
 
-    for(i=0; i<onlineNearestJobList.length; i++)
+    for(i=0 ;i<onlineNearestJobList.length; i++)
     {
       await ref.child(onlineNearestJobList[i].jobId.toString())
           .once()
@@ -367,6 +381,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         var jobKeyInfo = dataSnapshot.snapshot.value;
         jList.add(jobKeyInfo);
       });
+
       print("เป็นอะไรอีก");
       print(onlineNearestJobList.length);
       print("#######################################");
@@ -404,7 +419,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             },
           ),
           ButtonSearch(size),
-          //ButtonTest(size),
+          // ButtonTest(size),
           Positioned(
             bottom: 0,
             left: 0,
@@ -480,6 +495,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             break;
 
           case Geofire.onGeoQueryReady:
+            jobLocationKeysLoaded = true;
             showJoblocation();
             break;
         }
@@ -492,11 +508,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
 
   showJoblocation()
   {
-
-    // final Uint8List customMarker= await getBytesFromAsset(
-    //     path: 'images/location.png' , //paste the custom image path
-    //     width: 130 // size of custom image as marker
-    // );
 
     setState(() async{
       markersSet.clear();
@@ -520,7 +531,6 @@ class _HomeTabContractorState extends State<HomeTabContractor>
       }
       setState(() {
         markersSet = jobMarkerSet;
-        jList.clear();
       });
     });
   }
@@ -572,9 +582,9 @@ class _HomeTabContractorState extends State<HomeTabContractor>
               style: MyConstant().myButtonStyle4(),
               onPressed: ()
               {
-              Navigator.push(
-              context, MaterialPageRoute(builder: (c) => Test()));
-              print("TESSSSSSSSSSSS");
+              // Navigator.push(
+              // context, MaterialPageRoute(builder: (c) => Test()));
+              // print("TESSSSSSSSSSSS");
               },
               child: Text(
                 'ทดสอบ',

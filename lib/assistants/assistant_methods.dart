@@ -5,6 +5,7 @@ import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/infoHandler/app_info.dart';
 import 'package:jobhiring/models/trips_history_model.dart';
 import 'package:provider/provider.dart';
+import '../models/job_info.dart';
 import '../models/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,6 +23,23 @@ class AssistantMethods{
       if(snap.snapshot.value != null)
       {
         userModelCurrentInfo = UserModel.fromSnapshot(snap.snapshot);
+      }
+    });
+  }
+
+  static void readCurrentOnlineJobInfo() async
+  {
+    currentFirebaseUser = fAuth.currentUser;
+    DatabaseReference userRef = FirebaseDatabase.instance
+        .ref()
+        .child("Jobs")
+        .child(currentFirebaseUser!.uid);
+
+    userRef.once().then((snap)
+    {
+      if(snap.snapshot.value != null)
+      {
+        jobModelCurrentInfo = JobModel.fromSnapshot(snap.snapshot);
       }
     });
   }

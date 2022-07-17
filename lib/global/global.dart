@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jobhiring/models/job_data.dart';
+import 'package:jobhiring/tabStates/homecontractor.dart';
+import '../models/job_info.dart';
 import '../models/user_model.dart';
 
 final FirebaseAuth fAuth = FirebaseAuth.instance;
 User? currentFirebaseUser;
 UserModel? userModelCurrentInfo;
+JobModel? jobModelCurrentInfo;
 List jList = []; //jobKeyList
 String? chosenJobId = "";
 JobData jobData = JobData();

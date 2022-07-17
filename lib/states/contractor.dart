@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:jobhiring/states/select_job_nearest.dart';
 import 'package:jobhiring/tabStates/findjob.dart';
 import 'package:jobhiring/tabStates/history.dart';
 import 'package:jobhiring/tabStates/homecontractor.dart';
@@ -27,6 +29,10 @@ class _ContractorState extends State<Contractor>
           () {
         selectedIndex = index;
         tabController!.index = selectedIndex;
+        print("INDEXXXXXXXXXXXXXXXXXXXXXXXXX");
+        print(index);
+        print("SELECTINDEXXXXXXXXX");
+        print(selectedIndex);
       },
     );
   }
@@ -67,6 +73,14 @@ class _ContractorState extends State<Contractor>
       bottomNavigationBar: buildBottomlower(),
     );
   }
+
+  // void removeQueryListener() async {
+  //   bool? response = await Geofire.stopListener();
+  //
+  //   jList.clear();
+  //   print("PPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+  //   print(response);
+  // }
 
   BottomNavigationBar buildBottomlower() {
     return BottomNavigationBar(

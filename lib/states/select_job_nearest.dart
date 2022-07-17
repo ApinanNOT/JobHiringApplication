@@ -38,11 +38,24 @@ class _SelectJobNearestState extends State<SelectJobNearest>
 
   // This list holds the data for the list view
   List<dynamic> _foundJobs = [];
+
   @override
   initState() {
     // at the beginning, all users are shown
     _foundJobs = _allJobs;
     super.initState();
+
+    print("Start : Select Job Nearest");
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+
+    jList = [];
+
+    print("Finish : Select Job Nearest");
   }
 
   // This function is called whenever the text field changes
