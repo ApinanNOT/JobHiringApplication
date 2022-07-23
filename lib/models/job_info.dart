@@ -13,8 +13,9 @@ class JobModel
   String? phone;
   String? safe;
   String? time;
+  String? type;
 
-  JobModel({this.gender,this.money,this.detail,this.age,this.name,this.time,this.safe,this.phone,this.date,this.address});
+  JobModel({this.gender,this.money,this.detail,this.age,this.name,this.time,this.safe,this.phone,this.date,this.address,this.type});
 
   JobModel.fromSnapshot(DataSnapshot snap)
   {
@@ -28,5 +29,6 @@ class JobModel
     phone = (snap.value as dynamic)["phone"];
     safe = (snap.value as dynamic)["safe"];
     time = (snap.value as dynamic)["time"];
+    type = (snap.value as dynamic)["type"];
   }
 }

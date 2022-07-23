@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
 import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/states/authen.dart';
 import 'package:jobhiring/states/contractor.dart';
@@ -9,6 +12,9 @@ import 'package:jobhiring/states/markerjob.dart';
 import 'package:jobhiring/states/mode.dart';
 import 'package:jobhiring/utility/my_constant.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 
 import 'infoHandler/app_info.dart';
 
@@ -54,6 +60,14 @@ void main() async
       child: ChangeNotifierProvider(
         create: (context) => AppInfo(),
         child: MaterialApp(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', 'US'), // English
+            Locale('th', 'TH'), // Thai
+          ],
           title: 'JobHiring',
           theme: ThemeData(
             primarySwatch: Colors.blue,
@@ -100,4 +114,39 @@ class _MyAppState extends State<MyApp>
     );
   }
 }
+
+// final _timePickerTheme = TimePickerThemeData(
+//   backgroundColor: Colors.white,
+//   // hourMinuteShape: RoundedRectangleBorder(
+//   //   borderRadius: BorderRadius.all(Radius.circular(8)),
+//   //   side: BorderSide(color: MyConstant.primary, width: 4),
+//   // ),
+//   dayPeriodBorderSide: const BorderSide(color: Colors.orange, width: 4),
+//   dayPeriodColor: Colors.blueGrey.shade600,
+//   shape: const RoundedRectangleBorder(
+//     borderRadius: BorderRadius.all(Radius.circular(8)),
+//     side: BorderSide(color: Colors.orange, width: 4),
+//   ),
+//   dayPeriodTextColor: Colors.black,
+//   dayPeriodShape: const RoundedRectangleBorder(
+//     borderRadius: BorderRadius.all(Radius.circular(8)),
+//     side: BorderSide(color: Colors.orange, width: 4),
+//   ),
+//   hourMinuteColor: MaterialStateColor.resolveWith((states) =>
+//   states.contains(MaterialState.selected) ? Colors.orange : Colors.blueGrey.shade800),
+//   hourMinuteTextColor: MaterialStateColor.resolveWith(
+//           (states) => states.contains(MaterialState.selected) ? Colors.white : Colors.orange),
+//   dialHandColor: Colors.blueGrey.shade700,
+//   dialBackgroundColor: Colors.blueGrey.shade800,
+//   hourMinuteTextStyle: MyConstant().headbar(),
+//   dayPeriodTextStyle: MyConstant().headbar(),
+//   helpTextStyle: MyConstant().jobmoney(),
+//   inputDecorationTheme: const InputDecorationTheme(
+//     border: InputBorder.none,
+//     contentPadding: EdgeInsets.all(8),
+//   ),
+//   dialTextColor: MaterialStateColor.resolveWith(
+//           (states) => states.contains(MaterialState.selected) ? Colors.orange : Colors.white),
+//   entryModeIconColor: Colors.orange,
+// );
 

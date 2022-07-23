@@ -6,6 +6,7 @@ import 'package:jobhiring/splash_screen/splash_screen.dart';
 import 'package:jobhiring/utility/progress_dialog.dart';
 import 'package:jobhiring/widgets/show_image.dart';
 import 'package:jobhiring/widgets/show_title.dart';
+import 'package:nextflow_thai_personal_id/nextflow_thai_personal_id.dart';
 import '../utility/my_constant.dart';
 import 'package:tbib_toast/tbib_toast.dart';
 
@@ -22,6 +23,53 @@ class _CreateAccountState extends State<CreateAccount> {
   List<String> genderlist = ["ชาย", "หญิง", "LGBTQ"]; //gender
   String? selectedgendertype;
   bool statusRedEye = true;
+
+  List<String> agelist = [
+   "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+   "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+  ]; //age
+  String? selectedagetype;
 
   TextEditingController idTextEditingController = TextEditingController();
   TextEditingController nameTextEditingController = TextEditingController();
@@ -73,6 +121,9 @@ class _CreateAccountState extends State<CreateAccount> {
         "lastname": lastnameTextEditingController.text.trim(),
         "gender": selectedgendertype,
         "address": addressTextEditingController.text.trim(),
+        // "tambon" :
+        // "amphoe" :
+        // "changwat" :
         "phone": phoneTextEditingController.text.trim(),
         "age": ageTextEditingController.text.trim(),
         "email": emailTextEditingController.text.trim(),
@@ -260,6 +311,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            maxLength: 13,
             style: MyConstant().textinput(),
             keyboardType: TextInputType.number,
             controller: idTextEditingController,
@@ -280,6 +332,7 @@ class _CreateAccountState extends State<CreateAccount> {
               errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'หมายเลขบัตรประชาชน',
+              counterText: "",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.dark),
                 borderRadius: BorderRadius.circular(30),
@@ -329,6 +382,117 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildTambon(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          width: size * 0.7,
+          child: TextFormField(
+            style: MyConstant().textinput(),
+            controller: lastnameTextEditingController,
+            validator: (lastnameTextEditingController) {
+              if (lastnameTextEditingController!.isEmpty) {
+                return 'กรุณากรอกนามสกุล';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(lastnameTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
+              } else {}
+            },
+            decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
+              labelStyle: MyConstant().h3Style(),
+              labelText: 'นามสกุล',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildAmphoe(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          width: size * 0.7,
+          child: TextFormField(
+            style: MyConstant().textinput(),
+            controller: lastnameTextEditingController,
+            validator: (lastnameTextEditingController) {
+              if (lastnameTextEditingController!.isEmpty) {
+                return 'กรุณากรอกนามสกุล';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(lastnameTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
+              } else {}
+            },
+            decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
+              labelStyle: MyConstant().h3Style(),
+              labelText: 'นามสกุล',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildChangwat(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          width: size * 0.7,
+          child: TextFormField(
+            style: MyConstant().textinput(),
+            controller: lastnameTextEditingController,
+            validator: (lastnameTextEditingController) {
+              if (lastnameTextEditingController!.isEmpty) {
+                return 'กรุณากรอกนามสกุล';
+              } else if (RegExp(r'[\s]')
+                  .hasMatch(lastnameTextEditingController)) {
+                return 'ต้องไม่มีช่องว่าง';
+              } else {}
+            },
+            decoration: InputDecoration(
+              errorStyle: MyConstant().errortext(),
+              labelStyle: MyConstant().h3Style(),
+              labelText: 'นามสกุล',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.light),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildPhone(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -337,6 +501,7 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: const EdgeInsets.only(top: 16),
           width: size * 0.7,
           child: TextFormField(
+            maxLength: 10,
             style: MyConstant().textinput(),
             keyboardType: TextInputType.phone,
             controller: phoneTextEditingController,
@@ -358,6 +523,7 @@ class _CreateAccountState extends State<CreateAccount> {
               errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
               labelText: 'เบอร์โทร',
+              counterText: "",
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: MyConstant.dark),
                 borderRadius: BorderRadius.circular(30),
@@ -463,6 +629,52 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ],
     );
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     Container(
+    //       margin: const EdgeInsets.only(top: 20),
+    //       child: SizedBox(
+    //         width: size * 0.7,
+    //         child: DropdownButtonFormField<String>(
+    //           validator: (selectedagetype) {
+    //             if (selectedagetype == null) {
+    //               return 'กรุณาระบุอายุ';
+    //             } else {}
+    //           },
+    //           decoration: InputDecoration(
+    //             errorStyle: MyConstant().errortext(),
+    //             labelText: 'อายุ',
+    //             labelStyle: MyConstant().h3Style(),
+    //             enabledBorder: OutlineInputBorder(
+    //               borderSide: BorderSide(color: MyConstant.dark),
+    //               borderRadius: BorderRadius.circular(30),
+    //             ),
+    //             focusedBorder: OutlineInputBorder(
+    //               borderSide: BorderSide(color: MyConstant.light),
+    //               borderRadius: BorderRadius.circular(30),
+    //             ),
+    //           ),
+    //           value: selectedagetype,
+    //           onChanged: (newValue) {
+    //             setState(() {
+    //               selectedagetype = newValue.toString();
+    //             });
+    //           },
+    //           items: agelist.map((age) {
+    //             return DropdownMenuItem(
+    //               child: Text(
+    //                 age,
+    //                 style: MyConstant().textinput(),
+    //               ),
+    //               value: age,
+    //             );
+    //           }).toList(),
+    //         ),
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
   Row buildEmail(double size) {

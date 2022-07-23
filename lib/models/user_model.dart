@@ -13,8 +13,11 @@ class UserModel
   String? email;
   String? password;
   String? ratings;
+  String? tambon;
+  String? amphoe;
+  String? changwat;
 
-  UserModel({this.phone,this.address,this.age,this.email,this.gender,this.id,this.lastname,this.name,this.password,this.ratings});
+  UserModel({this.phone,this.address,this.age,this.email,this.gender,this.id,this.lastname,this.name,this.password,this.ratings,this.amphoe,this.changwat,this.tambon});
 
   UserModel.fromSnapshot(DataSnapshot snap)
   {
@@ -28,5 +31,8 @@ class UserModel
     email = (snap.value as dynamic)["email"];
     password = (snap.value as dynamic)["password"];
     ratings = (snap.value as dynamic)["ratings"];
+    tambon = (snap.value as dynamic)["tambon"];
+    amphoe = (snap.value as dynamic)["amphoe"];
+    changwat = (snap.value as dynamic)["changwat"];
   }
 }

@@ -9,6 +9,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+// import 'package:flutter_thailand_provinces/dao/amphure_dao.dart';
+// import 'package:flutter_thailand_provinces/provider/amphure_provider.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jobhiring/assistants/assistant_methods.dart';
@@ -113,6 +115,7 @@ class _HomeTabContractorState extends State<HomeTabContractor>
     AssistantMethods.readTripsKeysForOnlineUser(context);
 
     print("Start : HomeContractor");
+
   }
 
   @override
@@ -381,14 +384,12 @@ class _HomeTabContractorState extends State<HomeTabContractor>
         var jobKeyInfo = dataSnapshot.snapshot.value;
         jList.add(jobKeyInfo);
       });
-
       print("เป็นอะไรอีก");
       print(onlineNearestJobList.length);
       print("#######################################");
       print("onlineNearestJobList[i] : $onlineNearestJobList");
       print("ค่า i : $i");
     }
-
     Navigator.pop(context);
   }
 
@@ -550,10 +551,17 @@ class _HomeTabContractorState extends State<HomeTabContractor>
             child: ElevatedButton(
               style: MyConstant().myButtonStyle4(),
               onPressed: ()
-              {
+              async {
                 print("เป็นอิหยังแหมนิ");
                 print(i);
                 jobsearchinformation();
+                // var list = await AmphureProvider.all();
+                // for(AmphureDao amphure in list){
+                //   // amphure.id;
+                //   // amphure.provinceId;
+                //   print(amphure.nameTh);
+                //   // amphure.nameEn;
+                // }
               },
               child: Text(
                 'ค้นหางานรอบตัว',

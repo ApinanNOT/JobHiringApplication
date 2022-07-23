@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:buddhist_datetime_dateformat_sns/buddhist_datetime_dateformat_sns.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
 import 'package:jobhiring/global/global.dart';
 import 'package:jobhiring/states/employer.dart';
 import 'package:jobhiring/states/markerjob.dart';
@@ -43,6 +48,19 @@ class _PostTabState extends State<PostTab> {
   ]; //age
   String? selectedjobagetype;
 
+  List<String> typejoblist = [
+    "บุคคลทั่วไป",
+    "ช่างก่อสร้าง",
+    "ช่างประปา",
+  ]; //type
+  String? selectedtypejobtype;
+
+  @override
+  void initState()
+  {
+    super.initState();
+  }
+
   TextEditingController jobnameTextEditingController = TextEditingController();
   TextEditingController jobmoneyTextEditingController = TextEditingController();
   TextEditingController jobgenderTextEditingController = TextEditingController();
@@ -53,6 +71,7 @@ class _PostTabState extends State<PostTab> {
   TextEditingController jobaddressTextEditingController = TextEditingController();
   TextEditingController jobdetailTextEditingController = TextEditingController();
   TextEditingController jobphoneTextEditingController = TextEditingController();
+  TextEditingController jobtypeTextEditingController = TextEditingController();
 
   saveJobInformation() async {
     showDialog(
@@ -77,6 +96,7 @@ class _PostTabState extends State<PostTab> {
       "address": jobaddressTextEditingController.text.trim(),
       "detail": jobdetailTextEditingController.text.trim(),
       "phone" : jobphoneTextEditingController.text.trim(),
+      "type" : selectedtypejobtype,
       "ratings" : userModelCurrentInfo!.ratings,
       "contractorId" : "idle",
     };
@@ -358,14 +378,55 @@ class _PostTabState extends State<PostTab> {
           child: TextFormField(
             style: MyConstant().textinput(),
             controller: jobdateTextEditingController,
-            //keyboardType: TextInputType.datetime,
-            validator: (jobdateTextEditingController) {
-              if (jobdateTextEditingController!.isEmpty) {
-                return 'กรุณากรอกวันที่เริ่มทำงาน';
-              } else if (RegExp(r'[\s]')
-                  .hasMatch(jobdateTextEditingController)) {
-                return 'ต้องไม่มีช่องว่าง';
-              } else {}
+            onTap: () async {
+              DateTime date = DateTime.now();
+              FocusScope.of(context).requestFocus(FocusNode());
+              DateTime? picked =
+              // await showDatePicker(
+              //     context: context,
+              //     initialDate: date,
+              //     firstDate: date,
+              //     lastDate: DateTime(date.year + 5),);
+              await showRoundedDatePicker(
+                  height: 308,
+                  context: context,
+                  locale: Locale("th", "TH"),
+                  initialDate: date,
+                  firstDate: date,
+                  lastDate: DateTime(date.year + 3),
+                  era: EraMode.BUDDHIST_YEAR,
+                  borderRadius: 20,
+                  textPositiveButton: "ตกลง",
+                  textNegativeButton: "ยกเลิก",
+                theme: ThemeData(
+                  primaryColor: MyConstant.primary,
+                  primarySwatch: Colors.green,
+                ),
+                styleDatePicker: MaterialRoundedDatePickerStyle(
+                  textStyleYearButton: MyConstant().headbar(),
+                  textStyleButtonNegative: MyConstant().cancelbutton(),
+                  textStyleButtonPositive: MyConstant().confirmbutton(),
+                  textStyleDayButton: MyConstant().searchmatch(),
+                  textStyleDayHeader: MyConstant().jobmoney(),
+                  textStyleMonthYearHeader: MyConstant().jobmoney(),
+                ),
+                styleYearPicker: MaterialRoundedYearPickerStyle(
+                  textStyleYear: MyConstant().textinput(),
+                  textStyleYearSelected: MyConstant().jobname(),
+                ),
+              );
+              if (picked != null && picked != date) {
+                jobdateTextEditingController.text = '${picked.day}/${picked.month}/${picked.yearInBuddhistCalendar}';// add this line.
+                setState(() {
+                  date = picked;
+                });
+              }
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณาระบุวันที่เริ่มทำงาน';
+              }
+              return null;
             },
             decoration: InputDecoration(
               errorStyle: MyConstant().errortext(),
@@ -391,20 +452,11 @@ class _PostTabState extends State<PostTab> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 20),
           width: size * 0.6,
           child: TextFormField(
-            style: MyConstant().textinput(),
             controller: jobtimeTextEditingController,
-            keyboardType: TextInputType.datetime,
-            validator: (jobtimeTextEditingController) {
-              if (jobtimeTextEditingController!.isEmpty) {
-                return 'กรุณากรอกเวลาเริ่มทำงาน';
-              } else if (RegExp(r'[\s]')
-                  .hasMatch(jobtimeTextEditingController)) {
-                return 'ต้องไม่มีช่องว่าง';
-              } else {}
-            },
+            style: MyConstant().textinput(),
             decoration: InputDecoration(
               errorStyle: MyConstant().errortext(),
               labelStyle: MyConstant().h3Style(),
@@ -418,6 +470,27 @@ class _PostTabState extends State<PostTab> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
+            onTap: () async {
+              TimeOfDay time = TimeOfDay.now();
+              FocusScope.of(context).requestFocus(FocusNode());
+              TimeOfDay? picked =
+              await showTimePicker(
+                context: context,
+                initialTime: time,
+              );
+              if (picked != null && picked != time) {
+                jobtimeTextEditingController.text = picked.format(context).toString();// add this line.
+                setState(() {
+                  time = picked;
+                });
+              }
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณาระบุเวลาทำงาน';
+              }
+              return null;
+            },
           ),
         ),
       ],
@@ -519,6 +592,55 @@ class _PostTabState extends State<PostTab> {
     );
   }
 
+  Row buildJobType(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: SizedBox(
+            width: size * 0.6,
+            child: DropdownButtonFormField<String>(
+              validator: (selectedtypejobtype) {
+                if (selectedtypejobtype == null) {
+                  return 'กรุณาระบุประเภทบุคคล';
+                } else {}
+              },
+              decoration: InputDecoration(
+                errorStyle: MyConstant().errortext(),
+                labelText: 'ประเภทบุคคล',
+                labelStyle: MyConstant().h3Style(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.dark),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MyConstant.light),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              value: selectedtypejobtype,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedtypejobtype = newValue.toString();
+                });
+              },
+              items: typejoblist.map((type) {
+                return DropdownMenuItem(
+                  child: Text(
+                    type,
+                    style: MyConstant().textinput(),
+                  ),
+                  value: type,
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Row buildImage(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -610,6 +732,7 @@ class _PostTabState extends State<PostTab> {
                 buildJobMoney(size),
                 buildJobGender(size),
                 buildJobSafe(size),
+                buildJobType(size),
                 buildJobAge(size),
                 buildJobPhone(size),
                 buildJobDate(size),

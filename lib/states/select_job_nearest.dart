@@ -53,8 +53,6 @@ class _SelectJobNearestState extends State<SelectJobNearest>
 
     super.dispose();
 
-    jList = [];
-
     print("Finish : Select Job Nearest");
   }
 
@@ -339,6 +337,21 @@ class _SelectJobNearestState extends State<SelectJobNearest>
                           child: Container(
                             child: Text(
                               "ระดับความปลอดภัย : " + _foundJobs[index]["safe"],
+                              style: MyConstant().userinfo5(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 10.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
+                              "ปรเภทบุคคล : " + _foundJobs[index]["type"],
                               style: MyConstant().userinfo5(),
                             ),
                           ),

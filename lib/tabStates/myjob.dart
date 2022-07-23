@@ -130,6 +130,21 @@ class _MyJobState extends State<MyJob> {
                         Expanded(
                           child: Container(
                             child: Text(
+                              "ปรเภทบุคคล : " + jobModelCurrentInfo!.type.toString(),
+                              style: MyConstant().userinfo6(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18.0),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text(
                               "เวลา : " + jobModelCurrentInfo!.time.toString(),
                               style: MyConstant().userinfo6(),
                             ),
